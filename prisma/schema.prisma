@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Inquiry {
+  id              String   @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String
+  phone           String
+  eventDate       String
+  eventLocation   String
+  eventType       String
+  serviceRequired String
+  hearAbout       String
+  promoCode       String?
+  message         String?
+  status          String   @default("new")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+  name     String
+}
