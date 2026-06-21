@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "About | Gigi's Concept",
@@ -21,10 +22,13 @@ export default function AboutPage() {
       <section className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="aspect-[3/4] bg-brand-200 relative order-1 md:order-none">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-xs tracking-[0.2em] text-brand-500">PORTRAIT</p>
-              </div>
+            <div className="aspect-[3/4] bg-brand-200 relative order-1 md:order-none overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80"
+                alt="Gigi - Founder of Gigi's Concept"
+                fill
+                className="object-cover"
+              />
             </div>
             <div>
               <p className="text-xs tracking-[0.3em] text-brand-600 mb-4">THE STUDIO</p>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -22,10 +23,13 @@ export default function ServicesPage() {
       <section className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="aspect-[4/3] bg-brand-200 relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-xs tracking-[0.2em] text-brand-500">CONTENT CREATION</p>
-              </div>
+            <div className="aspect-[4/3] bg-brand-200 relative overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1609220136736-443140cffec6?w=800&q=80"
+                alt="Content creation shoot"
+                fill
+                className="object-cover"
+              />
             </div>
             <div>
               <p className="text-xs tracking-[0.3em] text-brand-600 mb-4">SERVICE ONE</p>
@@ -89,10 +93,13 @@ export default function ServicesPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="order-1 md:order-2">
-              <div className="aspect-[4/3] bg-brand-200 relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-xs tracking-[0.2em] text-brand-500">PHOTO BOOTH</p>
-                </div>
+              <div className="aspect-[4/3] bg-brand-200 relative overflow-hidden">
+                <Image
+                  src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&q=80"
+                  alt="Luxury photo booth"
+                  fill
+                  className="object-cover"
+                />
               </div>
             </div>
             <div className="order-2 md:order-1">

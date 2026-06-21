@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { InquiryForm } from "@/components/InquiryForm";
 
 export default function Home() {
@@ -54,9 +55,12 @@ export default function Home() {
             {/* Content Creation */}
             <div>
               <div className="aspect-[4/3] bg-brand-200 mb-8 overflow-hidden relative">
-                <div className="absolute inset-0 flex items-end justify-center pb-8">
-                  <p className="text-xs tracking-[0.2em] text-brand-600">CONTENT CREATION</p>
-                </div>
+                <Image
+                  src="https://images.unsplash.com/photo-1609220136736-443140cffec6?w=800&q=80"
+                  alt="Content creation shoot"
+                  fill
+                  className="object-cover"
+                />
               </div>
               <h3 className="font-script text-4xl mb-4">Content Creation</h3>
               <p className="text-brand-600 leading-relaxed mb-6">
@@ -93,9 +97,12 @@ export default function Home() {
             {/* Photo Booth */}
             <div>
               <div className="aspect-[4/3] bg-brand-200 mb-8 overflow-hidden relative">
-                <div className="absolute inset-0 flex items-end justify-center pb-8">
-                  <p className="text-xs tracking-[0.2em] text-brand-600">PHOTO BOOTH</p>
-                </div>
+                <Image
+                  src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&q=80"
+                  alt="Luxury photo booth experience"
+                  fill
+                  className="object-cover"
+                />
               </div>
               <h3 className="font-script text-4xl mb-4">Photo Booth</h3>
               <p className="text-brand-600 leading-relaxed mb-6">
@@ -149,10 +156,13 @@ export default function Home() {
       <section className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="aspect-[3/4] bg-brand-200 relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-xs tracking-[0.2em] text-brand-500">PORTRAIT</p>
-              </div>
+            <div className="aspect-[3/4] bg-brand-200 relative overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80"
+                alt="Gigi - Founder of Gigi's Concept"
+                fill
+                className="object-cover"
+              />
             </div>
             <div>
               <p className="text-xs tracking-[0.3em] text-brand-600 mb-4">THE STUDIO</p>
