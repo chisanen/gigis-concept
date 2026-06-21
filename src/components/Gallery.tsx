@@ -5,28 +5,36 @@ import { useState } from "react";
 
 const galleryItems = [
   {
-    src: "https://images.unsplash.com/photo-1643297654395-d6375d07215c?w=600&q=80",
-    alt: "Graduation celebration with confetti",
+    src: "https://images.unsplash.com/photo-R7sKX3PXZ1A?w=600&q=80",
+    alt: "Bride in elegant wedding gown holding bouquet",
   },
   {
-    src: "https://images.unsplash.com/photo-1754490900179-528cc5a3f8c4?w=600&q=80",
-    alt: "Couple dressed up for a glamorous event",
+    src: "https://images.unsplash.com/photo-9vHAhn_gUtg?w=600&q=80",
+    alt: "Bride with bridesmaids in black dresses",
   },
   {
-    src: "https://images.unsplash.com/photo-1754490899906-f793281ea1df?w=600&q=80",
-    alt: "Two women dress up for an elegant party",
+    src: "https://images.unsplash.com/photo-RjgyOT2cYIA?w=600&q=80",
+    alt: "Bride and bridesmaids celebrating with raised arms",
   },
   {
-    src: "https://images.unsplash.com/photo-1742473532838-79aa8e8c1914?w=600&q=80",
-    alt: "Woman poses for a photo with friends",
+    src: "https://images.unsplash.com/photo-x-a6jIlbzC8?w=600&q=80",
+    alt: "Couple embracing with love and affection",
   },
   {
-    src: "https://images.unsplash.com/photo-1768508659898-314050703e34?w=600&q=80",
-    alt: "Smiling couple in wedding attire holding flowers",
+    src: "https://images.unsplash.com/photo-M-adWhDQd7Y?w=600&q=80",
+    alt: "Little girls in ballerina dresses at birthday",
   },
   {
-    src: "https://images.unsplash.com/photo-1530519370550-209c4d0f6577?w=600&q=80",
-    alt: "Smiling woman at a celebration",
+    src: "https://images.unsplash.com/photo-USp3vDImrSU?w=600&q=80",
+    alt: "Bride and bridesmaids laughing together",
+  },
+  {
+    src: "https://images.unsplash.com/photo-91y7SsvXkJE?w=600&q=80",
+    alt: "Beautiful bride in wedding dress with bouquet",
+  },
+  {
+    src: "https://images.unsplash.com/photo-jWW3vn9hpFg?w=600&q=80",
+    alt: "Bridal party holding bouquets in forest",
   },
 ];
 
@@ -35,21 +43,21 @@ export function Gallery() {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {galleryItems.map((item, i) => (
           <button
             key={i}
             onClick={() => setSelected(i)}
-            className="relative aspect-square overflow-hidden group cursor-pointer"
+            className="relative aspect-[3/4] overflow-hidden group cursor-pointer"
           >
             <Image
               src={item.src}
               alt={item.alt}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 768px) 50vw, 33vw"
+              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+              sizes="(max-width: 768px) 50vw, 25vw"
             />
-            <div className="absolute inset-0 bg-brand-900/0 group-hover:bg-brand-900/20 transition-colors duration-300" />
+            <div className="absolute inset-0 bg-brand-900/10 group-hover:bg-transparent transition-all duration-500" />
           </button>
         ))}
       </div>
@@ -57,17 +65,17 @@ export function Gallery() {
       {/* Lightbox */}
       {selected !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-6"
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 md:p-10"
           onClick={() => setSelected(null)}
         >
           <button
             onClick={() => setSelected(null)}
-            className="absolute top-6 right-6 text-white text-4xl hover:opacity-70 transition-opacity"
+            className="absolute top-4 right-6 text-white/80 text-4xl hover:text-white transition-colors z-10"
             aria-label="Close"
           >
             &times;
           </button>
-          <div className="relative w-full max-w-4xl aspect-square md:aspect-[4/3]">
+          <div className="relative w-full max-w-3xl aspect-[3/4]">
             <Image
               src={galleryItems[selected].src.replace("w=600", "w=1200")}
               alt={galleryItems[selected].alt}

@@ -65,7 +65,7 @@ export function InquiryForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit} className="bg-white p-8 md:p-12 border border-brand-200 grid md:grid-cols-2 gap-6">
       <div>
         <label className="block text-sm mb-2">
           First Name <span className="text-brand-700">*</span>
@@ -211,11 +211,11 @@ export function InquiryForm() {
         />
       </div>
 
-      <div className="md:col-span-2">
+      <div className="md:col-span-2 text-center pt-4">
         <button
           type="submit"
           disabled={status === "loading"}
-          className="bg-brand-500 text-white px-10 py-3 text-sm tracking-[0.2em] hover:bg-brand-700 transition-colors disabled:opacity-50"
+          className="bg-brand-900 text-white px-14 py-3.5 text-[11px] tracking-[0.25em] hover:bg-brand-700 transition-colors disabled:opacity-50"
         >
           {status === "loading" ? "SUBMITTING..." : "SUBMIT"}
         </button>
