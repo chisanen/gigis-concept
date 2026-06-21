@@ -5,36 +5,36 @@ import { useState } from "react";
 
 const galleryItems = [
   {
-    src: "https://images.unsplash.com/photo-1535428245347-3ab06a1b100a?w=600&q=80",
-    alt: "Wedding love and marriage",
+    src: "https://images.unsplash.com/photo-1745231991466-19d41014cc66?w=600&q=80",
+    alt: "Couple embracing with love and affection",
   },
   {
-    src: "https://images.unsplash.com/photo-1692457799626-4477193123c6?w=600&q=80",
-    alt: "Black love couple portrait",
+    src: "https://images.unsplash.com/photo-1515531980326-6244280b99c8?w=600&q=80",
+    alt: "Elegant couple in formal attire",
   },
   {
-    src: "https://images.unsplash.com/photo-1700142534189-cc18e2d42917?w=600&q=80",
-    alt: "Bride holding bouquet",
+    src: "https://images.unsplash.com/photo-1515015337340-dbabb1fa63ae?w=600&q=80",
+    alt: "Wedding couple portrait",
   },
   {
-    src: "https://images.unsplash.com/photo-1562182856-e39faab686d7?w=600&q=80",
-    alt: "Elegant bridal party in beautiful dresses",
+    src: "https://images.unsplash.com/photo-1560461723-0fa849b3e03a?w=600&q=80",
+    alt: "Bridal party celebration",
   },
   {
     src: "https://images.unsplash.com/photo-1516668557604-c8e814fdb184?w=600&q=80",
-    alt: "Toddler blowing birthday candles",
+    alt: "Little one blowing out birthday candles",
   },
   {
-    src: "https://images.unsplash.com/photo-1632850741446-50260d19a158?w=600&q=80",
-    alt: "Beautiful portrait session",
+    src: "https://images.unsplash.com/photo-1592599457454-e6ace3370314?w=600&q=80",
+    alt: "Elegant wedding celebration",
   },
   {
-    src: "https://images.unsplash.com/photo-1719499719196-7a256956a22b?w=600&q=80",
-    alt: "Bride and groom elegant pose",
+    src: "https://images.unsplash.com/photo-1585890483032-1465321a75a5?w=600&q=80",
+    alt: "Bridal party in formal attire",
   },
   {
-    src: "https://images.unsplash.com/photo-1563525614522-b76b89d81024?w=600&q=80",
-    alt: "Sweet baby birthday celebration",
+    src: "https://images.unsplash.com/photo-1515015443787-2e0fb93d9783?w=600&q=80",
+    alt: "Wedding couple formal portrait",
   },
 ];
 
