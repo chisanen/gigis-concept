@@ -3,6 +3,7 @@ import Image from "next/image";
 import { InquiryForm } from "@/components/InquiryForm";
 import { QuoteCalculator } from "@/components/QuoteCalculator";
 import { Gallery } from "@/components/Gallery";
+import { HeroCarousel } from "@/components/HeroCarousel";
 
 export default function Home() {
   return (
@@ -10,14 +11,8 @@ export default function Home() {
       {/* ═══ 1 · CAPTURING MOMENTS ═══ */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="/hero-wedding.png"
-            alt="Elegant African American bride and groom on wedding steps"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50" />
+          <HeroCarousel />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50 z-10" />
         </div>
         <div className="relative z-10 max-w-2xl mx-auto px-6 text-center text-white py-20">
           <p className="text-[10px] md:text-[11px] tracking-[0.5em] text-white/60 mb-10 uppercase">
