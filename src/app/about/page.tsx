@@ -22,12 +22,13 @@ export default function AboutPage() {
       <section className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="aspect-[3/4] bg-brand-200 relative order-1 md:order-none overflow-hidden">
+            <div className="order-1 md:order-none overflow-hidden group">
               <Image
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80"
-                alt="Gigi - Founder of Gigi's Concept"
-                fill
-                className="object-cover"
+                src="/gigi-portrait.png"
+                alt="Gigi — Founder of Gigi's Concept"
+                width={800}
+                height={533}
+                className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700"
               />
             </div>
             <div>

@@ -24,6 +24,18 @@ export function AdminNav({ userName }: { userName: string }) {
             >
               INQUIRIES
             </Link>
+            <Link
+              href="/admin/content"
+              className="text-sm tracking-widest text-brand-400 hover:text-white transition-colors"
+            >
+              CONTENT
+            </Link>
+            <Link
+              href="/admin/gallery"
+              className="text-sm tracking-widest text-brand-400 hover:text-white transition-colors"
+            >
+              GALLERY
+            </Link>
           </div>
         </div>
         <div className="flex items-center gap-4">

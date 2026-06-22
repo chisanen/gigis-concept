@@ -25,8 +25,8 @@ export default function ServicesPage() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="aspect-[4/3] bg-brand-200 relative overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1653899665441-e52920ff25e9?w=800&q=80"
-                alt="Content creation — editorial brand shoot"
+                src="/hero-wedding.png"
+                alt="Elegant wedding celebration — content creation"
                 fill
                 className="object-cover"
               />
@@ -95,8 +95,8 @@ export default function ServicesPage() {
             <div className="order-1 md:order-2">
               <div className="aspect-[4/3] bg-brand-200 relative overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1731664454047-b8e9ec397575?w=800&q=80"
-                  alt="Couple on the dance floor at an elegant event"
+                  src="/photo-booth.png"
+                  alt="Upscale luxury photo booth setup"
                   fill
                   className="object-cover"
                 />
