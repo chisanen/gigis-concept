@@ -3,7 +3,6 @@ import { Cormorant_Garamond, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Providers } from "@/components/Providers";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -20,9 +19,9 @@ const dancing = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Gigi's Concept | Content Creation & Luxury Photo Booth",
+  title: "Gigi's Concept | Content Creation & Luxury Photo Booth — Dallas TX",
   description:
-    "Editorial content and a timeless photo-booth experience — quietly crafted, beautifully delivered. Based in Dallas, serving clients across Texas and beyond.",
+    "Editorial content and a timeless photo-booth experience in Dallas, Texas — quietly crafted, beautifully delivered. Weddings, events, brand shoots.",
 };
 
 export default function RootLayout({
@@ -32,12 +31,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${dancing.variable}`}>
+      <head>
+        <meta name="geo.region" content="US-TX" />
+        <meta name="geo.placename" content="Dallas" />
+      </head>
       <body className="min-h-screen flex flex-col font-serif antialiased">
-        <Providers>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </Providers>
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
