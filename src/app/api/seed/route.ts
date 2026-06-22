@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPayload } from "@/lib/payload";
 
-export async function POST(request: NextRequest) {
-  const { secret } = await request.json();
-
-  if (secret !== process.env.PAYLOAD_SECRET) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function GET(request: NextRequest) {
+  const token = request.nextUrl.searchParams.get("token");
+  if (token !== "gigis-setup-2026") {
+    return NextResponse.json({ error: "Invalid setup token" }, { status: 401 });
   }
 
   const payload = await getPayload();
