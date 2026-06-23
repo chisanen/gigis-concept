@@ -15,7 +15,7 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <Image src="/logo.png" alt="Gigi's Concept" width={120} height={113} className="h-16 w-auto mb-4 brightness-0 invert" />
+            <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} className="h-20 w-auto mb-4 brightness-0 invert" />
             <p className="text-sm leading-relaxed text-brand-400">
               Editorial content and a timeless photo-booth experience — quietly crafted, beautifully delivered.
             </p>

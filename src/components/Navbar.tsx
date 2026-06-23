@@ -23,7 +23,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 bg-brand-50/95 backdrop-blur-sm border-b border-brand-200/50">
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="hover:opacity-80 transition-opacity">
-          <Image src="/logo.png" alt="Gigi's Concept" width={120} height={113} className="h-12 w-auto" priority />
+          <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} className="h-16 w-auto" priority />
         </Link>
 
         {/* Desktop nav */}
