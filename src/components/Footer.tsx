@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export function Footer() {
@@ -14,7 +15,7 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <p className="text-3xl text-white mb-4" style={{ fontFamily: "var(--font-logo)" }}>Gigi&apos;s Concept</p>
+            <Image src="/logo.png" alt="Gigi's Concept" width={120} height={113} className="h-16 w-auto mb-4 brightness-0 invert" />
             <p className="text-sm leading-relaxed text-brand-400">
               Editorial content and a timeless photo-booth experience — quietly crafted, beautifully delivered.
             </p>
