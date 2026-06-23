@@ -7,6 +7,12 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 
 export const dynamic = "force-dynamic";
 
+function fixMediaUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith("/api/media/file/")) return `/${url.replace("/api/media/file/", "")}`;
+  return url;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -24,7 +30,7 @@ export async function generateMetadata({
 
   const image =
     post.featuredImage && typeof post.featuredImage === "object"
-      ? post.featuredImage.url
+      ? fixMediaUrl(post.featuredImage.url as string)
       : undefined;
 
   return {
@@ -55,10 +61,12 @@ export default async function BlogPostPage({
   const post = posts.docs[0];
   if (!post) notFound();
 
-  const image =
+  const imageObj =
     post.featuredImage && typeof post.featuredImage === "object"
-      ? post.featuredImage
+      ? post.featuredImage as Record<string, unknown>
       : null;
+  const imageUrl = fixMediaUrl(imageObj?.url as string);
+  const imageAlt = (imageObj?.alt as string) || post.title;
 
   // JSON-LD structured data
   const jsonLd = {
@@ -66,7 +74,7 @@ export default async function BlogPostPage({
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
-    image: image?.url,
+    image: imageUrl,
     datePublished: post.publishedDate,
     dateModified: post.updatedAt,
     author: { "@type": "Person", name: post.author || "Gigi" },
@@ -113,11 +121,11 @@ export default async function BlogPostPage({
           </div>
 
           {/* Featured image */}
-          {image?.url && (
+          {imageUrl && (
             <div className="relative aspect-[16/9] overflow-hidden mb-12">
               <Image
-                src={image.url}
-                alt={image.alt || post.title}
+                src={imageUrl}
+                alt={imageAlt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 768px"

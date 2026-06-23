@@ -8,10 +8,10 @@ function getImageUrl(img: unknown): string | null {
   const media = img as Record<string, unknown>;
   const url = media.url as string | undefined;
   if (!url) return null;
-  // If it's a relative Payload URL, make it absolute
+  // Map Payload media URLs to public directory (files exist in /public/)
   if (url.startsWith("/api/media/file/")) {
-    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "";
-    return `${serverUrl}${url}`;
+    const filename = url.replace("/api/media/file/", "");
+    return `/${filename}`;
   }
   return url;
 }
