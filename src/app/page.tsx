@@ -125,8 +125,8 @@ export default async function Home() {
             <div className="group text-center">
               <div className="relative aspect-[4/3] overflow-hidden mb-8">
                 <Image
-                  src="https://images.unsplash.com/photo-1515531980326-6244280b99c8?w=800&q=80"
-                  alt="Elegant couple content shoot"
+                  src="/content-creation-bts.png"
+                  alt="Content creator filming bride getting makeup done — behind the scenes"
                   fill
                   className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]"
                   sizes="(max-width: 768px) 100vw, 50vw"
