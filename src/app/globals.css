@@ -12,6 +12,7 @@
 
   --font-serif: var(--font-cormorant);
   --font-script: var(--font-dancing);
+  --font-logo: var(--font-logo);
 }
 
 @layer base {

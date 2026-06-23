@@ -21,7 +21,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-brand-50/95 backdrop-blur-sm border-b border-brand-200/50">
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="font-script text-3xl text-brand-700 hover:opacity-80 transition-opacity">
+        <Link href="/" className="text-3xl text-brand-700 hover:opacity-80 transition-opacity" style={{ fontFamily: "var(--font-logo)" }}>
           Gigi&apos;s Concept
         </Link>
 

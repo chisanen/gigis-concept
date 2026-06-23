@@ -14,7 +14,7 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <p className="font-script text-3xl text-white mb-4">Gigi&apos;s Concept</p>
+            <p className="text-3xl text-white mb-4" style={{ fontFamily: "var(--font-logo)" }}>Gigi&apos;s Concept</p>
             <p className="text-sm leading-relaxed text-brand-400">
               Editorial content and a timeless photo-booth experience — quietly crafted, beautifully delivered.
             </p>
