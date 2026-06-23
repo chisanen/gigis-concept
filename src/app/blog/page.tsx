@@ -3,6 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPayload } from "@/lib/payload";
 
+function getImageUrl(img: unknown): string | null {
+  if (!img || typeof img !== "object") return null;
+  const media = img as Record<string, unknown>;
+  const url = media.url as string | undefined;
+  if (!url) return null;
+  // If it's a relative Payload URL, make it absolute
+  if (url.startsWith("/api/media/file/")) {
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "";
+    return `${serverUrl}${url}`;
+  }
+  return url;
+}
+
 export const metadata: Metadata = {
   title: "Blog | Gigi's Concept — Dallas TX Wedding & Event Content",
   description:
@@ -85,17 +98,21 @@ export default async function BlogPage({
                   className="group"
                 >
                   <div className="relative aspect-[3/2] overflow-hidden mb-5 bg-brand-200">
-                    {post.featuredImage &&
-                      typeof post.featuredImage === "object" &&
-                      post.featuredImage.url && (
+                    {(() => {
+                      const imgUrl = getImageUrl(post.featuredImage);
+                      const alt = post.featuredImage && typeof post.featuredImage === "object"
+                        ? (post.featuredImage as Record<string, unknown>).alt as string || post.title
+                        : post.title;
+                      return imgUrl ? (
                         <Image
-                          src={post.featuredImage.url}
-                          alt={post.featuredImage.alt || post.title}
+                          src={imgUrl}
+                          alt={alt}
                           fill
                           className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
-                      )}
+                      ) : null;
+                    })()}
                   </div>
                   <p className="text-[10px] tracking-[0.2em] text-brand-500 uppercase mb-2">
                     {post.category?.replace("-", " ")}
