@@ -4,8 +4,25 @@ import { InquiryForm } from "@/components/InquiryForm";
 import { QuoteCalculator } from "@/components/QuoteCalculator";
 import { Gallery } from "@/components/Gallery";
 import { HeroCarousel } from "@/components/HeroCarousel";
+import { getPayload } from "@/lib/payload";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+async function getSiteData() {
+  try {
+    const payload = await getPayload();
+    const [settings, testimonials] = await Promise.all([
+      payload.findGlobal({ slug: "site-settings" }),
+      payload.find({ collection: "testimonials", where: { featured: { equals: true } }, limit: 1 }),
+    ]);
+    return { settings, testimonial: testimonials.docs[0] || null };
+  } catch {
+    return { settings: null, testimonial: null };
+  }
+}
+
+export default async function Home() {
+  const { settings, testimonial } = await getSiteData();
   return (
     <>
       {/* ═══ 1 · CAPTURING MOMENTS ═══ */}
@@ -173,12 +190,11 @@ export default function Home() {
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
           </svg>
           <p className="font-script text-[1.35rem] md:text-[1.6rem] text-brand-900 leading-[1.7] mb-12">
-            My mom started crying! She loves it so much — thank you so much.
-            You are amazing at what you do.
+            {testimonial?.quote || "My mom started crying! She loves it so much — thank you so much. You are amazing at what you do."}
           </p>
           <div className="w-14 h-px bg-brand-400 mx-auto mb-6" />
           <p className="text-[10px] tracking-[0.35em] text-brand-600 uppercase">
-            Latoya E. &middot; 60th Birthday Celebration
+            {testimonial?.authorName || "Latoya E."} &middot; {testimonial?.eventDescription || "60th Birthday Celebration"}
           </p>
         </div>
       </section>
@@ -229,8 +245,8 @@ export default function Home() {
           <InquiryForm />
           <div className="text-center mt-16 pt-12 border-t border-brand-400/30">
             <p className="text-[13px] text-brand-600 mb-3">Or reach us directly at</p>
-            <a href="mailto:hello@gigisconcept.com" className="text-brand-900 underline underline-offset-4 text-lg">
-              hello@gigisconcept.com
+            <a href={`mailto:${(settings as Record<string, unknown>)?.contactEmail || "hello@gigisconcept.com"}`} className="text-brand-900 underline underline-offset-4 text-lg">
+              {(settings as Record<string, unknown>)?.contactEmail as string || "hello@gigisconcept.com"}
             </a>
           </div>
         </div>
