@@ -1,8 +1,10 @@
 import { MetaDescriptionComponent, MetaImageComponent, MetaTitleComponent, OverviewComponent, PreviewComponent } from '@payloadcms/plugin-seo/client'
 import { AlignFeatureClient, BlockquoteFeatureClient, BlocksFeatureClient, BoldFeatureClient, ChecklistFeatureClient, CodeBlockBlockComponent, CodeComponent, DebugJsxConverterFeatureClient, FixedToolbarFeatureClient, HeadingFeatureClient, HorizontalRuleFeatureClient, IndentFeatureClient, InlineCodeFeatureClient, InlineToolbarFeatureClient, ItalicFeatureClient, LexicalPluginToLexicalFeatureClient, LinkFeatureClient, OrderedListFeatureClient, ParagraphFeatureClient, RelationshipFeatureClient, SlateToLexicalFeatureClient, StrikethroughFeatureClient, SubscriptFeatureClient, SuperscriptFeatureClient, TableFeatureClient, TestRecorderFeatureClient, TextStateFeatureClient, TreeViewFeatureClient, UnderlineFeatureClient, UnorderedListFeatureClient, UploadFeatureClient, codeConverterClient } from '@payloadcms/richtext-lexical/client'
 import { VercelBlobClientUploadHandler } from '@payloadcms/storage-vercel-blob/client'
+import { StudioDashboard } from '@/components/admin/Dashboard'
 
 export const importMap = {
+  '@/components/admin/Dashboard#StudioDashboard': StudioDashboard,
   '@payloadcms/plugin-seo/client#MetaDescriptionComponent': MetaDescriptionComponent,
   '@payloadcms/plugin-seo/client#MetaImageComponent': MetaImageComponent,
   '@payloadcms/plugin-seo/client#MetaTitleComponent': MetaTitleComponent,

@@ -37,6 +37,9 @@ export default buildConfig({
     meta: {
       titleSuffix: " — Gigi's Concept Studio",
     },
+    components: {
+      afterDashboard: ["@/components/admin/Dashboard#StudioDashboard"],
+    },
   },
   collections: [
     Users,
