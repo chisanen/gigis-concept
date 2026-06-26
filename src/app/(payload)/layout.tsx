@@ -5,6 +5,7 @@ import { serverFunction } from "./admin/[[...segments]]/serverFunction";
 import React from "react";
 
 import "@payloadcms/next/css";
+import "./custom.css";
 
 export const metadata = {
   robots: "noindex, nofollow",
