@@ -12,6 +12,19 @@ import { GalleryImages } from "./collections/GalleryImages";
 import { Testimonials } from "./collections/Testimonials";
 import { Inquiries } from "./collections/Inquiries";
 import { Users } from "./collections/Users";
+import { Leads } from "./collections/Leads";
+import { Bookings } from "./collections/Bookings";
+import { Packages } from "./collections/Packages";
+import { AddOns } from "./collections/AddOns";
+import { Quotes } from "./collections/Quotes";
+import { Contracts } from "./collections/Contracts";
+import { Invoices } from "./collections/Invoices";
+import { Tasks } from "./collections/Tasks";
+import { Team } from "./collections/Team";
+import { Equipment } from "./collections/Equipment";
+import { EmailTemplates } from "./collections/EmailTemplates";
+import { DiscountCodes } from "./collections/DiscountCodes";
+import { Popups } from "./collections/Popups";
 import { SiteSettings } from "./globals/SiteSettings";
 
 const filename = fileURLToPath(import.meta.url);
@@ -25,7 +38,28 @@ export default buildConfig({
       titleSuffix: " — Gigi's Concept Studio",
     },
   },
-  collections: [Users, Media, Pages, BlogPosts, GalleryImages, Testimonials, Inquiries],
+  collections: [
+    Users,
+    Media,
+    Pages,
+    BlogPosts,
+    GalleryImages,
+    Testimonials,
+    Inquiries,
+    Leads,
+    Bookings,
+    Packages,
+    AddOns,
+    Quotes,
+    Contracts,
+    Invoices,
+    Tasks,
+    Team,
+    Equipment,
+    EmailTemplates,
+    DiscountCodes,
+    Popups,
+  ],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "default-secret-change-me",
