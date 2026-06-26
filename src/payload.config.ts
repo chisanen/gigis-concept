@@ -43,7 +43,12 @@ export default buildConfig({
       titleSuffix: " — Gigi's Concept Studio",
     },
     components: {
-      afterDashboard: ["@/components/admin/Dashboard#StudioDashboard"],
+      afterDashboard: [
+        "@/components/admin/Dashboard#StudioDashboard",
+        "@/components/admin/Calendar#StudioCalendar",
+        "@/components/admin/LeadsCRM#LeadsCRM",
+        "@/components/admin/Reports#StudioReports",
+      ],
     },
   },
   collections: [

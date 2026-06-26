@@ -2,9 +2,15 @@ import { MetaDescriptionComponent, MetaImageComponent, MetaTitleComponent, Overv
 import { AlignFeatureClient, BlockquoteFeatureClient, BlocksFeatureClient, BoldFeatureClient, ChecklistFeatureClient, CodeBlockBlockComponent, CodeComponent, DebugJsxConverterFeatureClient, FixedToolbarFeatureClient, HeadingFeatureClient, HorizontalRuleFeatureClient, IndentFeatureClient, InlineCodeFeatureClient, InlineToolbarFeatureClient, ItalicFeatureClient, LexicalPluginToLexicalFeatureClient, LinkFeatureClient, OrderedListFeatureClient, ParagraphFeatureClient, RelationshipFeatureClient, SlateToLexicalFeatureClient, StrikethroughFeatureClient, SubscriptFeatureClient, SuperscriptFeatureClient, TableFeatureClient, TestRecorderFeatureClient, TextStateFeatureClient, TreeViewFeatureClient, UnderlineFeatureClient, UnorderedListFeatureClient, UploadFeatureClient, codeConverterClient } from '@payloadcms/richtext-lexical/client'
 import { VercelBlobClientUploadHandler } from '@payloadcms/storage-vercel-blob/client'
 import { StudioDashboard } from '@/components/admin/Dashboard'
+import { StudioCalendar } from '@/components/admin/Calendar'
+import { LeadsCRM } from '@/components/admin/LeadsCRM'
+import { StudioReports } from '@/components/admin/Reports'
 
 export const importMap = {
   '@/components/admin/Dashboard#StudioDashboard': StudioDashboard,
+  '@/components/admin/Calendar#StudioCalendar': StudioCalendar,
+  '@/components/admin/LeadsCRM#LeadsCRM': LeadsCRM,
+  '@/components/admin/Reports#StudioReports': StudioReports,
   '@payloadcms/plugin-seo/client#MetaDescriptionComponent': MetaDescriptionComponent,
   '@payloadcms/plugin-seo/client#MetaImageComponent': MetaImageComponent,
   '@payloadcms/plugin-seo/client#MetaTitleComponent': MetaTitleComponent,

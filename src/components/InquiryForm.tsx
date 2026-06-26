@@ -33,11 +33,35 @@ export function InquiryForm() {
     const data = new FormData(form);
 
     try {
+      const formObj = Object.fromEntries(data);
+
+      // Submit inquiry
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(data)),
+        body: JSON.stringify(formObj),
       });
+
+      // Also create a lead for CRM tracking
+      fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formObj.firstName,
+          lastName: formObj.lastName,
+          email: formObj.email,
+          phone: formObj.phone,
+          eventDate: formObj.eventDate,
+          eventLocation: formObj.eventLocation,
+          eventType: formObj.eventType,
+          serviceRequired: formObj.serviceRequired,
+          heardAbout: formObj.hearAbout,
+          promoCode: formObj.promoCode,
+          message: formObj.message,
+          stage: "new",
+          source: "website",
+        }),
+      }).catch(() => {});
 
       if (!res.ok) throw new Error("Failed to submit");
       setStatus("success");
