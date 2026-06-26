@@ -44,7 +44,7 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: Users.slug,
-    theme: "all",
+    theme: "light",
     meta: {
       titleSuffix: " — Gigi's Concept Studio",
     },
