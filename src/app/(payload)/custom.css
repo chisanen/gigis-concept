@@ -1,8 +1,11 @@
-/* Gigi's Concept — Payload admin: light "Nude" theme (replaces dark/brown UI) */
+/* ═══════════════════════════════════════════════════════════
+   Gigi's Concept — Admin Theme
+   Light "Nude" + Dark "Crimson Luxe"
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── LIGHT MODE (Nude) ─── */
 :root,
-html[data-theme="light"],
-html[data-theme="dark"] {
-  /* ----- Base palette ramp: lightest (0) -> darkest (1000) ----- */
+html[data-theme="light"] {
   --color-base-0:   #FFFFFF;
   --color-base-50:  #FBF9F6;
   --color-base-100: #F1EDE6;
@@ -25,12 +28,10 @@ html[data-theme="dark"] {
   --color-base-950: #221A16;
   --color-base-1000:#1A1410;
 
-  /* ----- Canvas + text ----- */
   --theme-bg:        #EBE3DB;
   --theme-text:      #3A2D28;
   --theme-input-bg:  #FFFFFF;
 
-  /* ----- Elevations: low = beige canvas, raised = white cards ----- */
   --theme-elevation-0:    #EBE3DB;
   --theme-elevation-50:   #F1EDE6;
   --theme-elevation-100:  #FFFFFF;
@@ -46,48 +47,143 @@ html[data-theme="dark"] {
   --theme-elevation-900:  #2C221E;
   --theme-elevation-1000: #3A2D28;
 
-  /* ----- Brand accent ----- */
   --theme-success-500: #3A2D28;
   --theme-success-600: #2C221E;
   --theme-success-400: #5C463B;
   --theme-text-link:   #A48374;
-
-  /* ----- Status colors ----- */
   --theme-error-500:   #B3261E;
   --theme-warning-500: #B7791F;
   --theme-success-tertiary: #EBE3DB;
 
-  /* ----- Elegant geometry + readable admin type ----- */
   --style-radius-s: 4px;
   --style-radius-m: 8px;
   --style-radius-l: 12px;
   --font-body: 'Jost', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
-/* Never fall back to dark */
-html[data-theme="dark"] { color-scheme: light; }
+/* ─── DARK MODE (Crimson Luxe) ─── */
+html[data-theme="dark"] {
+  color-scheme: dark;
 
-/* Sidebar / nav */
-.nav { background: #FFFFFF; border-right: 1px solid #D1C7BD; }
-.nav .nav__link, .nav .nav__label, .nav__group-label { color: #3A2D28; }
-.nav .nav__link:hover, .nav .nav__link.active { color: #A48374; }
+  --color-base-0:   #0A0604;
+  --color-base-50:  #120C08;
+  --color-base-100: #1A1410;
+  --color-base-150: #200E01;
+  --color-base-200: #2A1A10;
+  --color-base-250: #321F14;
+  --color-base-300: #3D2518;
+  --color-base-350: #4A2D1C;
+  --color-base-400: #5B0202;
+  --color-base-450: #6A1010;
+  --color-base-500: #8B0000;
+  --color-base-550: #9A1515;
+  --color-base-600: #B02020;
+  --color-base-650: #C4A060;
+  --color-base-700: #D4B878;
+  --color-base-750: #DCC890;
+  --color-base-800: #E0D0A0;
+  --color-base-850: #EDE7C7;
+  --color-base-900: #F0ECd4;
+  --color-base-950: #F5F2E2;
+  --color-base-1000:#FFFFFF;
 
-/* Primary buttons — espresso pill */
-.btn--style-primary { background: #3A2D28; color: #F1EDE6; border-radius: 999px; }
-.btn--style-primary:hover { background: #2C221E; }
-.btn--style-secondary { border: 1px solid #3A2D28; color: #3A2D28; background: transparent; border-radius: 999px; }
+  --theme-bg:        #200E01;
+  --theme-text:      #EDE7C7;
+  --theme-input-bg:  #1A1410;
 
-/* Cards, tables, inputs */
-.card, .table, .collection-list__wrap, .doc-controls, .dashboard__card { background: #FFFFFF; border-color: #D1C7BD; }
-input, textarea, select, .field-type input, .react-select__control {
+  --theme-elevation-0:    #200E01;
+  --theme-elevation-50:   #1A1410;
+  --theme-elevation-100:  #2A1A10;
+  --theme-elevation-150:  #321F14;
+  --theme-elevation-200:  #3D2518;
+  --theme-elevation-250:  #4A2D1C;
+  --theme-elevation-300:  #5B0202;
+  --theme-elevation-400:  #6A1010;
+  --theme-elevation-500:  #8B0000;
+  --theme-elevation-600:  #C4A060;
+  --theme-elevation-700:  #D4B878;
+  --theme-elevation-800:  #DCC890;
+  --theme-elevation-900:  #EDE7C7;
+  --theme-elevation-1000: #FFFFFF;
+
+  --theme-success-500: #8B0000;
+  --theme-success-600: #5B0202;
+  --theme-success-400: #A02020;
+  --theme-text-link:   #EDE7C7;
+  --theme-error-500:   #FF6B6B;
+  --theme-warning-500: #F0C040;
+  --theme-success-tertiary: #2A1A10;
+}
+
+/* ─── LIGHT MODE COMPONENT STYLES ─── */
+html[data-theme="light"] .nav { background: #FFFFFF; border-right: 1px solid #D1C7BD; }
+html[data-theme="light"] .nav .nav__link,
+html[data-theme="light"] .nav .nav__label,
+html[data-theme="light"] .nav__group-label { color: #3A2D28; }
+html[data-theme="light"] .nav .nav__link:hover,
+html[data-theme="light"] .nav .nav__link.active { color: #A48374; }
+
+html[data-theme="light"] .btn--style-primary { background: #3A2D28; color: #F1EDE6; border-radius: 999px; }
+html[data-theme="light"] .btn--style-primary:hover { background: #2C221E; }
+html[data-theme="light"] .btn--style-secondary { border: 1px solid #3A2D28; color: #3A2D28; background: transparent; border-radius: 999px; }
+
+html[data-theme="light"] .card,
+html[data-theme="light"] .table,
+html[data-theme="light"] .collection-list__wrap,
+html[data-theme="light"] .doc-controls { background: #FFFFFF; border-color: #D1C7BD; }
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select,
+html[data-theme="light"] .field-type input,
+html[data-theme="light"] .react-select__control {
   background: #FFFFFF !important; border-color: #D1C7BD !important; color: #3A2D28 !important;
 }
-.react-select__menu { background: #FFFFFF; }
+html[data-theme="light"] .react-select__menu { background: #FFFFFF; }
+html[data-theme="light"] .app-header,
+html[data-theme="light"] .step-nav { background: #EBE3DB; color: #3A2D28; }
 
-/* Header / breadcrumb */
-.app-header, .step-nav { background: #EBE3DB; color: #3A2D28; }
+html[data-theme="light"] .login,
+html[data-theme="light"] .template-minimal { background: #EBE3DB !important; }
+html[data-theme="light"] .template-minimal__wrap { background: #FFFFFF; border: 1px solid #D1C7BD; border-radius: 12px; padding: 40px; }
+html[data-theme="light"] .login__brand::before { color: #3A2D28; }
+html[data-theme="light"] .login__brand::after { color: #3A2D28; }
+html[data-theme="light"] .nav__logo::after { color: #3A2D28; }
 
-/* Replace Payload logo */
+/* ─── DARK MODE COMPONENT STYLES ─── */
+html[data-theme="dark"] .nav { background: #1A1410; border-right: 1px solid #3D2518; }
+html[data-theme="dark"] .nav .nav__link,
+html[data-theme="dark"] .nav .nav__label,
+html[data-theme="dark"] .nav__group-label { color: #EDE7C7; }
+html[data-theme="dark"] .nav .nav__link:hover,
+html[data-theme="dark"] .nav .nav__link.active { color: #8B0000; }
+
+html[data-theme="dark"] .btn--style-primary { background: #8B0000; color: #EDE7C7; border-radius: 999px; }
+html[data-theme="dark"] .btn--style-primary:hover { background: #5B0202; }
+html[data-theme="dark"] .btn--style-secondary { border: 1px solid #EDE7C7; color: #EDE7C7; background: transparent; border-radius: 999px; }
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .table,
+html[data-theme="dark"] .collection-list__wrap,
+html[data-theme="dark"] .doc-controls { background: #1A1410; border-color: #3D2518; }
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select,
+html[data-theme="dark"] .field-type input,
+html[data-theme="dark"] .react-select__control {
+  background: #1A1410 !important; border-color: #3D2518 !important; color: #EDE7C7 !important;
+}
+html[data-theme="dark"] .react-select__menu { background: #1A1410; }
+html[data-theme="dark"] .app-header,
+html[data-theme="dark"] .step-nav { background: #200E01; color: #EDE7C7; }
+
+html[data-theme="dark"] .login,
+html[data-theme="dark"] .template-minimal { background: #200E01 !important; }
+html[data-theme="dark"] .template-minimal__wrap { background: #1A1410; border: 1px solid #3D2518; border-radius: 12px; padding: 40px; }
+html[data-theme="dark"] .login__brand::before { color: #EDE7C7; }
+html[data-theme="dark"] .login__brand::after { color: #8B0000; }
+html[data-theme="dark"] .nav__logo::after { color: #EDE7C7; }
+
+/* ─── SHARED BRANDING (both modes) ─── */
 .graphic-logo { display: none !important; }
 .login__brand {
   display: flex;
@@ -101,7 +197,6 @@ input, textarea, select, .field-type input, .react-select__control {
   content: "GIGI'S";
   font-size: 32px;
   letter-spacing: 0.2em;
-  color: #3A2D28;
   font-weight: 300;
   line-height: 1;
 }
@@ -109,21 +204,18 @@ input, textarea, select, .field-type input, .react-select__control {
   content: "CONCEPT";
   font-size: 28px;
   letter-spacing: 0.2em;
-  color: #3A2D28;
   font-weight: 300;
   line-height: 1;
 }
 
-/* Login page */
-.login, .template-minimal { background: #EBE3DB !important; }
-.template-minimal__wrap { background: #FFFFFF; border: 1px solid #D1C7BD; border-radius: 12px; padding: 40px; }
-
-/* Sidebar logo */
 .nav__logo .graphic-logo { display: none !important; }
 .nav__logo::after {
   content: "GIGI'S CONCEPT";
   font-size: 13px;
   letter-spacing: 0.15em;
-  color: #3A2D28;
   font-weight: 300;
 }
+
+/* ─── SHARED GEOMETRY ─── */
+.btn--style-primary,
+.btn--style-secondary { border-radius: 999px; }
