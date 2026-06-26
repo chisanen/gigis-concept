@@ -27,6 +27,12 @@ import { Equipment } from "./collections/Equipment";
 import { EmailTemplates } from "./collections/EmailTemplates";
 import { DiscountCodes } from "./collections/DiscountCodes";
 import { Popups } from "./collections/Popups";
+import { ContractTemplates } from "./collections/ContractTemplates";
+import { Automations } from "./collections/Automations";
+import { Broadcasts } from "./collections/Broadcasts";
+import { Questionnaires } from "./collections/Questionnaires";
+import { QuestionnaireResponses } from "./collections/QuestionnaireResponses";
+import { ActivityLog } from "./collections/ActivityLog";
 import { SiteSettings } from "./globals/SiteSettings";
 import { Navigation } from "./globals/Navigation";
 import { ServiceArea } from "./globals/ServiceArea";
@@ -38,7 +44,7 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: Users.slug,
-    theme: "all",
+    theme: "light",
     meta: {
       titleSuffix: " — Gigi's Concept Studio",
     },
@@ -74,6 +80,12 @@ export default buildConfig({
     Popups,
     Customers,
     Consultations,
+    ContractTemplates,
+    Automations,
+    Broadcasts,
+    Questionnaires,
+    QuestionnaireResponses,
+    ActivityLog,
   ],
   globals: [SiteSettings, Navigation, ServiceArea, AvailabilityRules],
   editor: lexicalEditor(),

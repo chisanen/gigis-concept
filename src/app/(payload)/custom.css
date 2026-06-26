@@ -219,3 +219,37 @@ html[data-theme="dark"] .nav__logo::after { color: #EDE7C7; }
 /* ─── SHARED GEOMETRY ─── */
 .btn--style-primary,
 .btn--style-secondary { border-radius: 999px; }
+
+/* ─── HOME / DASHBOARD LINK in sidebar ─── */
+.nav::before {
+  content: "⌂ Dashboard";
+  display: block;
+  padding: 12px 20px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 1px solid var(--theme-elevation-300, #D1C7BD);
+  margin-bottom: 8px;
+}
+html[data-theme="light"] .nav::before { color: #3A2D28; }
+html[data-theme="light"] .nav::before:hover { color: #A48374; }
+html[data-theme="dark"] .nav::before { color: #EDE7C7; }
+html[data-theme="dark"] .nav::before:hover { color: #8B0000; }
+
+/* Make the nav ::before clickable via JS injected link */
+.nav { position: relative; }
+
+/* ─── THEME TOGGLE HINT ─── */
+.nav::after {
+  content: "☀ Light / ☾ Dark — toggle in account settings";
+  display: block;
+  padding: 8px 20px;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--theme-elevation-300, #D1C7BD);
+  margin-top: 8px;
+  opacity: 0.6;
+}
+html[data-theme="light"] .nav::after { color: #A48374; }
+html[data-theme="dark"] .nav::after { color: #C4A060; }
