@@ -44,11 +44,12 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: Users.slug,
-    theme: "light",
+    theme: "all",
     meta: {
       titleSuffix: " — Gigi's Concept Studio",
     },
     components: {
+      beforeNavLinks: ["@/components/admin/NavLinks#NavLinks"],
       afterDashboard: [
         "@/components/admin/Dashboard#StudioDashboard",
         "@/components/admin/Calendar#StudioCalendar",

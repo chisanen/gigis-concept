@@ -5,8 +5,10 @@ import { StudioDashboard } from '@/components/admin/Dashboard'
 import { StudioCalendar } from '@/components/admin/Calendar'
 import { LeadsCRM } from '@/components/admin/LeadsCRM'
 import { StudioReports } from '@/components/admin/Reports'
+import { NavLinks } from '@/components/admin/NavLinks'
 
 export const importMap = {
+  '@/components/admin/NavLinks#NavLinks': NavLinks,
   '@/components/admin/Dashboard#StudioDashboard': StudioDashboard,
   '@/components/admin/Calendar#StudioCalendar': StudioCalendar,
   '@/components/admin/LeadsCRM#LeadsCRM': LeadsCRM,
