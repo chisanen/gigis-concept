@@ -12,6 +12,8 @@ import { GalleryImages } from "./collections/GalleryImages";
 import { Testimonials } from "./collections/Testimonials";
 import { Inquiries } from "./collections/Inquiries";
 import { Users } from "./collections/Users";
+import { Customers } from "./collections/Customers";
+import { Consultations } from "./collections/Consultations";
 import { Leads } from "./collections/Leads";
 import { Bookings } from "./collections/Bookings";
 import { Packages } from "./collections/Packages";
@@ -26,6 +28,9 @@ import { EmailTemplates } from "./collections/EmailTemplates";
 import { DiscountCodes } from "./collections/DiscountCodes";
 import { Popups } from "./collections/Popups";
 import { SiteSettings } from "./globals/SiteSettings";
+import { Navigation } from "./globals/Navigation";
+import { ServiceArea } from "./globals/ServiceArea";
+import { AvailabilityRules } from "./globals/AvailabilityRules";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -62,8 +67,10 @@ export default buildConfig({
     EmailTemplates,
     DiscountCodes,
     Popups,
+    Customers,
+    Consultations,
   ],
-  globals: [SiteSettings],
+  globals: [SiteSettings, Navigation, ServiceArea, AvailabilityRules],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "default-secret-change-me",
   db: postgresAdapter({

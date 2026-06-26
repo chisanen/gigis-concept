@@ -5,6 +5,10 @@ export const Testimonials: CollectionConfig = {
   admin: {
     useAsTitle: "authorName",
     group: "Website",
+    defaultColumns: ["authorName", "rating", "status", "eventDescription", "featured"],
+  },
+  access: {
+    create: () => true,
   },
   fields: [
     {
@@ -20,6 +24,33 @@ export const Testimonials: CollectionConfig = {
     {
       name: "eventDescription",
       type: "text",
+    },
+    {
+      name: "rating",
+      type: "number",
+      min: 1,
+      max: 5,
+      defaultValue: 5,
+    },
+    {
+      name: "status",
+      type: "select",
+      options: [
+        { label: "Pending", value: "pending" },
+        { label: "Approved", value: "approved" },
+        { label: "Rejected", value: "rejected" },
+      ],
+      defaultValue: "pending",
+    },
+    {
+      name: "source",
+      type: "select",
+      options: [
+        { label: "Website", value: "website" },
+        { label: "Requested", value: "requested" },
+        { label: "Manual", value: "manual" },
+      ],
+      defaultValue: "website",
     },
     {
       name: "featured",

@@ -17,10 +17,12 @@ export const Users: CollectionConfig = {
       name: "role",
       type: "select",
       options: [
+        { label: "Owner", value: "owner" },
         { label: "Admin", value: "admin" },
         { label: "Editor", value: "editor" },
+        { label: "Staff", value: "staff" },
       ],
-      defaultValue: "editor",
+      defaultValue: "staff",
       required: true,
     },
   ],
