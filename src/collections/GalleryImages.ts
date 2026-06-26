@@ -5,6 +5,7 @@ export const GalleryImages: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "clientName", "eventDate"],
+    group: "Website",
   },
   fields: [
     {

@@ -1,78 +1,129 @@
-/* Custom Payload admin branding */
-:root {
-  --theme-bg: #F1EDE6;
-  --theme-elevation-0: #F1EDE6;
-  --theme-elevation-50: #F8F5F1;
-  --theme-elevation-100: #EBE3DB;
-  --theme-elevation-150: #E5DDD4;
-  --theme-elevation-200: #D1C7BD;
-  --theme-elevation-250: #CBA08D;
-  --theme-elevation-300: #AA8374;
-  --theme-elevation-350: #9A7464;
-  --theme-elevation-400: #8A6554;
-  --theme-elevation-450: #7A5644;
-  --theme-elevation-500: #76220B;
-  --theme-elevation-600: #5A3D32;
-  --theme-elevation-700: #4A2D22;
-  --theme-elevation-800: #3A2D28;
-  --theme-elevation-900: #2A1D18;
-  --theme-elevation-950: #1A0D08;
+/* Gigi's Concept — Payload admin: light "Nude" theme (replaces dark/brown UI) */
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  /* ----- Base palette ramp: lightest (0) -> darkest (1000) ----- */
+  --color-base-0:   #FFFFFF;
+  --color-base-50:  #FBF9F6;
+  --color-base-100: #F1EDE6;
+  --color-base-150: #EBE3DB;
+  --color-base-200: #E3DACF;
+  --color-base-250: #D9CEC0;
+  --color-base-300: #D1C7BD;
+  --color-base-350: #C7BBAD;
+  --color-base-400: #B9AB99;
+  --color-base-450: #AD9C88;
+  --color-base-500: #A48374;
+  --color-base-550: #8F7263;
+  --color-base-600: #7C6253;
+  --color-base-650: #6B5347;
+  --color-base-700: #5C463B;
+  --color-base-750: #4E3B31;
+  --color-base-800: #443329;
+  --color-base-850: #3A2D28;
+  --color-base-900: #2C221E;
+  --color-base-950: #221A16;
+  --color-base-1000:#1A1410;
+
+  /* ----- Canvas + text ----- */
+  --theme-bg:        #EBE3DB;
+  --theme-text:      #3A2D28;
+  --theme-input-bg:  #FFFFFF;
+
+  /* ----- Elevations: low = beige canvas, raised = white cards ----- */
+  --theme-elevation-0:    #EBE3DB;
+  --theme-elevation-50:   #F1EDE6;
+  --theme-elevation-100:  #FFFFFF;
+  --theme-elevation-150:  #FBF9F6;
+  --theme-elevation-200:  #F1EDE6;
+  --theme-elevation-250:  #EBE3DB;
+  --theme-elevation-300:  #D1C7BD;
+  --theme-elevation-400:  #C7BBAD;
+  --theme-elevation-500:  #A48374;
+  --theme-elevation-600:  #7C6253;
+  --theme-elevation-700:  #5C463B;
+  --theme-elevation-800:  #443329;
+  --theme-elevation-900:  #2C221E;
   --theme-elevation-1000: #3A2D28;
 
-  --theme-success-500: #76220B;
-  --theme-text: #3A2D28;
+  /* ----- Brand accent ----- */
+  --theme-success-500: #3A2D28;
+  --theme-success-600: #2C221E;
+  --theme-success-400: #5C463B;
+  --theme-text-link:   #A48374;
+
+  /* ----- Status colors ----- */
+  --theme-error-500:   #B3261E;
+  --theme-warning-500: #B7791F;
+  --theme-success-tertiary: #EBE3DB;
+
+  /* ----- Elegant geometry + readable admin type ----- */
+  --style-radius-s: 4px;
+  --style-radius-m: 8px;
+  --style-radius-l: 12px;
+  --font-body: 'Jost', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
-[data-theme="dark"] {
-  --theme-bg: #1a1412;
-  --theme-elevation-0: #1a1412;
-  --theme-elevation-50: #231c19;
-  --theme-elevation-100: #2c2420;
-  --theme-elevation-150: #352c27;
-  --theme-elevation-200: #3e342e;
-  --theme-elevation-250: #473c35;
-  --theme-elevation-300: #50443c;
-  --theme-elevation-350: #594c43;
-  --theme-elevation-400: #62544a;
-  --theme-elevation-450: #6b5c51;
-  --theme-elevation-500: #AA8374;
-  --theme-elevation-600: #CBA08D;
-  --theme-elevation-700: #D1C7BD;
-  --theme-elevation-800: #EBE3DB;
-  --theme-elevation-900: #F1EDE6;
-  --theme-elevation-950: #F8F5F1;
-  --theme-elevation-1000: #F1EDE6;
-}
+/* Never fall back to dark */
+html[data-theme="dark"] { color-scheme: light; }
 
-/* Replace Payload logo with Gigi's Concept logo */
-.graphic-logo {
-  display: none !important;
-}
+/* Sidebar / nav */
+.nav { background: #FFFFFF; border-right: 1px solid #D1C7BD; }
+.nav .nav__link, .nav .nav__label, .nav__group-label { color: #3A2D28; }
+.nav .nav__link:hover, .nav .nav__link.active { color: #A48374; }
 
+/* Primary buttons — espresso pill */
+.btn--style-primary { background: #3A2D28; color: #F1EDE6; border-radius: 999px; }
+.btn--style-primary:hover { background: #2C221E; }
+.btn--style-secondary { border: 1px solid #3A2D28; color: #3A2D28; background: transparent; border-radius: 999px; }
+
+/* Cards, tables, inputs */
+.card, .table, .collection-list__wrap, .doc-controls, .dashboard__card { background: #FFFFFF; border-color: #D1C7BD; }
+input, textarea, select, .field-type input, .react-select__control {
+  background: #FFFFFF !important; border-color: #D1C7BD !important; color: #3A2D28 !important;
+}
+.react-select__menu { background: #FFFFFF; }
+
+/* Header / breadcrumb */
+.app-header, .step-nav { background: #EBE3DB; color: #3A2D28; }
+
+/* Replace Payload logo */
+.graphic-logo { display: none !important; }
 .login__brand {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80px;
+  flex-direction: column;
+  min-height: 100px;
+  gap: 8px;
+}
+.login__brand::before {
+  content: "GIGI'S";
+  font-size: 32px;
+  letter-spacing: 0.2em;
+  color: #3A2D28;
+  font-weight: 300;
+  line-height: 1;
+}
+.login__brand::after {
+  content: "CONCEPT";
+  font-size: 28px;
+  letter-spacing: 0.2em;
+  color: #3A2D28;
+  font-weight: 300;
+  line-height: 1;
 }
 
-.login__brand::before {
-  content: "GIGI'S CONCEPT";
-  font-size: 28px;
-  letter-spacing: 0.15em;
-  color: var(--theme-elevation-1000);
-  font-weight: 300;
-}
+/* Login page */
+.login, .template-minimal { background: #EBE3DB !important; }
+.template-minimal__wrap { background: #FFFFFF; border: 1px solid #D1C7BD; border-radius: 12px; padding: 40px; }
 
 /* Sidebar logo */
-.nav__logo {
-  font-size: 0 !important;
-}
-
-.nav__logo::before {
+.nav__logo .graphic-logo { display: none !important; }
+.nav__logo::after {
   content: "GIGI'S CONCEPT";
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  color: var(--theme-elevation-1000);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: #3A2D28;
   font-weight: 300;
 }

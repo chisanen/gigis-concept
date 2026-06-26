@@ -20,8 +20,9 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: Users.slug,
+    theme: "light",
     meta: {
-      titleSuffix: " — Gigi's Concept Admin",
+      titleSuffix: " — Gigi's Concept Studio",
     },
   },
   collections: [Users, Media, Pages, BlogPosts, GalleryImages, Testimonials, Inquiries],

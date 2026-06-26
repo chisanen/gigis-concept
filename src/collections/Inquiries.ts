@@ -5,6 +5,7 @@ export const Inquiries: CollectionConfig = {
   admin: {
     useAsTitle: "email",
     defaultColumns: ["firstName", "lastName", "serviceRequired", "status", "createdAt"],
+    group: "Studio",
   },
   access: {
     create: () => true,
