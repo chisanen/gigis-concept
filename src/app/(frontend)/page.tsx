@@ -8,21 +8,54 @@ import { getPayload } from "@/lib/payload";
 
 export const dynamic = "force-dynamic";
 
+function getMediaUrl(media: unknown): string | null {
+  if (!media || typeof media !== "object") return null;
+  const m = media as Record<string, unknown>;
+  const url = m.url as string;
+  if (!url) return null;
+  if (url.startsWith("/api/media/file/")) return `/${url.replace("/api/media/file/", "")}`;
+  return url;
+}
+
 async function getSiteData() {
   try {
     const payload = await getPayload();
-    const [settings, testimonials] = await Promise.all([
+    const [settings, testimonials, homePage] = await Promise.all([
       payload.findGlobal({ slug: "site-settings" }),
-      payload.find({ collection: "testimonials", where: { featured: { equals: true } }, limit: 1 }),
+      payload.find({ collection: "testimonials", where: { featured: { equals: true }, status: { equals: "approved" } }, limit: 1 }),
+      payload.find({ collection: "pages", where: { slug: { equals: "home" } }, limit: 1, depth: 2 }),
     ]);
-    return { settings, testimonial: testimonials.docs[0] || null };
+    return {
+      settings,
+      testimonial: testimonials.docs[0] || null,
+      blocks: (homePage.docs[0] as Record<string, unknown>)?.layout as Record<string, unknown>[] || null,
+    };
   } catch {
-    return { settings: null, testimonial: null };
+    return { settings: null, testimonial: null, blocks: null };
   }
 }
 
+function getBlock(blocks: Record<string, unknown>[] | null, type: string): Record<string, unknown> | null {
+  if (!blocks) return null;
+  return blocks.find((b) => b.blockType === type) || null;
+}
+
 export default async function Home() {
-  const { settings, testimonial } = await getSiteData();
+  const { settings, testimonial, blocks } = await getSiteData();
+
+  const hero = getBlock(blocks, "hero");
+  const about = getBlock(blocks, "aboutSplit");
+  const twoWays = getBlock(blocks, "twoWays");
+  const pkgs = getBlock(blocks, "packagesToggle");
+  const ctaBlock = getBlock(blocks, "cta");
+  const galleryBlock = getBlock(blocks, "gallerySection");
+  const contactBlock = getBlock(blocks, "contactSection");
+
+  // Image URLs from CMS or fallback to static files
+  const aboutImage = (about && getMediaUrl(about.image)) || "/gigi-portrait.png";
+  const card1Image = (twoWays && getMediaUrl(twoWays.card1Image)) || "/content-creation-bts.png";
+  const card2Image = (twoWays && getMediaUrl(twoWays.card2Image)) || "/photo-booth.png";
+
   return (
     <>
       {/* ═══ 1 · CAPTURING MOMENTS ═══ */}
@@ -33,30 +66,23 @@ export default async function Home() {
         </div>
         <div className="relative z-10 max-w-2xl mx-auto px-6 text-center text-white py-20">
           <p className="text-[10px] md:text-[11px] tracking-[0.5em] text-white/60 mb-10 uppercase">
-            Content Creation &middot; Luxury Photo Booth
+            {(hero?.subtitle as string) || "Content Creation · Luxury Photo Booth"}
           </p>
           <h1 className="font-script text-6xl sm:text-7xl md:text-[6.5rem] leading-[0.85] mb-5">
-            Capturing
+            {(hero?.heading as string) || "Capturing"}
           </h1>
           <p className="text-2xl sm:text-3xl md:text-4xl tracking-[0.3em] font-extralight uppercase mb-12 text-white/90">
-            Moments
+            {(hero?.subheading as string) || "Moments"}
           </p>
           <p className="text-[13px] md:text-[15px] text-white/70 max-w-sm mx-auto mb-16 leading-[1.9]">
-            Editorial content and a timeless photo-booth experience — quietly
-            crafted, beautifully delivered.
+            {(hero?.tagline as string) || "Editorial content and a timeless photo-booth experience — quietly crafted, beautifully delivered."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/services"
-              className="bg-white text-brand-900 px-10 py-4 text-[10px] tracking-[0.3em] hover:bg-brand-200 transition-colors"
-            >
-              EXPLORE SERVICES
+            <Link href={(hero?.ctaPrimaryHref as string) || "/services"} className="bg-white text-brand-900 px-10 py-4 text-[10px] tracking-[0.3em] hover:bg-brand-200 transition-colors">
+              {(hero?.ctaPrimaryLabel as string) || "EXPLORE SERVICES"}
             </Link>
-            <Link
-              href="/contact"
-              className="border border-white/40 text-white px-10 py-4 text-[10px] tracking-[0.3em] hover:bg-white hover:text-brand-900 transition-all"
-            >
-              INQUIRE
+            <Link href={(hero?.ctaSecondaryHref as string) || "/contact"} className="border border-white/40 text-white px-10 py-4 text-[10px] tracking-[0.3em] hover:bg-white hover:text-brand-900 transition-all">
+              {(hero?.ctaSecondaryLabel as string) || "INQUIRE"}
             </Link>
           </div>
         </div>
@@ -66,41 +92,26 @@ export default async function Home() {
       <section className="py-28 md:py-40 bg-white">
         <div className="max-w-6xl mx-auto px-6 lg:px-16">
           <div className="grid md:grid-cols-2 gap-14 md:gap-20 items-center">
-            {/* Left — Full uncropped photo */}
             <div className="relative w-full overflow-hidden group">
-              <Image
-                src="/gigi-portrait.png"
-                alt="Gigi — Founder of Gigi's Concept"
-                width={800}
-                height={533}
-                className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700"
-                priority
-              />
+              <Image src={aboutImage} alt="Gigi — Founder" width={800} height={533} className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700" priority />
             </div>
-
-            {/* Right — Blurb + Quote */}
             <div className="text-center md:text-left">
               <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-7 uppercase">
-                The Studio
+                {(about?.eyebrow as string) || "The Studio"}
               </p>
               <h2 className="font-script text-[2.4rem] md:text-[3rem] text-brand-900 leading-[1.15] mb-2">
-                Quiet luxury,
+                {(about?.heading1 as string) || "Quiet luxury,"}
               </h2>
               <h2 className="font-script text-[2.4rem] md:text-[3rem] text-brand-900 leading-[1.15] mb-10">
-                captured on camera.
+                {(about?.heading2 as string) || "captured on camera."}
               </h2>
               <p className="text-[14px] text-brand-600 leading-[2] mb-5">
-                Gigi&apos;s Concept is a boutique content &amp; photo-booth studio
-                based in Dallas, serving clients across Texas and beyond. We shoot
-                with an editorial eye so your brand, your wedding, or your
-                milestone feels exactly like the one you&apos;ve been dreaming
-                about.
+                {(about?.paragraph1 as string) || "Gigi's Concept is a boutique content & photo-booth studio based in Dallas, serving clients across Texas and beyond."}
               </p>
               <p className="text-[14px] text-brand-600 leading-[2] mb-12">
-                Every shoot is treated like a small cover story — because the best
-                moments rarely shout. They whisper.
+                {(about?.paragraph2 as string) || "Every shoot is treated like a small cover story — because the best moments rarely shout. They whisper."}
               </p>
-              <p className="font-script text-3xl text-brand-700">— Gigi</p>
+              <p className="font-script text-3xl text-brand-700">{(about?.signature as string) || "— Gigi"}</p>
             </div>
           </div>
         </div>
@@ -111,73 +122,46 @@ export default async function Home() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-20">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">
-              What We Offer
+              {(twoWays?.eyebrow as string) || "What We Offer"}
             </p>
             <h2 className="text-xl md:text-2xl tracking-[0.25em] font-light text-brand-900 uppercase mb-3">
-              Two Ways To
+              {(twoWays?.heading as string) || "Two Ways To"}
             </h2>
             <p className="font-script text-5xl md:text-6xl text-brand-900">
-              work together
+              {(twoWays?.subheading as string) || "work together"}
             </p>
           </div>
-
           <div className="grid md:grid-cols-2 gap-10">
             <div className="group text-center">
               <div className="relative aspect-[4/3] overflow-hidden mb-8">
-                <Image
-                  src="/content-creation-bts.png"
-                  alt="Content creator filming bride getting makeup done — behind the scenes"
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+                <Image src={card1Image} alt="Content creation" fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
-              <h3 className="font-script text-3xl text-brand-900 mb-4">Content Creation</h3>
+              <h3 className="font-script text-3xl text-brand-900 mb-4">{(twoWays?.card1Title as string) || "Content Creation"}</h3>
               <p className="text-[13px] text-brand-600 leading-[1.9] mb-8 max-w-xs mx-auto">
-                Editorial content days for founders, brands, and tastemakers.
-                Directed shoots with short-form and long-form deliverables,
-                returned to you within forty-eight hours.
+                {(twoWays?.card1Description as string) || "Editorial content days for founders, brands, and tastemakers."}
               </p>
-              <Link href="/services" className="inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
-                LEARN MORE
-              </Link>
+              <Link href={(twoWays?.card1Link as string) || "/services"} className="inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">LEARN MORE</Link>
             </div>
-
             <div className="group text-center">
               <div className="relative aspect-[4/3] overflow-hidden mb-8">
-                <Image
-                  src="/photo-booth.png"
-                  alt="Upscale luxury photo booth setup"
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+                <Image src={card2Image} alt="Photo booth" fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
-              <h3 className="font-script text-3xl text-brand-900 mb-4">Photo Booth</h3>
+              <h3 className="font-script text-3xl text-brand-900 mb-4">{(twoWays?.card2Title as string) || "Photo Booth"}</h3>
               <p className="text-[13px] text-brand-600 leading-[1.9] mb-8 max-w-xs mx-auto">
-                A slow, cinematic take on the classic photo booth — custom
-                backdrops, heavyweight prints on-site, and a digital gallery the
-                next day. For weddings, launches, and the nights worth
-                remembering.
+                {(twoWays?.card2Description as string) || "A slow, cinematic take on the classic photo booth."}
               </p>
-              <Link href="/services" className="inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
-                LEARN MORE
-              </Link>
+              <Link href={(twoWays?.card2Link as string) || "/services"} className="inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">LEARN MORE</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ 4 · PACKAGES / QUOTE CALCULATOR ═══ */}
+      {/* ═══ 4 · PACKAGES ═══ */}
       <section className="py-28 md:py-36 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
-            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">
-              Investment
-            </p>
-            <h2 className="font-script text-5xl md:text-6xl text-brand-900">
-              Packages
-            </h2>
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(pkgs?.eyebrow as string) || "Investment"}</p>
+            <h2 className="font-script text-5xl md:text-6xl text-brand-900">{(pkgs?.heading as string) || "Packages"}</h2>
           </div>
           <QuoteCalculator />
         </div>
@@ -202,31 +186,25 @@ export default async function Home() {
       {/* ═══ 6 · GET A QUOTE ═══ */}
       <section className="py-32 md:py-40 bg-brand-900">
         <div className="max-w-2xl mx-auto px-6 text-center text-white">
-          <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">
-            Let&apos;s Create
-          </p>
-          <h2 className="font-script text-5xl md:text-7xl mb-5">Tell us</h2>
-          <p className="text-lg md:text-xl tracking-[0.25em] font-extralight uppercase mb-14 text-white/70">
-            About Your Moment
-          </p>
-          <Link href="/contact" className="inline-block border border-white/40 text-white px-14 py-4 text-[10px] tracking-[0.35em] hover:bg-white hover:text-brand-900 transition-all">
-            GET YOUR QUOTE
+          <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(ctaBlock?.eyebrow as string) || "Let's Create"}</p>
+          <h2 className="font-script text-5xl md:text-7xl mb-5">{(ctaBlock?.heading as string) || "Tell us"}</h2>
+          <p className="text-lg md:text-xl tracking-[0.25em] font-extralight uppercase mb-14 text-white/70">{(ctaBlock?.subheading as string) || "About Your Moment"}</p>
+          <Link href={(ctaBlock?.buttonHref as string) || "/contact"} className="inline-block border border-white/40 text-white px-14 py-4 text-[10px] tracking-[0.35em] hover:bg-white hover:text-brand-900 transition-all">
+            {(ctaBlock?.buttonLabel as string) || "GET YOUR QUOTE"}
           </Link>
         </div>
       </section>
 
-      {/* ═══ 7 · GALLERY PREVIEW ═══ */}
+      {/* ═══ 7 · GALLERY ═══ */}
       <section className="py-28 md:py-36 bg-brand-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
-            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">Our Work</p>
-            <h2 className="font-script text-5xl md:text-6xl text-brand-900">Gallery</h2>
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(galleryBlock?.eyebrow as string) || "Our Work"}</p>
+            <h2 className="font-script text-5xl md:text-6xl text-brand-900">{(galleryBlock?.heading as string) || "Gallery"}</h2>
           </div>
           <Gallery />
           <div className="text-center mt-12">
-            <Link href="/gallery" className="inline-block border border-brand-900 px-10 py-3.5 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
-              VIEW FULL GALLERY
-            </Link>
+            <Link href="/gallery" className="inline-block border border-brand-900 px-10 py-3.5 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">VIEW FULL GALLERY</Link>
           </div>
         </div>
       </section>
@@ -235,11 +213,10 @@ export default async function Home() {
       <section id="contact" className="py-28 md:py-36 bg-brand-200">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16">
-            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">Get In Touch</p>
-            <h2 className="font-script text-5xl md:text-6xl text-brand-900 mb-5">Contact Us</h2>
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(contactBlock?.eyebrow as string) || "Get In Touch"}</p>
+            <h2 className="font-script text-5xl md:text-6xl text-brand-900 mb-5">{(contactBlock?.heading as string) || "Contact Us"}</h2>
             <p className="text-[14px] text-brand-600 max-w-md mx-auto leading-[1.8]">
-              Ready to book? Have questions? Fill out the form below and
-              we&apos;ll get back to you within 24 hours.
+              {(contactBlock?.description as string) || "Ready to book? Have questions? Fill out the form below and we'll get back to you within 24 hours."}
             </p>
           </div>
           <InquiryForm />
