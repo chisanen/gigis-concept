@@ -19,7 +19,7 @@ export const GalleryImages: CollectionConfig = {
       type: "upload",
       relationTo: "media",
       required: true,
-      admin: { description: "Upload the photo here" },
+      admin: { components: { afterInput: ["@/components/admin/AIImageButton#AIImageButton"] }, description: "Upload the photo here — or use ✨ Generate with AI below" },
     },
     {
       name: "category",

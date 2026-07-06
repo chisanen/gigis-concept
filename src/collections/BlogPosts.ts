@@ -38,7 +38,7 @@ export const BlogPosts: CollectionConfig = {
       name: "featuredImage",
       type: "upload",
       relationTo: "media",
-      admin: { description: "The main image shown at the top of the post and on the blog list" },
+      admin: { components: { afterInput: ["@/components/admin/AIImageButton#AIImageButton"] }, description: "The main image shown at the top of the post and on the blog list" },
     },
     {
       name: "content",

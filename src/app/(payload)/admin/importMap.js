@@ -6,9 +6,11 @@ import { StudioCalendar } from '@/components/admin/Calendar'
 import { LeadsCRM } from '@/components/admin/LeadsCRM'
 import { StudioReports } from '@/components/admin/Reports'
 import { NavLinks } from '@/components/admin/NavLinks'
+import { AIImageButton } from '@/components/admin/AIImageButton'
 
 export const importMap = {
   '@/components/admin/NavLinks#NavLinks': NavLinks,
+  '@/components/admin/AIImageButton#AIImageButton': AIImageButton,
   '@/components/admin/Dashboard#StudioDashboard': StudioDashboard,
   '@/components/admin/Calendar#StudioCalendar': StudioCalendar,
   '@/components/admin/LeadsCRM#LeadsCRM': LeadsCRM,
