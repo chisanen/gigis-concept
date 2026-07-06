@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { PrivateGallery } from "@/components/PrivateGallery";
+import { InstagramFeed } from "@/components/InstagramFeed";
+import { getPayload } from "@/lib/payload";
 
 export const metadata: Metadata = {
   title: "Gallery | Gigi's Concept",
@@ -8,7 +10,9 @@ export const metadata: Metadata = {
     "Browse our portfolio of weddings, events, and brand shoots. Clients can access their private gallery with a password.",
 };
 
-const publicPhotos = [
+export const dynamic = "force-dynamic";
+
+const fallbackPhotos = [
   { src: "https://images.unsplash.com/photo-1745231991466-19d41014cc66?w=600&q=80", alt: "Couple embracing" },
   { src: "https://images.unsplash.com/photo-1515531980326-6244280b99c8?w=600&q=80", alt: "Elegant couple" },
   { src: "https://images.unsplash.com/photo-1515015337340-dbabb1fa63ae?w=600&q=80", alt: "Wedding couple" },
@@ -23,7 +27,20 @@ const publicPhotos = [
   { src: "https://images.unsplash.com/photo-1563525614522-b76b89d81024?w=600&q=80", alt: "Birthday party" },
 ];
 
-export default function GalleryPage() {
+async function getSettings() {
+  try {
+    const payload = await getPayload();
+    return await payload.findGlobal({ slug: "site-settings" });
+  } catch {
+    return null;
+  }
+}
+
+export default async function GalleryPage() {
+  const settings = await getSettings();
+  const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "";
+  const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
+
   return (
     <>
       {/* Hero */}
@@ -36,14 +53,27 @@ export default function GalleryPage() {
         </div>
       </section>
 
+      {/* Instagram Feed */}
+      {showInstagramFeed && instagramHandle && (
+        <section className="py-24 md:py-32 bg-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-14">
+              <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Follow Us</p>
+              <h2 className="font-script text-4xl md:text-5xl text-brand-900">Instagram</h2>
+            </div>
+            <InstagramFeed handle={instagramHandle} />
+          </div>
+        </section>
+      )}
+
       {/* Public Gallery */}
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-brand-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Portfolio</p>
             <h2 className="font-script text-4xl md:text-5xl text-brand-900">Public Gallery</h2>
           </div>
-          <GalleryGrid photos={publicPhotos} />
+          <GalleryGrid photos={fallbackPhotos} />
         </div>
       </section>
 

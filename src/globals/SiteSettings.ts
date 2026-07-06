@@ -22,9 +22,11 @@ export const SiteSettings: GlobalConfig = {
         {
           label: "Social",
           fields: [
-            { name: "instagramUrl", type: "text" },
+            { name: "instagramUrl", type: "text", admin: { description: "Full URL to your Instagram profile (e.g. https://instagram.com/gigisconcept)" } },
+            { name: "instagramHandle", type: "text", admin: { description: "Your Instagram handle without @ (e.g. gigisconcept). Used for the embedded Instagram feed on your gallery page." } },
             { name: "facebookUrl", type: "text" },
             { name: "tiktokUrl", type: "text" },
+            { name: "showInstagramFeed", type: "checkbox", defaultValue: true, admin: { description: "Show the Instagram feed on your Gallery page" } },
           ],
         },
         {
