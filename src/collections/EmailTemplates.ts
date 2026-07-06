@@ -7,9 +7,9 @@ export const EmailTemplates: CollectionConfig = {
     group: "Operations",
   },
   fields: [
-    { name: "name", type: "text", required: true },
-    { name: "subject", type: "text", required: true },
-    { name: "body", type: "richText" },
+    { name: "name", type: "text", required: true, admin: { description: "Internal name for this template (e.g. 'Booking Confirmation', 'Quote Follow-Up')" } },
+    { name: "subject", type: "text", required: true, admin: { description: "Email subject line your clients will see in their inbox" } },
+    { name: "body", type: "richText", admin: { description: "The email content — write it like you're talking to your client" } },
     {
       name: "category",
       type: "select",
@@ -23,6 +23,7 @@ export const EmailTemplates: CollectionConfig = {
         { label: "Review", value: "review" },
         { label: "Promo", value: "promo" },
       ],
+      admin: { description: "What type of email is this? Helps you find templates quickly" },
     },
   ],
 };

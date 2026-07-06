@@ -8,7 +8,7 @@ export const Equipment: CollectionConfig = {
     group: "Operations",
   },
   fields: [
-    { name: "name", type: "text", required: true },
+    { name: "name", type: "text", required: true, admin: { description: "What is this piece of equipment called? (e.g. 'Ring Light #2', 'Mirror Booth')" } },
     {
       name: "type",
       type: "select",
@@ -19,8 +19,9 @@ export const Equipment: CollectionConfig = {
         { label: "Prop", value: "prop" },
         { label: "Lighting", value: "lighting" },
       ],
+      admin: { description: "What category does this equipment fall under?" },
     },
-    { name: "identifier", type: "text" },
+    { name: "identifier", type: "text", admin: { description: "Serial number or your own label to identify this item (e.g. 'BOOTH-001')" } },
     {
       name: "status",
       type: "select",
@@ -30,7 +31,8 @@ export const Equipment: CollectionConfig = {
         { label: "In Repair", value: "in_repair" },
         { label: "Retired", value: "retired" },
       ],
+      admin: { description: "Is this equipment ready to use, being repaired, or retired?" },
     },
-    { name: "notes", type: "textarea" },
+    { name: "notes", type: "textarea", admin: { description: "Any notes about condition, repair history, or special instructions" } },
   ],
 };

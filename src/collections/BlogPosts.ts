@@ -15,6 +15,7 @@ export const BlogPosts: CollectionConfig = {
       name: "title",
       type: "text",
       required: true,
+      admin: { description: "The headline of your blog post — make it engaging and descriptive" },
     },
     {
       name: "slug",
@@ -24,22 +25,26 @@ export const BlogPosts: CollectionConfig = {
       index: true,
       admin: {
         position: "sidebar",
+        description: "URL-friendly version of the title (e.g. 'my-wedding-tips'). Must be unique",
       },
     },
     {
       name: "excerpt",
       type: "textarea",
       maxLength: 300,
+      admin: { description: "A short preview shown on the blog list page and in search results (max 300 characters)" },
     },
     {
       name: "featuredImage",
       type: "upload",
       relationTo: "media",
+      admin: { description: "The main image shown at the top of the post and on the blog list" },
     },
     {
       name: "content",
       type: "richText",
       required: true,
+      admin: { description: "The full blog post content — write your heart out!" },
     },
     {
       name: "category",
@@ -53,6 +58,7 @@ export const BlogPosts: CollectionConfig = {
       ],
       admin: {
         position: "sidebar",
+        description: "Which category does this post belong to?",
       },
     },
     {
@@ -62,10 +68,12 @@ export const BlogPosts: CollectionConfig = {
         {
           name: "tag",
           type: "text",
+          admin: { description: "A keyword or topic tag (e.g. 'dallas', 'luxury', 'tips')" },
         },
       ],
       admin: {
         position: "sidebar",
+        description: "Tags help visitors find related posts",
       },
     },
     {
@@ -74,6 +82,7 @@ export const BlogPosts: CollectionConfig = {
       defaultValue: "Gigi",
       admin: {
         position: "sidebar",
+        description: "Who wrote this post?",
       },
     },
     {
@@ -84,6 +93,7 @@ export const BlogPosts: CollectionConfig = {
         date: {
           pickerAppearance: "dayOnly",
         },
+        description: "When should this post appear as published?",
       },
     },
     {

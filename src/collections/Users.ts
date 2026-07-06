@@ -12,6 +12,7 @@ export const Users: CollectionConfig = {
       name: "name",
       type: "text",
       required: true,
+      admin: { description: "Your display name in the admin" },
     },
     {
       name: "role",
@@ -24,6 +25,7 @@ export const Users: CollectionConfig = {
       ],
       defaultValue: "staff",
       required: true,
+      admin: { description: "Controls what this person can access. Owner = everything. Admin = everything except secrets. Editor = website content only. Staff = just their assigned events." },
     },
   ],
 };

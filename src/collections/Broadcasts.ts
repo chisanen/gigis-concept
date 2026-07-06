@@ -11,10 +11,12 @@ export const Broadcasts: CollectionConfig = {
       name: "subject",
       type: "text",
       required: true,
+      admin: { description: "Email subject line — make it catchy so people open it!" },
     },
     {
       name: "body",
       type: "richText",
+      admin: { description: "The email content you want to send to your audience" },
     },
     {
       name: "audience",
@@ -25,10 +27,12 @@ export const Broadcasts: CollectionConfig = {
         { label: "Leads", value: "leads" },
         { label: "Tagged", value: "tagged" },
       ],
+      admin: { description: "Who should receive this broadcast?" },
     },
     {
       name: "scheduledAt",
       type: "date",
+      admin: { description: "When should this email go out? Leave empty to send manually" },
     },
     {
       name: "status",
@@ -39,11 +43,13 @@ export const Broadcasts: CollectionConfig = {
         { label: "Sent", value: "sent" },
       ],
       defaultValue: "draft",
+      admin: { description: "Current status of this broadcast" },
     },
     {
       name: "sentCount",
       type: "number",
       defaultValue: 0,
+      admin: { description: "How many emails were sent (updates automatically)" },
     },
   ],
 };

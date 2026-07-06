@@ -11,21 +11,25 @@ export const ServiceArea: GlobalConfig = {
       name: "baseZip",
       type: "text",
       defaultValue: "75219",
+      admin: { description: "Your home base ZIP code — travel fees are calculated from here" },
     },
     {
       name: "includedRadiusMiles",
       type: "number",
       defaultValue: 25,
+      admin: { description: "How many miles you'll travel for free before charging a travel fee" },
     },
     {
       name: "perMileCents",
       type: "number",
       defaultValue: 50,
+      admin: { description: "Travel fee per mile beyond the free radius, in cents (e.g. 50 = $0.50/mile)" },
     },
     {
       name: "currency",
       type: "text",
       defaultValue: "USD",
+      admin: { description: "Currency code for pricing (e.g. 'USD')" },
     },
   ],
 };

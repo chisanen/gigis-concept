@@ -8,8 +8,8 @@ export const Tasks: CollectionConfig = {
     group: "Studio",
   },
   fields: [
-    { name: "title", type: "text", required: true },
-    { name: "dueDate", type: "date" },
+    { name: "title", type: "text", required: true, admin: { description: "What needs to be done? Keep it short and clear" } },
+    { name: "dueDate", type: "date", admin: { description: "When should this be finished by?" } },
     {
       name: "status",
       type: "select",
@@ -18,6 +18,7 @@ export const Tasks: CollectionConfig = {
         { label: "Open", value: "open" },
         { label: "Done", value: "done" },
       ],
+      admin: { description: "Is this task still open or already done?" },
     },
     {
       name: "priority",
@@ -29,7 +30,8 @@ export const Tasks: CollectionConfig = {
         { label: "High", value: "high" },
         { label: "Urgent", value: "urgent" },
       ],
+      admin: { description: "How important is this? Urgent items show at the top" },
     },
-    { name: "notes", type: "textarea" },
+    { name: "notes", type: "textarea", admin: { description: "Any extra details or context for this task" } },
   ],
 };

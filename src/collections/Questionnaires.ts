@@ -11,6 +11,7 @@ export const Questionnaires: CollectionConfig = {
       name: "name",
       type: "text",
       required: true,
+      admin: { description: "Name of this questionnaire (e.g. 'Wedding Details', 'Photo Booth Preferences')" },
     },
     {
       name: "serviceType",
@@ -20,14 +21,17 @@ export const Questionnaires: CollectionConfig = {
         { label: "Content Creation", value: "content_creation" },
         { label: "Photo Booth", value: "photo_booth" },
       ],
+      admin: { description: "Which service is this questionnaire for? Choose 'All' if it applies to everything" },
     },
     {
       name: "fields",
       type: "array",
+      admin: { description: "The questions you want to ask — add as many as you need" },
       fields: [
         {
           name: "label",
           type: "text",
+          admin: { description: "The question text your client will see" },
         },
         {
           name: "type",
@@ -39,23 +43,26 @@ export const Questionnaires: CollectionConfig = {
             { label: "Date", value: "date" },
             { label: "Checkbox", value: "checkbox" },
           ],
+          admin: { description: "What kind of answer do you expect? Short text, long text, dropdown, date, or yes/no" },
         },
         {
           name: "options",
           type: "text",
           admin: {
-            description: "Comma-separated for select type",
+            description: "Comma-separated choices for dropdown questions (e.g. 'Indoor, Outdoor, Both')",
           },
         },
         {
           name: "required",
           type: "checkbox",
+          admin: { description: "Must the client answer this question before submitting?" },
         },
       ],
     },
     {
       name: "isDefault",
       type: "checkbox",
+      admin: { description: "Use this questionnaire automatically for new bookings of this service type" },
     },
   ],
 };

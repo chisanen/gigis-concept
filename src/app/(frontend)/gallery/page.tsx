@@ -39,6 +39,7 @@ async function getSettings() {
 export default async function GalleryPage() {
   const settings = await getSettings();
   const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "";
+  const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "";
   const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
 
   return (
@@ -54,14 +55,14 @@ export default async function GalleryPage() {
       </section>
 
       {/* Instagram Feed */}
-      {showInstagramFeed && instagramHandle && (
+      {showInstagramFeed && (instagramWidgetId || instagramHandle) && (
         <section className="py-24 md:py-32 bg-white">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-14">
               <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Follow Us</p>
               <h2 className="font-script text-4xl md:text-5xl text-brand-900">Instagram</h2>
             </div>
-            <InstagramFeed handle={instagramHandle} />
+            <InstagramFeed widgetId={instagramWidgetId} handle={instagramHandle} />
           </div>
         </section>
       )}

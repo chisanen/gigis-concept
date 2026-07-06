@@ -19,6 +19,7 @@ export const Media: CollectionConfig = {
       name: "alt",
       type: "text",
       required: true,
+      admin: { description: "Describe the image in a few words — this helps with accessibility and SEO (e.g. 'Bride and groom first dance')" },
     },
   ],
 };

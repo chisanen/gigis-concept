@@ -7,7 +7,7 @@ export const Team: CollectionConfig = {
     group: "Operations",
   },
   fields: [
-    { name: "name", type: "text", required: true },
+    { name: "name", type: "text", required: true, admin: { description: "Team member's full name" } },
     {
       name: "role",
       type: "select",
@@ -17,14 +17,15 @@ export const Team: CollectionConfig = {
         { label: "Booth Attendant", value: "booth_attendant" },
         { label: "Editor", value: "editor" },
       ],
+      admin: { description: "What role does this person fill on your team?" },
     },
-    { name: "email", type: "email" },
-    { name: "phone", type: "text" },
+    { name: "email", type: "email", admin: { description: "Their email — used for notifications and assignments" } },
+    { name: "phone", type: "text", admin: { description: "Best phone number to reach them on event day" } },
     {
       name: "color",
       type: "text",
-      admin: { description: "Calendar color hex" },
+      admin: { description: "Calendar color hex (e.g. '#FF5733') — helps you tell team members apart on the calendar" },
     },
-    { name: "isActive", type: "checkbox", defaultValue: true },
+    { name: "isActive", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this person from scheduling without removing them" } },
   ],
 };
