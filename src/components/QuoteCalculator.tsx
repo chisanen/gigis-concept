@@ -62,7 +62,7 @@ export function QuoteCalculator() {
     if (qty <= 0) return;
     const all = [...BOOTH_ADDONS, ...CONTENT_ADDONS, ...SHARED_ADDONS];
     const a = all.find(x => x.id === id);
-    if (a) total += a.unit === "/hr" ? a.price * (parseInt(eventHours) || hours) : a.price * qty;
+    if (a) total += ("unit" in a && a.unit === "/hr") ? a.price * (parseInt(eventHours) || hours) : a.price * qty;
   });
   const deposit = Math.round(total * 0.5);
 
@@ -162,7 +162,7 @@ export function QuoteCalculator() {
               <p className="text-[10px] tracking-[0.15em] text-brand-500 uppercase mb-2 mt-4">Booth Add-ons</p>
               {BOOTH_ADDONS.map(a => (
                 <div key={a.id} className="flex items-center justify-between p-3 bg-white border border-brand-200 rounded-lg mb-1">
-                  <div><p className="text-[12px] text-brand-900">{a.name}</p><p className="text-[10px] text-brand-500">${a.price}{a.unit || ""} {a.note ? `(${a.note})` : ""}</p></div>
+                  <div><p className="text-[12px] text-brand-900">{a.name}</p><p className="text-[10px] text-brand-500">${a.price}{"unit" in a ? a.unit : ""} {a.note ? `(${a.note})` : ""}</p></div>
                   <div className="flex items-center gap-2">
                     <button onClick={() => toggleAddon(a.id, -1)} className="w-7 h-7 border border-brand-300 rounded text-sm">−</button>
                     <span className="w-5 text-center text-[12px]">{addons[a.id] || 0}</span>
@@ -219,7 +219,7 @@ export function QuoteCalculator() {
               <p className="text-[10px] tracking-[0.15em] text-brand-500 uppercase mb-2">General Add-ons</p>
               {SHARED_ADDONS.map(a => (
                 <div key={a.id} className="flex items-center justify-between p-3 bg-white border border-brand-200 rounded-lg mb-1">
-                  <div><p className="text-[12px] text-brand-900">{a.name}</p><p className="text-[10px] text-brand-500">${a.price}{a.unit || ""}</p></div>
+                  <div><p className="text-[12px] text-brand-900">{a.name}</p><p className="text-[10px] text-brand-500">${a.price}{"unit" in a ? a.unit : ""}</p></div>
                   <div className="flex items-center gap-2">
                     <button onClick={() => toggleAddon(a.id, -1)} className="w-7 h-7 border border-brand-300 rounded text-sm">−</button>
                     <span className="w-5 text-center text-[12px]">{addons[a.id] || 0}</span>
@@ -251,7 +251,7 @@ export function QuoteCalculator() {
                     {Object.entries(addons).filter(([,q]) => q > 0).map(([id, qty]) => {
                       const a = [...BOOTH_ADDONS, ...CONTENT_ADDONS, ...SHARED_ADDONS].find(x => x.id === id);
                       if (!a) return null;
-                      const cost = a.unit === "/hr" ? a.price * (parseInt(eventHours) || hours) : a.price * qty;
+                      const cost = ("unit" in a && a.unit === "/hr") ? a.price * (parseInt(eventHours) || hours) : a.price * qty;
                       return <div key={id} className="flex justify-between text-[12px] text-brand-600"><span>{a.name} x{qty}</span><span>${cost}</span></div>;
                     })}
                   </div>
