@@ -7,6 +7,9 @@ export const Leads: CollectionConfig = {
     defaultColumns: ["firstName", "lastName", "stage", "eventDate", "serviceRequired"],
     group: "Studio",
   },
+  access: {
+    create: () => true,
+  },
   fields: [
     { name: "firstName", type: "text", required: true, admin: { description: "Client's first name" } },
     { name: "lastName", type: "text", required: true, admin: { description: "Client's last name" } },
