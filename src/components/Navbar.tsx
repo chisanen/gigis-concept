@@ -72,60 +72,96 @@ export function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile menu - solid full screen overlay */}
+      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-[100]" style={{ top: 0 }}>
-          {/* Solid background - completely covers page */}
-          <div className="absolute inset-0 bg-brand-50" />
-
-          {/* Header row with logo + close */}
-          <div className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-brand-200/50">
-            <Link href="/" onClick={() => setMobileOpen(false)} className="flex-shrink-0">
-              <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} className="h-10 w-auto" />
+        <div
+          className="lg:hidden"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 9999,
+            backgroundColor: "#F8F5F1",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {/* Top bar */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #EBE3DB" }}>
+            <Link href="/" onClick={() => setMobileOpen(false)}>
+              <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} style={{ height: 40, width: "auto" }} />
             </Link>
-            <button onClick={() => setMobileOpen(false)} className="p-3 -mr-2" aria-label="Close menu">
-              <svg className="w-6 h-6 text-brand-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+            <button onClick={() => setMobileOpen(false)} style={{ padding: 12 }} aria-label="Close menu">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A2D28" strokeWidth="1.5">
+                <path d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Menu content */}
-          <div className="relative z-10 flex flex-col h-[calc(100%-60px)] overflow-y-auto">
-            <div className="flex-1 px-6 pt-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block py-4 text-[15px] tracking-[0.12em] border-b border-brand-200/40 ${
-                    pathname === link.href ? "text-brand-700 font-medium" : "text-brand-900"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+          {/* Nav links */}
+          <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  display: "block",
+                  padding: "16px 0",
+                  fontSize: 16,
+                  letterSpacing: "0.1em",
+                  color: pathname === link.href ? "#76220B" : "#3A2D28",
+                  fontWeight: pathname === link.href ? 600 : 400,
+                  borderBottom: "1px solid #EBE3DB",
+                  textDecoration: "none",
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
 
-            <div className="px-6 pt-6 pb-10 space-y-3">
-              <Link
-                href="/contact"
-                onClick={() => setMobileOpen(false)}
-                className="block text-center bg-brand-900 text-white py-4 text-[11px] tracking-[0.2em]"
-              >
-                INQUIRE
-              </Link>
-              <Link
-                href="/pricing"
-                onClick={() => setMobileOpen(false)}
-                className="block text-center border border-brand-900 py-4 text-[11px] tracking-[0.2em] text-brand-900"
-              >
-                BUILD YOUR QUOTE
-              </Link>
-              <p className="text-center text-[11px] text-brand-500 pt-3">
-                +1 (832) 873-7776<br />hello@gigisconcept.com
-              </p>
-            </div>
+          {/* Bottom buttons */}
+          <div style={{ padding: "16px 24px 32px" }}>
+            <Link
+              href="/contact"
+              onClick={() => setMobileOpen(false)}
+              style={{
+                display: "block",
+                textAlign: "center",
+                backgroundColor: "#3A2D28",
+                color: "#F1EDE6",
+                padding: "16px",
+                fontSize: 12,
+                letterSpacing: "0.2em",
+                textDecoration: "none",
+                marginBottom: 10,
+              }}
+            >
+              INQUIRE
+            </Link>
+            <Link
+              href="/pricing"
+              onClick={() => setMobileOpen(false)}
+              style={{
+                display: "block",
+                textAlign: "center",
+                border: "1px solid #3A2D28",
+                color: "#3A2D28",
+                padding: "16px",
+                fontSize: 12,
+                letterSpacing: "0.2em",
+                textDecoration: "none",
+                marginBottom: 16,
+              }}
+            >
+              BUILD YOUR QUOTE
+            </Link>
+            <p style={{ textAlign: "center", fontSize: 11, color: "#A48374" }}>
+              +1 (832) 873-7776 &middot; hello@gigisconcept.com
+            </p>
           </div>
         </div>
       )}
