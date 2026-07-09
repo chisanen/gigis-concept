@@ -4,11 +4,15 @@ export const Media: CollectionConfig = {
   slug: "media",
   upload: {
     mimeTypes: ["image/*"],
+    staticDir: undefined,
     imageSizes: [
       { name: "thumbnail", width: 300, height: 300, position: "centre" },
       { name: "card", width: 600, height: 450, position: "centre" },
       { name: "hero", width: 1600, height: 900, position: "centre" },
     ],
+  },
+  access: {
+    read: () => true,
   },
   admin: {
     useAsTitle: "alt",
