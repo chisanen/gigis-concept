@@ -3,42 +3,24 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const galleryItems = [
-  {
-    src: "https://images.unsplash.com/photo-1745231991466-19d41014cc66?w=600&q=80",
-    alt: "Couple embracing with love and affection",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1515531980326-6244280b99c8?w=600&q=80",
-    alt: "Elegant couple in formal attire",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1515015337340-dbabb1fa63ae?w=600&q=80",
-    alt: "Wedding couple portrait",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1560461723-0fa849b3e03a?w=600&q=80",
-    alt: "Bridal party celebration",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1516668557604-c8e814fdb184?w=600&q=80",
-    alt: "Little one blowing out birthday candles",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1592599457454-e6ace3370314?w=600&q=80",
-    alt: "Elegant wedding celebration",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1585890483032-1465321a75a5?w=600&q=80",
-    alt: "Bridal party in formal attire",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1515015443787-2e0fb93d9783?w=600&q=80",
-    alt: "Wedding couple formal portrait",
-  },
+const fallbackItems = [
+  { src: "https://images.unsplash.com/photo-1745231991466-19d41014cc66?w=600&q=80", alt: "Couple embracing" },
+  { src: "https://images.unsplash.com/photo-1515531980326-6244280b99c8?w=600&q=80", alt: "Elegant couple" },
+  { src: "https://images.unsplash.com/photo-1515015337340-dbabb1fa63ae?w=600&q=80", alt: "Wedding couple" },
+  { src: "https://images.unsplash.com/photo-1560461723-0fa849b3e03a?w=600&q=80", alt: "Bridal party" },
+  { src: "https://images.unsplash.com/photo-1516668557604-c8e814fdb184?w=600&q=80", alt: "Birthday celebration" },
+  { src: "https://images.unsplash.com/photo-1592599457454-e6ace3370314?w=600&q=80", alt: "Wedding celebration" },
+  { src: "https://images.unsplash.com/photo-1585890483032-1465321a75a5?w=600&q=80", alt: "Bridal party formal" },
+  { src: "https://images.unsplash.com/photo-1515015443787-2e0fb93d9783?w=600&q=80", alt: "Wedding portrait" },
 ];
 
-export function Gallery() {
+interface GalleryItem {
+  src: string;
+  alt: string;
+}
+
+export function Gallery({ items }: { items?: GalleryItem[] }) {
+  const galleryItems = items && items.length > 0 ? items : fallbackItems;
   const [selected, setSelected] = useState<number | null>(null);
 
   return (

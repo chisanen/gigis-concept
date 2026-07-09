@@ -54,8 +54,9 @@ export default function FrontendLayout({
       <head>
         <meta name="geo.region" content="US-TX" />
         <meta name="geo.placename" content="Dallas" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className="min-h-screen flex flex-col font-serif antialiased">
+      <body className="min-h-screen flex flex-col font-serif antialiased overflow-x-hidden">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

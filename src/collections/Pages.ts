@@ -162,6 +162,35 @@ const StepsBlock: Block = {
   ],
 };
 
+const VideoEmbedBlock: Block = {
+  slug: "videoEmbed",
+  labels: { singular: "Video Embed", plural: "Video Embeds" },
+  fields: [
+    { name: "heading", type: "text", admin: { description: "Optional heading above the video" } },
+    { name: "videoUrl", type: "text", required: true, admin: { description: "Paste a YouTube or Vimeo URL (e.g. https://youtube.com/watch?v=... or https://vimeo.com/...)" } },
+    { name: "caption", type: "text", admin: { description: "Optional caption below the video" } },
+    { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section" } },
+  ],
+};
+
+const FAQBlock: Block = {
+  slug: "faq",
+  labels: { singular: "FAQ", plural: "FAQs" },
+  fields: [
+    { name: "heading", type: "text", defaultValue: "FAQ", admin: { description: "Section heading" } },
+    {
+      name: "questions",
+      type: "array",
+      admin: { description: "Add your frequently asked questions" },
+      fields: [
+        { name: "question", type: "text", required: true, admin: { description: "The question" } },
+        { name: "answer", type: "textarea", required: true, admin: { description: "The answer" } },
+      ],
+    },
+    { name: "isVisible", type: "checkbox", defaultValue: true },
+  ],
+};
+
 export const Pages: CollectionConfig = {
   slug: "pages",
   admin: {
@@ -199,6 +228,8 @@ export const Pages: CollectionConfig = {
         RichTextBlock,
         PackagesBlock,
         StepsBlock,
+        VideoEmbedBlock,
+        FAQBlock,
       ],
       admin: { description: "Build your page by adding sections below. Drag to reorder" },
     },

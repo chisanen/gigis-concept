@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function BookConsultPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     clientName: "",
     clientEmail: "",
@@ -17,6 +18,15 @@ export default function BookConsultPage() {
     e.preventDefault();
     setStatus("loading");
     try {
+      // Check availability first
+      const availRes = await fetch(`/api/check-availability?date=${form.date}`);
+      const availData = await availRes.json();
+      if (!availData.available) {
+        setError("That date is already booked. Please choose another date.");
+        setStatus("idle");
+        return;
+      }
+
       const res = await fetch("/api/consultations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
