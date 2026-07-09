@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { InquiryForm } from "@/components/InquiryForm";
-import { QuoteCalculator } from "@/components/QuoteCalculator";
+import { PackagesDisplay } from "@/components/PackagesDisplay";
+import { PackagesSection } from "@/components/PackagesSection";
 import { Gallery } from "@/components/Gallery";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { getPayload } from "@/lib/payload";
@@ -156,14 +157,17 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ═══ 4 · PACKAGES ═══ */}
+      {/* ═══ 4 · PACKAGES (server-rendered) ═══ */}
       <section className="py-28 md:py-36 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-10">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(pkgs?.eyebrow as string) || "Investment"}</p>
             <h2 className="font-script text-5xl md:text-6xl text-brand-900">{(pkgs?.heading as string) || "Packages"}</h2>
           </div>
-          <QuoteCalculator />
+          <PackagesSection
+            boothHtml={<PackagesDisplay service="booth" />}
+            contentHtml={<PackagesDisplay service="content" />}
+          />
         </div>
       </section>
 
@@ -228,6 +232,105 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* ═══ HOW TO BOOK ═══ */}
+      <section className="py-24 md:py-32 bg-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="font-script text-5xl md:text-6xl text-brand-900 mb-4">How to book</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-12 text-center">
+            <div>
+              <p className="text-3xl font-light text-brand-900 mb-4">Step 1</p>
+              <p className="text-[13px] text-brand-600 leading-[1.9]">
+                Shoot us your inquiry with your chosen package and any fun add ons!
+                Dates get locked in after a non-refundable 50% deposit is paid and the contract is signed.
+              </p>
+            </div>
+            <div>
+              <p className="text-3xl font-light text-brand-900 mb-4">Step 2</p>
+              <p className="text-[13px] text-brand-600 leading-[1.9]">
+                As your event date gets closer, we&apos;ll send you a questionnaire about a
+                month before your event to nail down the little details!
+              </p>
+            </div>
+            <div>
+              <p className="text-3xl font-light text-brand-900 mb-4">Step 3</p>
+              <p className="text-[13px] text-brand-600 leading-[1.9]">
+                Let us handle the stress (and the fun!) We&apos;ll ensure that everyone has an
+                incredible time at your event!
+              </p>
+            </div>
+          </div>
+          <div className="text-center mt-12">
+            <Link href="/contact" className="inline-block bg-brand-500 text-white px-8 py-3 text-[10px] tracking-[0.25em] hover:bg-brand-700 transition-colors">
+              INQUIRE NOW
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ ═══ */}
+      <section className="py-24 md:py-32 bg-brand-100">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-5 uppercase">Common Questions</p>
+            <h2 className="font-script text-5xl md:text-6xl text-brand-900">FAQ</h2>
+          </div>
+          <div className="space-y-6">
+            {[
+              { q: "How do I book?", a: "Fill out the inquiry form or DM us on Instagram. We'll send you a custom quote within 24 hours. Once you accept, sign the contract and pay the 50% deposit to lock in your date." },
+              { q: "What's the deposit policy?", a: "A 50% non-refundable retainer is required to secure your date. The remaining 50% is due at the start of your session." },
+              { q: "How fast do I get my content?", a: "Raw footage is delivered within 24 hours. Edited videos take 3–5 business days. Rush delivery (24 hours) is available for $50." },
+              { q: "Do you travel outside Dallas?", a: "Yes! We serve all of Texas and beyond. Events within 25 miles of Dallas (75219) have no travel fee. Beyond that, a $0.50/mile travel fee applies." },
+              { q: "What's included with the photo booth?", a: "Every booking includes a custom backdrop, on-site attendant, unlimited instant prints, props & accessories, and a digital gallery delivered within 24 hours." },
+              { q: "Can I customize my photo booth backdrop?", a: "Absolutely! We offer Classic Spandex ($25), Curtain ($25–$50), and Flower Wall ($50–$100) backdrops. We can also work with your event designer for custom setups." },
+              { q: "Do you offer content for social media?", a: "Yes — that's our specialty. Our content creation packages deliver short-form and long-form video perfect for Instagram, TikTok, and YouTube." },
+            ].map((faq, i) => (
+              <details key={i} className="group bg-white border border-brand-200 rounded-lg">
+                <summary className="cursor-pointer px-6 py-5 text-[15px] text-brand-900 font-medium flex justify-between items-center">
+                  {faq.q}
+                  <span className="text-brand-500 group-open:rotate-45 transition-transform text-xl">+</span>
+                </summary>
+                <div className="px-6 pb-5 text-[13px] text-brand-600 leading-[1.9]">{faq.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ JSON-LD SCHEMA ═══ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "Gigi's Concept",
+            description: "Luxury content creation and photo booth services in Dallas, Texas",
+            url: "https://gigis-concept.vercel.app",
+            telephone: "+1-832-873-7776",
+            email: "hello@gigisconcept.com",
+            address: { "@type": "PostalAddress", addressLocality: "Dallas", addressRegion: "TX", postalCode: "75219", addressCountry: "US" },
+            geo: { "@type": "GeoCoordinates", latitude: 32.7767, longitude: -96.7970 },
+            areaServed: { "@type": "GeoCircle", geoMidpoint: { "@type": "GeoCoordinates", latitude: 32.7767, longitude: -96.7970 }, geoRadius: "40000" },
+            priceRange: "$290–$800",
+            image: "https://gigis-concept.vercel.app/og-image.png",
+            sameAs: ["https://instagram.com/gigisconcept"],
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: "Services",
+              itemListElement: [
+                { "@type": "Offer", name: "Content Creation — Basic Package", price: "60", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Content Creation — The Storyteller", price: "550", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Content Creation — Signature Full-Day", price: "800", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Photo Booth — The Good Angle", price: "290", priceCurrency: "USD" },
+                { "@type": "Offer", name: "Photo Booth — 5-Hour Extended", price: "450", priceCurrency: "USD" },
+              ],
+            },
+          }),
+        }}
+      />
     </>
   );
 }
