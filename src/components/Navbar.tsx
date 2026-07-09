@@ -15,156 +15,69 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
+  useEffect(() => { setOpen(false); }, [pathname]);
 
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <header className="sticky top-0 z-50 bg-brand-50/95 backdrop-blur-sm border-b border-brand-200/50">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-        <Link href="/" className="hover:opacity-80 transition-opacity flex-shrink-0">
-          <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} className="h-10 sm:h-14 md:h-16 w-auto" priority />
-        </Link>
-
-        {/* Desktop nav */}
-        <div className="hidden lg:flex items-center gap-6 xl:gap-10">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-[11px] xl:text-sm tracking-[0.2em] transition-colors ${
-                pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            href="/contact"
-            className="border border-brand-900 px-5 py-2 text-[11px] xl:text-sm tracking-[0.2em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all"
-          >
-            INQUIRE
+    <>
+      <header className="sticky top-0 z-50 bg-brand-50 border-b border-brand-200/50">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <Link href="/" className="flex-shrink-0">
+            <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} className="h-10 sm:h-14 md:h-16 w-auto" priority />
           </Link>
-        </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden flex flex-col gap-1.5 p-3 -mr-2"
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-        >
-          <span className={`block w-6 h-0.5 bg-brand-900 transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-brand-900 transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-brand-900 transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-        </button>
-      </nav>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div
-          className="lg:hidden"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 9999,
-            backgroundColor: "#F8F5F1",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {/* Top bar */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderBottom: "1px solid #EBE3DB" }}>
-            <Link href="/" onClick={() => setMobileOpen(false)}>
-              <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} style={{ height: 40, width: "auto" }} />
-            </Link>
-            <button onClick={() => setMobileOpen(false)} style={{ padding: 12 }} aria-label="Close menu">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A2D28" strokeWidth="1.5">
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Nav links */}
-          <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+          {/* Desktop */}
+          <div className="hidden lg:flex items-center gap-6 xl:gap-10">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                style={{
-                  display: "block",
-                  padding: "16px 0",
-                  fontSize: 16,
-                  letterSpacing: "0.1em",
-                  color: pathname === link.href ? "#76220B" : "#3A2D28",
-                  fontWeight: pathname === link.href ? 600 : 400,
-                  borderBottom: "1px solid #EBE3DB",
-                  textDecoration: "none",
-                }}
-              >
+              <Link key={link.href} href={link.href}
+                className={`text-[11px] xl:text-sm tracking-[0.2em] transition-colors ${pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"}`}>
                 {link.label}
               </Link>
             ))}
-          </div>
-
-          {/* Bottom buttons */}
-          <div style={{ padding: "16px 24px 32px" }}>
-            <Link
-              href="/contact"
-              onClick={() => setMobileOpen(false)}
-              style={{
-                display: "block",
-                textAlign: "center",
-                backgroundColor: "#3A2D28",
-                color: "#F1EDE6",
-                padding: "16px",
-                fontSize: 12,
-                letterSpacing: "0.2em",
-                textDecoration: "none",
-                marginBottom: 10,
-              }}
-            >
+            <Link href="/contact" className="border border-brand-900 px-5 py-2 text-[11px] xl:text-sm tracking-[0.2em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
               INQUIRE
             </Link>
-            <Link
-              href="/pricing"
-              onClick={() => setMobileOpen(false)}
-              style={{
-                display: "block",
-                textAlign: "center",
-                border: "1px solid #3A2D28",
-                color: "#3A2D28",
-                padding: "16px",
-                fontSize: 12,
-                letterSpacing: "0.2em",
-                textDecoration: "none",
-                marginBottom: 16,
-              }}
-            >
-              BUILD YOUR QUOTE
-            </Link>
-            <p style={{ textAlign: "center", fontSize: 11, color: "#A48374" }}>
-              +1 (832) 873-7776 &middot; hello@gigisconcept.com
-            </p>
           </div>
-        </div>
-      )}
-    </header>
+
+          {/* Hamburger */}
+          <button onClick={() => setOpen(!open)} className="lg:hidden p-2" aria-label="Menu">
+            {open ? (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A2D28" strokeWidth="2"><path d="M6 18L18 6M6 6l12 12"/></svg>
+            ) : (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A2D28" strokeWidth="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            )}
+          </button>
+        </nav>
+
+        {/* Mobile dropdown — renders INSIDE the header, below the nav bar */}
+        {open && (
+          <div className="lg:hidden bg-brand-50 border-t border-brand-200 pb-6">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} onClick={() => setOpen(false)}
+                className={`block px-6 py-3.5 text-[14px] tracking-[0.1em] border-b border-brand-100 ${pathname === link.href ? "text-brand-700 font-medium" : "text-brand-900"}`}>
+                {link.label}
+              </Link>
+            ))}
+            <div className="px-6 pt-4 space-y-3">
+              <Link href="/contact" onClick={() => setOpen(false)}
+                className="block text-center bg-brand-900 text-white py-3.5 text-[11px] tracking-[0.2em]">
+                INQUIRE
+              </Link>
+              <Link href="/pricing" onClick={() => setOpen(false)}
+                className="block text-center border border-brand-900 py-3.5 text-[11px] tracking-[0.2em] text-brand-900">
+                BUILD YOUR QUOTE
+              </Link>
+              <p className="text-center text-[11px] text-brand-500 pt-2">
+                +1 (832) 873-7776 &middot; hello@gigisconcept.com
+              </p>
+            </div>
+          </div>
+        )}
+      </header>
+    </>
   );
 }
