@@ -56,6 +56,8 @@ export default buildConfig({
         "@/components/admin/LeadsCRM#LeadsCRM",
         "@/components/admin/Reports#StudioReports",
         "@/components/admin/QuoteBuilder#QuoteBuilder",
+        "@/components/admin/PageBuilder#PageBuilder",
+        "@/components/admin/LivePreview#LivePreview",
       ],
     },
   },

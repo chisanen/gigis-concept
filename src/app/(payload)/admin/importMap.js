@@ -8,6 +8,8 @@ import { StudioReports } from '@/components/admin/Reports'
 import { NavLinks } from '@/components/admin/NavLinks'
 import { AIImageButton } from '@/components/admin/AIImageButton'
 import { QuoteBuilder } from '@/components/admin/QuoteBuilder'
+import { PageBuilder } from '@/components/admin/PageBuilder'
+import { LivePreview } from '@/components/admin/LivePreview'
 
 export const importMap = {
   '@/components/admin/NavLinks#NavLinks': NavLinks,
@@ -17,6 +19,8 @@ export const importMap = {
   '@/components/admin/Calendar#StudioCalendar': StudioCalendar,
   '@/components/admin/LeadsCRM#LeadsCRM': LeadsCRM,
   '@/components/admin/Reports#StudioReports': StudioReports,
+  '@/components/admin/PageBuilder#PageBuilder': PageBuilder,
+  '@/components/admin/LivePreview#LivePreview': LivePreview,
   '@payloadcms/plugin-seo/client#MetaDescriptionComponent': MetaDescriptionComponent,
   '@payloadcms/plugin-seo/client#MetaImageComponent': MetaImageComponent,
   '@payloadcms/plugin-seo/client#MetaTitleComponent': MetaTitleComponent,
