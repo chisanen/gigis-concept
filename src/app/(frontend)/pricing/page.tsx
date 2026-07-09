@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PackagesDisplay } from "@/components/PackagesDisplay";
+import { PackagesSection } from "@/components/PackagesSection";
 import { QuoteCalculator } from "@/components/QuoteCalculator";
 
 export const metadata: Metadata = {
@@ -15,13 +17,27 @@ export default function PricingPage() {
       <section className="bg-brand-200 py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Investment</p>
-          <h1 className="font-script text-5xl md:text-7xl text-brand-900">Build Your Quote</h1>
+          <h1 className="font-script text-5xl md:text-7xl text-brand-900">Packages</h1>
         </div>
       </section>
 
-      {/* Quote Calculator — the only pricing section */}
+      {/* Packages display (server-rendered) */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <PackagesSection
+            boothHtml={<PackagesDisplay service="booth" />}
+            contentHtml={<PackagesDisplay service="content" />}
+          />
+        </div>
+      </section>
+
+      {/* Quote Calculator */}
       <section className="py-16 md:py-24 bg-brand-50">
         <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-5 uppercase">Estimate</p>
+            <h2 className="font-script text-4xl md:text-5xl text-brand-900">Build Your Quote</h2>
+          </div>
           <QuoteCalculator />
         </div>
       </section>
