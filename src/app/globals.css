@@ -26,6 +26,8 @@
     background-color: var(--color-brand-50);
     color: var(--color-brand-900);
     font-family: var(--font-serif);
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
 
   ::selection {
@@ -38,6 +40,7 @@
     border-radius: 0;
     -webkit-appearance: none;
     appearance: none;
+    font-size: 16px; /* prevents iOS zoom on focus */
   }
 
   select {
@@ -45,5 +48,43 @@
     background-repeat: no-repeat;
     background-position: right 16px center;
     padding-right: 40px;
+  }
+
+  /* Mobile tap targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Fix iOS input zoom */
+  @supports (-webkit-touch-callout: none) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
+}
+
+/* Mobile-specific overrides */
+@media (max-width: 640px) {
+  /* Smaller hero text on mobile */
+  .font-script {
+    word-break: break-word;
+  }
+
+  /* Tighter padding on small screens */
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Stack quote builder columns */
+  .grid.md\:grid-cols-2 {
+    gap: 1.5rem;
+  }
+
+  /* Make FAQ answers readable */
+  details .text-\[13px\] {
+    font-size: 14px;
+    line-height: 1.7;
   }
 }

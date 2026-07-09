@@ -60,29 +60,29 @@ export default async function Home() {
   return (
     <>
       {/* ═══ 1 · CAPTURING MOMENTS ═══ */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[70vh] sm:min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <HeroCarousel />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50 z-10" />
         </div>
-        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center text-white py-20">
+        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center text-white py-12 sm:py-20">
           <p className="text-[10px] md:text-[11px] tracking-[0.5em] text-white/60 mb-10 uppercase">
             {(hero?.subtitle as string) || "Content Creation · Luxury Photo Booth"}
           </p>
-          <h1 className="font-script text-6xl sm:text-7xl md:text-[6.5rem] leading-[0.85] mb-5">
+          <h1 className="font-script text-5xl sm:text-6xl md:text-[6.5rem] leading-[0.85] mb-4 sm:mb-5">
             {(hero?.heading as string) || "Capturing"}
           </h1>
-          <p className="text-2xl sm:text-3xl md:text-4xl tracking-[0.3em] font-extralight uppercase mb-12 text-white/90">
+          <p className="text-xl sm:text-2xl md:text-4xl tracking-[0.2em] sm:tracking-[0.3em] font-extralight uppercase mb-8 sm:mb-12 text-white/90">
             {(hero?.subheading as string) || "Moments"}
           </p>
-          <p className="text-[13px] md:text-[15px] text-white/70 max-w-sm mx-auto mb-16 leading-[1.9]">
+          <p className="text-[13px] md:text-[15px] text-white/70 max-w-sm mx-auto mb-8 sm:mb-16 leading-[1.9]">
             {(hero?.tagline as string) || "Editorial content and a timeless photo-booth experience — quietly crafted, beautifully delivered."}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href={(hero?.ctaPrimaryHref as string) || "/services"} className="bg-white text-brand-900 px-10 py-4 text-[10px] tracking-[0.3em] hover:bg-brand-200 transition-colors">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto">
+            <Link href={(hero?.ctaPrimaryHref as string) || "/services"} className="w-full sm:w-auto text-center bg-white text-brand-900 px-8 sm:px-10 py-3.5 sm:py-4 text-[10px] tracking-[0.25em] sm:tracking-[0.3em] hover:bg-brand-200 transition-colors">
               {(hero?.ctaPrimaryLabel as string) || "EXPLORE SERVICES"}
             </Link>
-            <Link href={(hero?.ctaSecondaryHref as string) || "/contact"} className="border border-white/40 text-white px-10 py-4 text-[10px] tracking-[0.3em] hover:bg-white hover:text-brand-900 transition-all">
+            <Link href={(hero?.ctaSecondaryHref as string) || "/contact"} className="w-full sm:w-auto text-center border border-white/40 text-white px-8 sm:px-10 py-3.5 sm:py-4 text-[10px] tracking-[0.25em] sm:tracking-[0.3em] hover:bg-white hover:text-brand-900 transition-all">
               {(hero?.ctaSecondaryLabel as string) || "INQUIRE"}
             </Link>
           </div>
@@ -90,9 +90,9 @@ export default async function Home() {
       </section>
 
       {/* ═══ 2 · ABOUT GIGI ═══ */}
-      <section className="py-28 md:py-40 bg-white">
-        <div className="max-w-6xl mx-auto px-6 lg:px-16">
-          <div className="grid md:grid-cols-2 gap-14 md:gap-20 items-center">
+      <section className="py-16 sm:py-28 md:py-40 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center">
             <div className="relative w-full overflow-hidden group">
               <Image src={aboutImage} alt="Gigi — Founder" width={800} height={533} className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700" priority />
             </div>
@@ -100,10 +100,10 @@ export default async function Home() {
               <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-7 uppercase">
                 {(about?.eyebrow as string) || "The Studio"}
               </p>
-              <h2 className="font-script text-[2.4rem] md:text-[3rem] text-brand-900 leading-[1.15] mb-2">
+              <h2 className="font-script text-[2rem] sm:text-[2.4rem] md:text-[3rem] text-brand-900 leading-[1.15] mb-2">
                 {(about?.heading1 as string) || "Quiet luxury,"}
               </h2>
-              <h2 className="font-script text-[2.4rem] md:text-[3rem] text-brand-900 leading-[1.15] mb-10">
+              <h2 className="font-script text-[2rem] sm:text-[2.4rem] md:text-[3rem] text-brand-900 leading-[1.15] mb-6 sm:mb-10">
                 {(about?.heading2 as string) || "captured on camera."}
               </h2>
               <p className="text-[14px] text-brand-600 leading-[2] mb-5">
@@ -119,9 +119,9 @@ export default async function Home() {
       </section>
 
       {/* ═══ 3 · TWO WAYS TO WORK TOGETHER ═══ */}
-      <section className="py-28 md:py-36 bg-brand-100">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-20">
+      <section className="py-16 sm:py-28 md:py-36 bg-brand-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-20">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">
               {(twoWays?.eyebrow as string) || "What We Offer"}
             </p>
@@ -158,8 +158,8 @@ export default async function Home() {
       </section>
 
       {/* ═══ 4 · PACKAGES (server-rendered) ═══ */}
-      <section className="py-28 md:py-36 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="py-16 sm:py-28 md:py-36 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(pkgs?.eyebrow as string) || "Investment"}</p>
             <h2 className="font-script text-5xl md:text-6xl text-brand-900">{(pkgs?.heading as string) || "Packages"}</h2>
@@ -172,8 +172,8 @@ export default async function Home() {
       </section>
 
       {/* ═══ 5 · TESTIMONIAL ═══ */}
-      <section className="py-28 md:py-36 bg-brand-100">
-        <div className="max-w-2xl mx-auto px-6 text-center">
+      <section className="py-16 sm:py-28 md:py-36 bg-brand-100">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <svg className="w-10 h-10 mx-auto text-brand-400/50 mb-10" fill="currentColor" viewBox="0 0 24 24">
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
           </svg>
@@ -189,7 +189,7 @@ export default async function Home() {
 
       {/* ═══ FOMO STRIP ═══ */}
       <section className="py-6 bg-brand-200">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-[11px] tracking-[0.2em] text-brand-700">
             Limited Saturdays available each season &middot; Now booking 2026 &amp; 2027 events &middot; Secure your date today
           </p>
@@ -197,8 +197,8 @@ export default async function Home() {
       </section>
 
       {/* ═══ 6 · GET A QUOTE ═══ */}
-      <section className="py-32 md:py-40 bg-brand-900">
-        <div className="max-w-2xl mx-auto px-6 text-center text-white">
+      <section className="py-16 sm:py-32 md:py-40 bg-brand-900">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center text-white">
           <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(ctaBlock?.eyebrow as string) || "Let's Create"}</p>
           <h2 className="font-script text-5xl md:text-7xl mb-5">{(ctaBlock?.heading as string) || "Tell us"}</h2>
           <p className="text-lg md:text-xl tracking-[0.25em] font-extralight uppercase mb-14 text-white/70">{(ctaBlock?.subheading as string) || "About Your Moment"}</p>
@@ -210,8 +210,8 @@ export default async function Home() {
       </section>
 
       {/* ═══ 7 · GALLERY ═══ */}
-      <section className="py-28 md:py-36 bg-brand-50">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="py-16 sm:py-28 md:py-36 bg-brand-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(galleryBlock?.eyebrow as string) || "Our Work"}</p>
             <h2 className="font-script text-5xl md:text-6xl text-brand-900">{(galleryBlock?.heading as string) || "Gallery"}</h2>
@@ -224,8 +224,8 @@ export default async function Home() {
       </section>
 
       {/* ═══ 8 · CONTACT US ═══ */}
-      <section id="contact" className="py-28 md:py-36 bg-brand-200">
-        <div className="max-w-3xl mx-auto px-6">
+      <section id="contact" className="py-16 sm:py-28 md:py-36 bg-brand-200">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{(contactBlock?.eyebrow as string) || "Get In Touch"}</p>
             <h2 className="font-script text-5xl md:text-6xl text-brand-900 mb-5">{(contactBlock?.heading as string) || "Contact Us"}</h2>
@@ -244,8 +244,8 @@ export default async function Home() {
       </section>
 
       {/* ═══ HOW TO BOOK ═══ */}
-      <section className="py-24 md:py-32 bg-white">
-        <div className="max-w-5xl mx-auto px-6">
+      <section className="py-14 sm:py-24 md:py-32 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="font-script text-5xl md:text-6xl text-brand-900 mb-4">How to book</h2>
           </div>
@@ -281,8 +281,8 @@ export default async function Home() {
       </section>
 
       {/* ═══ FAQ ═══ */}
-      <section className="py-24 md:py-32 bg-brand-100">
-        <div className="max-w-3xl mx-auto px-6">
+      <section className="py-14 sm:py-24 md:py-32 bg-brand-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-5 uppercase">Common Questions</p>
             <h2 className="font-script text-5xl md:text-6xl text-brand-900">FAQ</h2>

@@ -10,9 +10,9 @@ export function Footer() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="bg-brand-900 text-brand-200 py-16">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
+    <footer className="bg-brand-900 text-brand-200 py-12 sm:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12 mb-12">
           {/* Brand */}
           <div>
             <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} className="h-20 w-auto mb-4 brightness-0 invert" />
