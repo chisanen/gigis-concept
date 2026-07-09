@@ -25,6 +25,7 @@ export function Footer() {
           <div>
             <p className="text-xs tracking-[0.2em] text-brand-500 mb-4">QUICK LINKS</p>
             <div className="flex flex-col gap-2">
+              <Link href="/" className="text-sm hover:text-white transition-colors">Home</Link>
               <Link href="/about" className="text-sm hover:text-white transition-colors">About</Link>
               <Link href="/services" className="text-sm hover:text-white transition-colors">Services</Link>
               <Link href="/pricing" className="text-sm hover:text-white transition-colors">Pricing</Link>

@@ -195,6 +195,28 @@ export function InquiryForm() {
 
       <div>
         <label className="block text-sm mb-2">
+          Number of Hours <span className="text-brand-700">*</span>
+        </label>
+        <select
+          name="eventHours"
+          required
+          defaultValue=""
+          className="w-full border border-brand-400 bg-white px-4 py-3 text-sm focus:outline-none focus:border-brand-700 transition-colors"
+        >
+          <option value="" disabled>Select Hours</option>
+          <option value="2">2 Hours</option>
+          <option value="3">3 Hours</option>
+          <option value="4">4 Hours</option>
+          <option value="5">5 Hours</option>
+          <option value="6">6 Hours</option>
+          <option value="8">8 Hours (Full Day)</option>
+          <option value="10">10+ Hours</option>
+          <option value="not-sure">Not Sure Yet</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm mb-2">
           Event Type <span className="text-brand-700">*</span>
         </label>
         <select
