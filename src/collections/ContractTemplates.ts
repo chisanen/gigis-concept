@@ -4,7 +4,7 @@ export const ContractTemplates: CollectionConfig = {
   slug: "contract-templates",
   admin: {
     useAsTitle: "name",
-    group: "Studio",
+    group: "Operations",
   },
   fields: [
     {

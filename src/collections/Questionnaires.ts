@@ -4,7 +4,7 @@ export const Questionnaires: CollectionConfig = {
   slug: "questionnaires",
   admin: {
     useAsTitle: "name",
-    group: "Studio",
+    group: "Operations",
   },
   fields: [
     {

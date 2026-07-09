@@ -12,6 +12,10 @@ interface DashboardData {
   inquiries: { id: string; firstName: string; lastName: string; serviceRequired: string; createdAt: string }[];
   invoices: number;
   packages: number;
+  mediaCount: number;
+  galleryCount: number;
+  hasContactEmail: boolean;
+  revenueCents: number;
 }
 
 export const StudioDashboard: React.FC = () => {
@@ -21,16 +25,24 @@ export const StudioDashboard: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [leads, bookings, tasks, blogPosts, testimonials, inquiries, invoices, packages] = await Promise.all([
+        const [leads, bookings, tasks, blogPosts, testimonials, inquiries, invoices, packages, media, gallery, siteSettings] = await Promise.all([
           fetch("/api/leads?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
           fetch("/api/bookings?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
           fetch("/api/tasks?where[status][equals]=open&sort=dueDate&limit=10").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
           fetch("/api/blog-posts?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
           fetch("/api/testimonials?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
           fetch("/api/inquiries?sort=-createdAt&limit=5").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
-          fetch("/api/invoices?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
+          fetch("/api/invoices?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
           fetch("/api/packages?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
+          fetch("/api/media?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
+          fetch("/api/gallery-images?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
+          fetch("/api/globals/site-settings").then(r => r.json()).catch(() => ({})),
         ]);
+
+        const revenueCents = (invoices.docs || []).reduce(
+          (sum: number, inv: Record<string, unknown>) => sum + (Number(inv.amountPaidCents) || 0),
+          0,
+        );
 
         setData({
           leads: leads.totalDocs || 0,
@@ -53,6 +65,10 @@ export const StudioDashboard: React.FC = () => {
           })),
           invoices: invoices.totalDocs || 0,
           packages: packages.totalDocs || 0,
+          mediaCount: media.totalDocs || 0,
+          galleryCount: gallery.totalDocs || 0,
+          hasContactEmail: Boolean(siteSettings?.contactEmail),
+          revenueCents,
         });
       } catch (e) {
         console.error("Dashboard fetch error:", e);
@@ -79,7 +95,45 @@ export const StudioDashboard: React.FC = () => {
     );
   }
 
-  const s: React.CSSProperties = {};
+  const checklistItems = [
+    {
+      label: "Upload at least 1 media file",
+      done: data.mediaCount >= 1,
+      href: "/admin/collections/media/create",
+    },
+    {
+      label: "Update site settings (add contact email)",
+      done: data.hasContactEmail,
+      href: "/admin/globals/site-settings",
+    },
+    {
+      label: "Add at least 1 gallery image",
+      done: data.galleryCount >= 1,
+      href: "/admin/collections/gallery-images/create",
+    },
+    {
+      label: "Publish at least 5 blog posts",
+      done: data.blogPosts >= 5,
+      href: "/admin/collections/blog-posts/create",
+    },
+    {
+      label: "Add more than 1 testimonial",
+      done: data.testimonials > 1,
+      href: "/admin/collections/testimonials/create",
+    },
+  ];
+
+  const allDone = checklistItems.every((item) => item.done);
+  const completedCount = checklistItems.filter((item) => item.done).length;
+
+  const formatCurrency = (cents: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(cents / 100);
+  };
 
   return (
     <div style={{ padding: "32px 40px", maxWidth: "1200px", margin: "0 auto", fontFamily: "'Jost', system-ui, sans-serif" }}>
@@ -93,13 +147,117 @@ export const StudioDashboard: React.FC = () => {
         </p>
       </div>
 
+      {/* Setup Checklist */}
+      <div style={{
+        background: "#FFFFFF",
+        border: "1px solid #D1C7BD",
+        borderRadius: "10px",
+        padding: "24px",
+        marginBottom: "24px",
+      }}>
+        <div style={{ marginBottom: "16px" }}>
+          <h2 style={{
+            fontSize: "15px",
+            fontWeight: 500,
+            color: "#3A2D28",
+            margin: "0 0 4px",
+            letterSpacing: "0.04em",
+          }}>
+            Setup Checklist
+          </h2>
+          <p style={{ fontSize: "12px", color: "#A48374", margin: 0 }}>
+            {allDone
+              ? "All set! Your studio is ready."
+              : `Complete these to get the most out of your studio admin. (${completedCount}/${checklistItems.length})`}
+          </p>
+        </div>
+        {!allDone && (
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
+            {checklistItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.done ? undefined : item.href}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px 14px",
+                  background: item.done ? "#F4F9F4" : "#FBF9F6",
+                  borderRadius: "6px",
+                  textDecoration: "none",
+                  cursor: item.done ? "default" : "pointer",
+                }}
+              >
+                <span style={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  border: item.done ? "none" : "2px solid #D1C7BD",
+                  background: item.done ? "#4A8C5C" : "transparent",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  color: "#FFFFFF",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                }}>
+                  {item.done ? "\u2713" : ""}
+                </span>
+                <span style={{
+                  fontSize: "13px",
+                  color: item.done ? "#6B8F71" : "#3A2D28",
+                  textDecoration: item.done ? "line-through" : "none",
+                  flex: 1,
+                }}>
+                  {item.label}
+                </span>
+                {!item.done && (
+                  <span style={{ fontSize: "11px", color: "#A48374" }}>
+                    Go &rarr;
+                  </span>
+                )}
+              </a>
+            ))}
+          </div>
+        )}
+        {allDone && (
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            padding: "14px",
+            background: "#F4F9F4",
+            borderRadius: "6px",
+          }}>
+            <span style={{
+              width: "24px",
+              height: "24px",
+              borderRadius: "50%",
+              background: "#4A8C5C",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#FFFFFF",
+              fontSize: "14px",
+              fontWeight: 700,
+            }}>
+              {"\u2713"}
+            </span>
+            <span style={{ fontSize: "13px", color: "#4A8C5C", fontWeight: 500 }}>
+              All {checklistItems.length} steps completed
+            </span>
+          </div>
+        )}
+      </div>
+
       {/* KPI Cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px", marginBottom: "32px" }}>
         {[
-          { label: "Leads", value: data.leads, href: "/admin/collections/leads" },
-          { label: "Bookings", value: data.bookings, href: "/admin/collections/bookings" },
-          { label: "Open Tasks", value: data.openTasks, href: "/admin/collections/tasks" },
-          { label: "Blog Posts", value: data.blogPosts, href: "/admin/collections/blog-posts" },
+          { label: "Leads", value: String(data.leads), href: "/admin/collections/leads" },
+          { label: "Bookings", value: String(data.bookings), href: "/admin/collections/bookings" },
+          { label: "Revenue", value: formatCurrency(data.revenueCents), href: "/admin/collections/invoices" },
+          { label: "Open Tasks", value: String(data.openTasks), href: "/admin/collections/tasks" },
         ].map((kpi) => (
           <a
             key={kpi.label}
@@ -167,7 +325,7 @@ export const StudioDashboard: React.FC = () => {
             <h2 style={{ fontSize: "13px", fontWeight: 500, color: "#3A2D28", margin: 0, letterSpacing: "0.12em", textTransform: "uppercase" as const }}>
               Open Tasks
             </h2>
-            <a href="/admin/collections/tasks" style={{ fontSize: "11px", color: "#A48374", textDecoration: "none" }}>View all →</a>
+            <a href="/admin/collections/tasks" style={{ fontSize: "11px", color: "#A48374", textDecoration: "none" }}>View all &rarr;</a>
           </div>
           {data.tasks.length === 0 ? (
             <p style={{ color: "#A48374", fontSize: "13px", fontStyle: "italic" }}>All caught up!</p>
@@ -207,7 +365,7 @@ export const StudioDashboard: React.FC = () => {
             <h2 style={{ fontSize: "13px", fontWeight: 500, color: "#3A2D28", margin: 0, letterSpacing: "0.12em", textTransform: "uppercase" as const }}>
               Recent Inquiries
             </h2>
-            <a href="/admin/collections/inquiries" style={{ fontSize: "11px", color: "#A48374", textDecoration: "none" }}>View all →</a>
+            <a href="/admin/collections/inquiries" style={{ fontSize: "11px", color: "#A48374", textDecoration: "none" }}>View all &rarr;</a>
           </div>
           {data.inquiries.length === 0 ? (
             <p style={{ color: "#A48374", fontSize: "13px", fontStyle: "italic" }}>No inquiries yet. They&apos;ll appear when someone submits the contact form.</p>

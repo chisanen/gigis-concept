@@ -5,7 +5,7 @@ export const ActivityLog: CollectionConfig = {
   admin: {
     useAsTitle: "action",
     defaultColumns: ["action", "details", "performedAt"],
-    group: "Settings",
+    group: "Operations",
   },
   access: {
     create: () => true,

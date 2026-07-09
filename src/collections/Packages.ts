@@ -4,7 +4,7 @@ export const Packages: CollectionConfig = {
   slug: "packages",
   admin: {
     useAsTitle: "name",
-    defaultColumns: ["name", "category", "priceDisplay", "isFeatured"],
+    defaultColumns: ["name", "category", "priceDisplay", "badge", "sortOrder"],
     group: "Studio",
   },
   fields: [
