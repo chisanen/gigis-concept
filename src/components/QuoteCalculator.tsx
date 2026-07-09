@@ -33,8 +33,8 @@ const SHARED_ADDONS = [
 const EVENT_TYPES = ["Wedding", "Birthday", "Corporate Event", "Baby Shower", "Graduation", "Brand Shoot", "Anniversary", "Other"];
 
 export function QuoteCalculator() {
-  const [wantsBooth, setWantsBooth] = useState(false);
-  const [wantsContent, setWantsContent] = useState(false);
+  const [wantsBooth, setWantsBooth] = useState(true);
+  const [wantsContent, setWantsContent] = useState(true);
   const [boothPkg, setBoothPkg] = useState("");
   const [contentPkg, setContentPkg] = useState("");
   const [hours, setHours] = useState(3);
@@ -148,7 +148,7 @@ export function QuoteCalculator() {
             <div>
               <p className="text-[10px] tracking-[0.15em] text-brand-500 uppercase mb-3">Photo Booth Package</p>
               {BOOTH_PACKAGES.map(p => (
-                <button key={p.id} onClick={() => setBoothPkg(p.id)}
+                <button key={p.id} onClick={() => setBoothPkg(boothPkg === p.id ? "" : p.id)}
                   className={`w-full text-left p-4 mb-2 border rounded-lg transition-all ${boothPkg === p.id ? "border-brand-900 bg-brand-50" : "border-brand-200 bg-white hover:border-brand-400"}`}>
                   <div className="flex justify-between items-start">
                     <div><p className="text-[14px] text-brand-900 font-medium">{p.name}</p><p className="text-[11px] text-brand-500 mt-1">{p.desc}</p></div>
@@ -178,7 +178,7 @@ export function QuoteCalculator() {
             <div>
               <p className="text-[10px] tracking-[0.15em] text-brand-500 uppercase mb-3">Content Creation Package</p>
               {CONTENT_PACKAGES.map(p => (
-                <button key={p.id} onClick={() => setContentPkg(p.id)}
+                <button key={p.id} onClick={() => setContentPkg(contentPkg === p.id ? "" : p.id)}
                   className={`w-full text-left p-4 mb-2 border rounded-lg transition-all ${contentPkg === p.id ? "border-brand-900 bg-brand-50" : "border-brand-200 bg-white hover:border-brand-400"}`}>
                   <div className="flex justify-between items-start">
                     <div><p className="text-[14px] text-brand-900 font-medium">{p.name}</p><p className="text-[11px] text-brand-500 mt-1">{p.desc}</p></div>
