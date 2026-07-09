@@ -36,8 +36,20 @@ export default function BookConsultPage() {
           status: "scheduled",
         }),
       });
-      if (res.ok) setStatus("success");
-      else setStatus("error");
+      if (res.ok) {
+        // Send confirmation email
+        fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "consultation_confirmation",
+            data: form,
+          }),
+        }).catch(() => {});
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
     } catch {
       setStatus("error");
     }

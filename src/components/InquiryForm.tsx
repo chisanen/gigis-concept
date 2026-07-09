@@ -42,7 +42,7 @@ export function InquiryForm() {
         body: JSON.stringify(formObj),
       });
 
-      // Also create a lead for CRM tracking
+      // Create a lead for CRM tracking
       fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -60,6 +60,35 @@ export function InquiryForm() {
           message: formObj.message,
           stage: "new",
           source: "website",
+        }),
+      }).catch(() => {});
+
+      // Send auto-reply email to client
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "inquiry_auto_reply",
+          data: { email: formObj.email, firstName: formObj.firstName },
+        }),
+      }).catch(() => {});
+
+      // Notify owner of new inquiry
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "owner_notification",
+          data: {
+            Name: `${formObj.firstName} ${formObj.lastName}`,
+            Email: formObj.email as string,
+            Phone: formObj.phone as string,
+            "Event Date": formObj.eventDate as string,
+            "Event Type": formObj.eventType as string,
+            Service: formObj.serviceRequired as string,
+            Location: formObj.eventLocation as string,
+            Message: (formObj.message as string) || "—",
+          },
         }),
       }).catch(() => {});
 
