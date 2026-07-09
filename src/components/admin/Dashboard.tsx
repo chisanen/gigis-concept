@@ -136,7 +136,7 @@ export const StudioDashboard: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "32px 40px", maxWidth: "1200px", margin: "0 auto", fontFamily: "'Jost', system-ui, sans-serif" }}>
+    <div style={{ padding: "16px", maxWidth: "1200px", margin: "0 auto", fontFamily: "'Jost', system-ui, sans-serif" }}>
       {/* Header */}
       <div style={{ marginBottom: "36px" }}>
         <h1 style={{ fontSize: "26px", fontWeight: 300, color: "#3A2D28", margin: 0, letterSpacing: "0.04em" }}>
@@ -282,7 +282,7 @@ export const StudioDashboard: React.FC = () => {
       </div>
 
       {/* Two column */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
+      <div className="gc-admin-grid-2" style={{ marginBottom: "20px" }}>
         {/* Quick Actions */}
         <div style={{ background: "#FFFFFF", border: "1px solid #D1C7BD", borderRadius: "10px", padding: "24px" }}>
           <h2 style={{ fontSize: "13px", fontWeight: 500, color: "#3A2D28", margin: "0 0 16px", letterSpacing: "0.12em", textTransform: "uppercase" as const }}>
@@ -358,7 +358,7 @@ export const StudioDashboard: React.FC = () => {
       </div>
 
       {/* Bottom row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+      <div className="gc-admin-grid-2">
         {/* Recent Inquiries */}
         <div style={{ background: "#FFFFFF", border: "1px solid #D1C7BD", borderRadius: "10px", padding: "24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>

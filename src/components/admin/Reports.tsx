@@ -70,11 +70,11 @@ export const StudioReports: React.FC = () => {
   const statusData = Object.entries(data.bookingsByStatus).map(([name, value]) => ({ name, value }));
 
   return (
-    <div style={{ padding: "32px 40px", fontFamily: "'Jost', system-ui, sans-serif" }}>
+    <div style={{ padding: "16px", fontFamily: "'Jost', system-ui, sans-serif" }}>
       <h2 style={{ fontSize: "22px", fontWeight: 300, color: "#3A2D28", margin: "0 0 24px" }}>Reports</h2>
 
       {/* Revenue cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "14px", marginBottom: "32px" }}>
+      <div className="gc-admin-grid-3" style={{ marginBottom: "32px" }}>
         {[
           { label: "Total Invoiced", value: fmt(data.totalInvoicedCents) },
           { label: "Total Paid", value: fmt(data.totalPaidCents) },
@@ -88,7 +88,7 @@ export const StudioReports: React.FC = () => {
       </div>
 
       {/* Charts */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+      <div className="gc-admin-grid-2">
         <div style={{ background: "#fff", border: "1px solid #D1C7BD", borderRadius: "10px", padding: "24px" }}>
           <h3 style={{ fontSize: "13px", letterSpacing: "0.12em", color: "#3A2D28", textTransform: "uppercase" as const, margin: "0 0 20px", fontWeight: 500 }}>Leads by Source</h3>
           {sourceData.length > 0 ? (
@@ -125,7 +125,7 @@ export const StudioReports: React.FC = () => {
       </div>
 
       {/* Summary stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px", marginTop: "20px" }}>
+      <div className="gc-admin-grid-4" style={{ marginTop: "20px" }}>
         {[
           { label: "Total Leads", value: data.totalLeads },
           { label: "Total Bookings", value: data.totalBookings },

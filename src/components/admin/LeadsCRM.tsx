@@ -57,7 +57,7 @@ export const LeadsCRM: React.FC = () => {
   if (loading) return <div style={{ padding: "40px", textAlign: "center", color: "#A48374" }}>Loading CRM...</div>;
 
   return (
-    <div style={{ padding: "32px 40px", fontFamily: "'Jost', system-ui, sans-serif" }}>
+    <div style={{ padding: "16px", fontFamily: "'Jost', system-ui, sans-serif" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
         <div>
           <h2 style={{ fontSize: "22px", fontWeight: 300, color: "#3A2D28", margin: 0 }}>Leads Pipeline</h2>
