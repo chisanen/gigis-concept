@@ -55,6 +55,7 @@ export default buildConfig({
         "@/components/admin/Calendar#StudioCalendar",
         "@/components/admin/LeadsCRM#LeadsCRM",
         "@/components/admin/Reports#StudioReports",
+        "@/components/admin/QuoteBuilder#QuoteBuilder",
       ],
     },
   },

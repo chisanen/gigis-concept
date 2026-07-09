@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { fireAutomation } from "../lib/automations";
 
 export const Leads: CollectionConfig = {
   slug: "leads",
@@ -9,6 +10,15 @@ export const Leads: CollectionConfig = {
   },
   access: {
     create: () => true,
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, operation }) => {
+        if (operation === "create") {
+          fireAutomation("lead_created", doc).catch(console.error);
+        }
+      },
+    ],
   },
   fields: [
     { name: "firstName", type: "text", required: true, admin: { description: "Client's first name" } },

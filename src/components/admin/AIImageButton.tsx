@@ -7,6 +7,7 @@ export const AIImageButton: React.FC = () => {
   const [prompt, setPrompt] = useState("");
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   const presets = [
@@ -39,7 +40,8 @@ export const AIImageButton: React.FC = () => {
       }
 
       const data = await res.json();
-      setResult(data.url || data.mediaId ? "Image saved to Media library! Refresh and select it from the image picker." : "Image generated!");
+      if (data.url) setPreviewUrl(data.url);
+      setResult(data.mediaId ? "Image saved to Media library! Refresh and select it from the image picker above." : data.url ? "Image generated!" : "Done!");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
@@ -167,6 +169,12 @@ export const AIImageButton: React.FC = () => {
 
       {result && (
         <p style={{ marginTop: "8px", fontSize: "12px", color: "#2E7D32", fontWeight: 500 }}>{result}</p>
+      )}
+
+      {previewUrl && (
+        <div style={{ marginTop: "12px", borderRadius: "8px", overflow: "hidden", border: "1px solid #D1C7BD" }}>
+          <img src={previewUrl} alt="Generated image" style={{ width: "100%", height: "auto", display: "block" }} />
+        </div>
       )}
     </div>
   );

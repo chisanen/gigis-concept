@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { fireAutomation } from "../lib/automations";
 
 export const Bookings: CollectionConfig = {
   slug: "bookings",
@@ -6,6 +7,20 @@ export const Bookings: CollectionConfig = {
     useAsTitle: "clientName",
     defaultColumns: ["clientName", "eventDate", "service", "status"],
     group: "Studio",
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, previousDoc, operation }) => {
+        if (operation === "update" && previousDoc?.status !== doc.status) {
+          if (doc.status === "confirmed") {
+            fireAutomation("booking_confirmed", doc).catch(console.error);
+          }
+          if (doc.status === "completed") {
+            fireAutomation("event_completed", doc).catch(console.error);
+          }
+        }
+      },
+    ],
   },
   fields: [
     { name: "clientName", type: "text", required: true, admin: { description: "Full name of the client who booked" } },

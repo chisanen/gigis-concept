@@ -187,6 +187,15 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* ═══ FOMO STRIP ═══ */}
+      <section className="py-6 bg-brand-200">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <p className="text-[11px] tracking-[0.2em] text-brand-700">
+            Limited Saturdays available each season &middot; Now booking 2026 &amp; 2027 events &middot; Secure your date today
+          </p>
+        </div>
+      </section>
+
       {/* ═══ 6 · GET A QUOTE ═══ */}
       <section className="py-32 md:py-40 bg-brand-900">
         <div className="max-w-2xl mx-auto px-6 text-center text-white">
@@ -196,6 +205,7 @@ export default async function Home() {
           <Link href={(ctaBlock?.buttonHref as string) || "/contact"} className="inline-block border border-white/40 text-white px-14 py-4 text-[10px] tracking-[0.35em] hover:bg-white hover:text-brand-900 transition-all">
             {(ctaBlock?.buttonLabel as string) || "GET YOUR QUOTE"}
           </Link>
+          <p className="text-[11px] text-white/40 mt-6">+1 (832) 873-7776 &middot; hello@gigisconcept.com</p>
         </div>
       </section>
 
