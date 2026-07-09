@@ -4,22 +4,34 @@ export const GalleryImages: CollectionConfig = {
   slug: "gallery-images",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "category", "clientName", "eventDate"],
+    defaultColumns: ["title", "category", "collectionName", "eventDate"],
     group: "Website",
+    description: "Organize your photos and videos into collections. Each collection can be public, password-protected, or private to a specific client.",
+  },
+  access: {
+    read: () => true,
   },
   fields: [
     {
       name: "title",
       type: "text",
       required: true,
-      admin: { description: "A title for this image (e.g. 'Smith Wedding - First Dance')" },
+      admin: { description: "A title for this image or video (e.g. 'Smith Wedding - First Dance')" },
     },
     {
       name: "image",
       type: "upload",
       relationTo: "media",
       required: true,
-      admin: { components: { afterInput: ["@/components/admin/AIImageButton#AIImageButton"] }, description: "Upload the photo here — or use ✨ Generate with AI below" },
+      admin: {
+        components: { afterInput: ["@/components/admin/AIImageButton#AIImageButton"] },
+        description: "Upload a photo or video here. Drag and drop works! Supports JPG, PNG, MP4, MOV, and more.",
+      },
+    },
+    {
+      name: "collectionName",
+      type: "text",
+      admin: { description: "Group images into a collection (e.g. 'Smith Wedding 2026', 'Johnson Birthday'). Images with the same collection name are grouped together." },
     },
     {
       name: "category",
@@ -27,25 +39,34 @@ export const GalleryImages: CollectionConfig = {
       required: true,
       options: [
         { label: "Public", value: "public" },
-        { label: "Private (Client)", value: "private" },
+        { label: "Password Protected", value: "password" },
+        { label: "Private (Client Only)", value: "private" },
       ],
       defaultValue: "public",
-      admin: { description: "Public images show on your gallery page. Private images are only for the client" },
-    },
-    {
-      name: "clientName",
-      type: "text",
-      admin: {
-        condition: (data) => data?.category === "private",
-        description: "Client's name — so they can find their private gallery",
-      },
+      admin: { description: "Public = anyone can see. Password = visitors need a code you share. Private = only that client through their portal." },
     },
     {
       name: "password",
       type: "text",
       admin: {
-        condition: (data) => data?.category === "private",
-        description: "Password the client uses to access their private photos",
+        condition: (data) => data?.category === "password",
+        description: "The password visitors enter to view this collection. Share this with your client.",
+      },
+    },
+    {
+      name: "clientName",
+      type: "text",
+      admin: {
+        condition: (data) => data?.category === "private" || data?.category === "password",
+        description: "Client's name — helps you find their gallery in the list",
+      },
+    },
+    {
+      name: "clientEmail",
+      type: "email",
+      admin: {
+        condition: (data) => data?.category === "private" || data?.category === "password",
+        description: "Client's email — used to send them the gallery link",
       },
     },
     {
@@ -53,7 +74,7 @@ export const GalleryImages: CollectionConfig = {
       type: "date",
       admin: {
         date: { pickerAppearance: "dayOnly" },
-        description: "When was this photo taken?",
+        description: "When was this photo/video taken?",
       },
     },
     {

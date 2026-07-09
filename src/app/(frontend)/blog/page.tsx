@@ -8,11 +8,7 @@ function getImageUrl(img: unknown): string | null {
   const media = img as Record<string, unknown>;
   const url = media.url as string | undefined;
   if (!url) return null;
-  // Map Payload media URLs to public directory (files exist in /public/)
-  if (url.startsWith("/api/media/file/")) {
-    const filename = url.replace("/api/media/file/", "");
-    return `/${filename}`;
-  }
+  // Payload media URLs work directly now (public read access enabled)
   return url;
 }
 
@@ -47,7 +43,8 @@ export default async function BlogPage({
       ...(category ? { category: { equals: category } } : {}),
     },
     sort: "-publishedDate",
-    limit: 20,
+    limit: 30,
+    depth: 2,
   });
 
   return (
