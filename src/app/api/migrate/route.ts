@@ -18,11 +18,10 @@ export async function GET(req: NextRequest) {
 
     // Action: create-popups - manually create the popups table
     if (action === "create-popups") {
-      const db = payload.db as Record<string, unknown>;
-      const pool = (db.pool || db.client) as { query: (sql: string) => Promise<unknown> } | undefined;
-      const drizzle = db.drizzle as { execute: (sql: unknown) => Promise<unknown> } | undefined;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const db = payload.db as any;
+      const drizzle = db.drizzle;
 
-      // Try using the Drizzle SQL executor
       if (drizzle && typeof drizzle.execute === "function") {
         const { sql } = await import("drizzle-orm");
         await drizzle.execute(sql`
