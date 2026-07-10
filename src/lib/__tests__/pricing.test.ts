@@ -82,18 +82,16 @@ describe("getPricingData", () => {
     });
   });
 
-  it("returns defaults when payload throws an error", async () => {
+  it("returns fallback packages/addons when payload throws an error", async () => {
     mockedGetPayload.mockRejectedValue(new Error("Database connection failed"));
 
     const result = await getPricingData();
 
-    expect(result).toEqual({
-      packages: [],
-      addOns: [],
-      depositPercent: 50,
-      travelPerMileCents: 50,
-      travelFreeRadiusMiles: 25,
-    });
+    expect(result.packages.length).toBeGreaterThan(0);
+    expect(result.addOns.length).toBeGreaterThan(0);
+    expect(result.depositPercent).toBe(50);
+    expect(result.travelPerMileCents).toBe(50);
+    expect(result.travelFreeRadiusMiles).toBe(25);
   });
 
   it("falls back depositPercent to 50 when site-settings does not include depositPercent", async () => {
@@ -106,8 +104,10 @@ describe("getPricingData", () => {
 
     const result = await getPricingData();
 
-    // When depositPercent is undefined, the ?? 50 fallback triggers
     expect(result.depositPercent).toBe(50);
+    // Empty CMS docs should return fallback packages/addons
+    expect(result.packages.length).toBeGreaterThan(0);
+    expect(result.addOns.length).toBeGreaterThan(0);
   });
 
   it("calls payload.find for packages and add-ons with correct parameters", async () => {

@@ -21,6 +21,22 @@ interface AddOn {
   appliesTo: string;
 }
 
+const fallbackPackages: Package[] = [
+  { id: "fb-good-angle", name: "The Good Angle", subtitle: "3-hour photo booth experience", category: "photo_booth", priceCents: 29000, priceDisplay: "$290", priceUnit: "3-HR MIN", features: [{ feature: "Custom Backdrop" }, { feature: "On-Site Attendant" }, { feature: "Unlimited Prints" }, { feature: "Digital Gallery (24hr)" }], isFeatured: false },
+  { id: "fb-extended", name: "5-Hour Extended", subtitle: "extended photo booth coverage", category: "photo_booth", priceCents: 45000, priceDisplay: "$450", priceUnit: "5 HOURS", features: [{ feature: "Everything in The Good Angle" }, { feature: "Extended coverage" }, { feature: "Premium backdrops" }], isFeatured: true, badge: "Popular" },
+  { id: "fb-basic", name: "The Basic", subtitle: "on-the-go content", category: "content_creation", priceCents: 5000, priceDisplay: "$50", priceUnit: "/HR", features: [{ feature: "On-site content capture" }, { feature: "Two-hour minimum" }, { feature: "All raw footage delivered" }], isFeatured: false },
+  { id: "fb-storyteller", name: "The Storyteller", subtitle: "a complete content day", category: "content_creation", priceCents: 45000, priceDisplay: "$450", priceUnit: "FLAT", features: [{ feature: "Four hours of directed shooting" }, { feature: "Three fully-edited long videos" }, { feature: "Two fully-edited short videos" }, { feature: "All raw footage included" }, { feature: "48-hour delivery" }], isFeatured: true, badge: "most loved" },
+  { id: "fb-edited", name: "Edited Videos", subtitle: "polish a single piece", category: "content_creation", priceCents: 3000, priceDisplay: "$30", priceUnit: "STARTING", features: [{ feature: "Short-form edit - $30" }, { feature: "Long-form edit - $40" }, { feature: "One long edit free with any shoot" }], isFeatured: false },
+];
+
+const fallbackAddOns: AddOn[] = [
+  { id: "fb-spandex", name: "Classic Spandex Backdrop", priceDisplay: "$25", appliesTo: "photo_booth" },
+  { id: "fb-curtain", name: "Curtain Backdrop", priceDisplay: "$25-$50", appliesTo: "photo_booth" },
+  { id: "fb-flower", name: "Flower Wall Backdrop", priceDisplay: "$50-$100", appliesTo: "photo_booth" },
+  { id: "fb-rush", name: "Rush Delivery (24hr)", priceDisplay: "$50", appliesTo: "content_creation" },
+  { id: "fb-assistant", name: "On-Site Assistant", priceDisplay: "$10/hr", appliesTo: "all" },
+];
+
 async function getData() {
   try {
     const payload = await getPayload();
@@ -28,9 +44,14 @@ async function getData() {
       payload.find({ collection: "packages", where: { isVisible: { equals: true } }, sort: "sortOrder", limit: 20 }),
       payload.find({ collection: "add-ons", where: { isVisible: { equals: true } }, limit: 30 }),
     ]);
-    return { packages: pkgs.docs as unknown as Package[], addOns: addons.docs as unknown as AddOn[] };
+    const cmsPkgs = pkgs.docs as unknown as Package[];
+    const cmsAddOns = addons.docs as unknown as AddOn[];
+    return {
+      packages: cmsPkgs.length > 0 ? cmsPkgs : fallbackPackages,
+      addOns: cmsAddOns.length > 0 ? cmsAddOns : fallbackAddOns,
+    };
   } catch {
-    return { packages: [], addOns: [] };
+    return { packages: fallbackPackages, addOns: fallbackAddOns };
   }
 }
 
