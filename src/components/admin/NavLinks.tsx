@@ -12,37 +12,42 @@ export const NavLinks: React.FC = () => {
 
     // Style description boxes as collapsible instruction cards
     function styleDescriptions() {
-      // Find elements containing "HOW TO USE" text (our admin descriptions)
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
       let node: Node | null;
       while ((node = walker.nextNode())) {
         const el = node as HTMLElement;
         if (el.getAttribute("data-gc-styled")) continue;
         const text = el.textContent || "";
-        // Match our instruction descriptions (contain "HOW TO USE" or "TIP:")
         if ((text.includes("HOW TO USE:") || text.includes("TIP:")) &&
             el.children.length === 0 && text.length > 100) {
           el.setAttribute("data-gc-styled", "true");
-          const s = el.style;
-          s.background = "linear-gradient(135deg, #F8F5F1, #FFFFFF)";
-          s.border = "1px solid #D1C7BD";
-          s.borderLeft = "4px solid #A48374";
-          s.borderRadius = "0 8px 8px 0";
-          s.padding = "14px 18px";
-          s.margin = "8px 0 16px";
-          s.fontSize = "13px";
-          s.lineHeight = "1.7";
-          s.color = "#5C463B";
-          s.maxHeight = "3.6em";
-          s.overflow = "hidden";
-          s.cursor = "pointer";
-          s.transition = "max-height 0.4s ease";
-          s.position = "relative";
-          // Add expand/collapse on click
-          el.addEventListener("click", () => {
-            const expanded = el.style.maxHeight !== "3.6em";
-            el.style.maxHeight = expanded ? "3.6em" : "600px";
+
+          // Wrap in a container with header + collapsible body
+          const wrapper = document.createElement("div");
+          wrapper.style.cssText = "margin:8px 0 16px;border:1px solid #D1C7BD;border-left:4px solid #A48374;border-radius:0 8px 8px 0;overflow:hidden;background:linear-gradient(135deg,#F8F5F1,#FFFFFF)";
+
+          // Header bar (always visible, clickable)
+          const header = document.createElement("div");
+          header.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none";
+          header.innerHTML = '<span style="font-size:12px;font-weight:600;letter-spacing:0.1em;color:#A48374;text-transform:uppercase">Instructions</span><span style="font-size:16px;color:#A48374;transition:transform 0.3s" data-arrow>+</span>';
+
+          // Body (collapsible)
+          const body = document.createElement("div");
+          body.style.cssText = "max-height:0;overflow:hidden;transition:max-height 0.4s ease;padding:0 16px";
+          body.innerHTML = `<div style="padding:0 0 14px;font-size:13px;line-height:1.8;color:#5C463B">${text}</div>`;
+
+          // Toggle
+          let expanded = false;
+          header.addEventListener("click", () => {
+            expanded = !expanded;
+            body.style.maxHeight = expanded ? body.scrollHeight + "px" : "0";
+            const arrow = header.querySelector("[data-arrow]") as HTMLElement;
+            if (arrow) arrow.textContent = expanded ? "\u2212" : "+";
           });
+
+          wrapper.appendChild(header);
+          wrapper.appendChild(body);
+          el.replaceWith(wrapper);
         }
       }
     }
