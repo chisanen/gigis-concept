@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 
-const slides = [
+const defaultSlides = [
   { src: "/hero-wedding.png", alt: "Elegant bride and groom on wedding steps" },
   { src: "/hero-champagne.png", alt: "Luxurious champagne tower at reception" },
   { src: "/hero-nigerian.png", alt: "Nigerian Americans in traditional attire at photo booth" },
@@ -11,7 +11,8 @@ const slides = [
   { src: "/hero-reception.png", alt: "Opulent wedding reception celebration" },
 ];
 
-export function HeroCarousel() {
+export function HeroCarousel({ slides: slidesProp }: { slides?: { src: string; alt: string }[] } = {}) {
+  const slides = slidesProp && slidesProp.length > 0 ? slidesProp : defaultSlides;
   const [current, setCurrent] = useState(0);
 
   const next = useCallback(() => {

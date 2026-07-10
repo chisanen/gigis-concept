@@ -14,12 +14,18 @@ export const QuoteBuilder: React.FC = () => {
   const [clientEmail, setClientEmail] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [depositPercent, setDepositPercent] = useState(50);
 
   useEffect(() => {
     Promise.all([
       fetch("/api/packages?limit=20").then(r => r.json()).catch(() => ({ docs: [] })),
       fetch("/api/add-ons?limit=20").then(r => r.json()).catch(() => ({ docs: [] })),
-    ]).then(([p, a]) => { setPackages(p.docs || []); setAddOns(a.docs || []); });
+      fetch("/api/pricing").then(r => r.json()).catch(() => null),
+    ]).then(([p, a, pricing]) => {
+      setPackages(p.docs || []);
+      setAddOns(a.docs || []);
+      if (pricing?.depositPercent) setDepositPercent(pricing.depositPercent);
+    });
   }, []);
 
   const pkg = packages.find(p => p.id === selectedPkg);
@@ -37,7 +43,7 @@ export const QuoteBuilder: React.FC = () => {
   });
 
   const subtotal = lineItems.reduce((s, i) => s + i.totalCents, 0);
-  const deposit = Math.round(subtotal * 0.5);
+  const deposit = Math.round(subtotal * depositPercent / 100);
   const fmt = (c: number) => `$${(c / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
 
   async function saveQuote() {
@@ -126,7 +132,7 @@ export const QuoteBuilder: React.FC = () => {
                   <span>Total</span><span>{fmt(subtotal)}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#A48374", marginTop: "4px" }}>
-                  <span>50% Deposit</span><span>{fmt(deposit)}</span>
+                  <span>{depositPercent}% Deposit</span><span>{fmt(deposit)}</span>
                 </div>
               </div>
             </>

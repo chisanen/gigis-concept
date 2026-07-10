@@ -1,6 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+interface PreviousImage {
+  id: string;
+  url?: string;
+  alt?: string;
+  aiPrompt?: string;
+  sizes?: {
+    thumbnail?: { url?: string };
+  };
+}
 
 export const AIImageButton: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -9,6 +19,25 @@ export const AIImageButton: React.FC = () => {
   const [result, setResult] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [previousImages, setPreviousImages] = useState<PreviousImage[]>([]);
+  const [browseMessage, setBrowseMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchPreviousImages() {
+      try {
+        const res = await fetch(
+          "/api/media?where[isAiGenerated][equals]=true&sort=-createdAt&limit=12"
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setPreviousImages(data.docs || []);
+        }
+      } catch {
+        // silently fail
+      }
+    }
+    fetchPreviousImages();
+  }, []);
 
   const presets = [
     "Elegant African American bride and groom, golden hour, editorial wedding photography",
@@ -174,6 +203,82 @@ export const AIImageButton: React.FC = () => {
       {previewUrl && (
         <div style={{ marginTop: "12px", borderRadius: "8px", overflow: "hidden", border: "1px solid #D1C7BD" }}>
           <img src={previewUrl} alt="Generated image" style={{ width: "100%", height: "auto", display: "block" }} />
+        </div>
+      )}
+
+      {/* Browse Previous AI Images */}
+      {previousImages.length > 0 && (
+        <div style={{ marginTop: "16px", borderTop: "1px solid #D1C7BD", paddingTop: "14px" }}>
+          <p style={{ fontSize: "11px", color: "#7C6253", marginBottom: "8px", letterSpacing: "0.05em" }}>
+            Or choose from previous AI images:
+          </p>
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              overflowX: "auto",
+              paddingBottom: "4px",
+            }}
+          >
+            {previousImages.map((img) => {
+              const thumbUrl = img.sizes?.thumbnail?.url || img.url || "";
+              return (
+                <button
+                  key={img.id}
+                  type="button"
+                  onClick={() => {
+                    setBrowseMessage(
+                      "Image selected! Refresh and pick it from the image chooser above."
+                    );
+                  }}
+                  title={img.aiPrompt || img.alt || "AI image"}
+                  style={{
+                    flexShrink: 0,
+                    width: "48px",
+                    height: "48px",
+                    padding: 0,
+                    border: "1px solid #D1C7BD",
+                    borderRadius: "6px",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    background: "#E8E2DA",
+                  }}
+                >
+                  {thumbUrl ? (
+                    <img
+                      src={thumbUrl}
+                      alt={img.alt || "AI image"}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "100%",
+                        height: "100%",
+                        fontSize: "16px",
+                        color: "#A48374",
+                      }}
+                    >
+                      ?
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          {browseMessage && (
+            <p style={{ marginTop: "8px", fontSize: "12px", color: "#2E7D32", fontWeight: 500 }}>
+              {browseMessage}
+            </p>
+          )}
         </div>
       )}
     </div>

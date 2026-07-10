@@ -22,11 +22,17 @@ export default function QuoteAcceptPage() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [loading, setLoading] = useState(true);
   const [accepted, setAccepted] = useState(false);
+  const [depositPercent, setDepositPercent] = useState(50);
 
   useEffect(() => {
-    fetch(`/api/quotes?where[quoteNumber][equals]=${token}&limit=1`)
-      .then(r => r.json())
-      .then(d => { if (d.docs?.[0]) setQuote(d.docs[0]); })
+    Promise.all([
+      fetch(`/api/quotes?where[quoteNumber][equals]=${token}&limit=1`).then(r => r.json()),
+      fetch("/api/pricing").then(r => r.json()).catch(() => null),
+    ])
+      .then(([quoteData, pricingData]) => {
+        if (quoteData.docs?.[0]) setQuote(quoteData.docs[0]);
+        if (pricingData?.depositPercent) setDepositPercent(pricingData.depositPercent);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [token]);
@@ -100,7 +106,7 @@ export default function QuoteAcceptPage() {
               <span className="text-brand-900">{fmt(quote.totalCents)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-brand-600">50% Deposit Due</span>
+              <span className="text-brand-600">{depositPercent}% Deposit Due</span>
               <span className="text-brand-700 font-medium">{fmt(quote.depositCents)}</span>
             </div>
           </div>

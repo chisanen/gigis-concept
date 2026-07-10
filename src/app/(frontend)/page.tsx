@@ -5,7 +5,9 @@ import { PackagesDisplay } from "@/components/PackagesDisplay";
 import { PackagesSection } from "@/components/PackagesSection";
 import { Gallery } from "@/components/Gallery";
 import { HeroCarousel } from "@/components/HeroCarousel";
+import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 import { getPayload } from "@/lib/payload";
+import { getPricingData } from "@/lib/pricing";
 
 export const dynamic = "force-dynamic";
 
@@ -21,19 +23,22 @@ function getMediaUrl(media: unknown): string | null {
 async function getSiteData() {
   try {
     const payload = await getPayload();
-    const [settings, testimonials, homePage] = await Promise.all([
+    const [settings, homePage] = await Promise.all([
       payload.findGlobal({ slug: "site-settings" }),
-      payload.find({ collection: "testimonials", where: { featured: { equals: true }, status: { equals: "approved" } }, limit: 1 }),
       payload.find({ collection: "pages", where: { slug: { equals: "home" } }, limit: 1, depth: 2 }),
     ]);
     return {
       settings,
-      testimonial: testimonials.docs[0] || null,
       blocks: (homePage.docs[0] as Record<string, unknown>)?.layout as Record<string, unknown>[] || null,
     };
   } catch {
-    return { settings: null, testimonial: null, blocks: null };
+    return { settings: null, blocks: null };
   }
+}
+
+function formatCents(cents: number): string {
+  const dollars = cents / 100;
+  return dollars % 1 === 0 ? `$${dollars}` : `$${dollars.toFixed(2)}`;
 }
 
 function getBlock(blocks: Record<string, unknown>[] | null, type: string): Record<string, unknown> | null {
@@ -42,7 +47,25 @@ function getBlock(blocks: Record<string, unknown>[] | null, type: string): Recor
 }
 
 export default async function Home() {
-  const { settings, testimonial, blocks } = await getSiteData();
+  const [{ settings, blocks }, pricing] = await Promise.all([
+    getSiteData(),
+    getPricingData(),
+  ]);
+
+  // Dynamic pricing values for FAQ and schema
+  const { packages, addOns, depositPercent, travelPerMileCents, travelFreeRadiusMiles } = pricing;
+  const rushAddon = addOns.find(a => a.name.toLowerCase().includes("rush"));
+  const rushPrice = rushAddon ? formatCents(rushAddon.priceCents) : "$50";
+  const travelPerMile = `$${(travelPerMileCents / 100).toFixed(2)}`;
+  const backdropAddOns = addOns.filter(a => a.name.toLowerCase().includes("backdrop"));
+  const backdropText = backdropAddOns.length > 0
+    ? backdropAddOns.map(a => `${a.name} (${a.priceDisplay}${a.note ? `, ${a.note}` : ""})`).join(", ")
+    : "Classic Spandex ($25), Curtain ($25, up to $50), and Flower Wall ($50, up to $100)";
+
+  // Price range for schema
+  const allPriceDollars = packages.map(p => p.priceCents / 100).filter(p => p > 0);
+  const minPrice = allPriceDollars.length > 0 ? Math.min(...allPriceDollars) : 290;
+  const maxPrice = allPriceDollars.length > 0 ? Math.max(...allPriceDollars) : 800;
 
   const hero = getBlock(blocks, "hero");
   const about = getBlock(blocks, "aboutSplit");
@@ -76,7 +99,7 @@ export default async function Home() {
             {(hero?.subheading as string) || "Moments"}
           </p>
           <p className="text-[13px] md:text-[15px] text-white/70 max-w-sm mx-auto mb-8 sm:mb-16 leading-[1.9]">
-            {(hero?.tagline as string) || "Editorial content and a timeless photo-booth experience — quietly crafted, beautifully delivered."}
+            {(hero?.tagline as string) || "Editorial content and a timeless photo-booth experience, quietly crafted, beautifully delivered."}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto">
             <Link href={(hero?.ctaPrimaryHref as string) || "/services"} className="w-full sm:w-auto text-center bg-white text-brand-900 px-8 sm:px-10 py-3.5 sm:py-4 text-[10px] tracking-[0.25em] sm:tracking-[0.3em] hover:bg-brand-200 transition-colors">
@@ -94,7 +117,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16">
           <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center">
             <div className="relative w-full overflow-hidden group">
-              <Image src={aboutImage} alt="Gigi — Founder" width={800} height={533} className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700" priority />
+              <Image src={aboutImage} alt="Gigi, Founder" width={800} height={533} className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700" priority />
             </div>
             <div className="text-center md:text-left">
               <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-7 uppercase">
@@ -110,9 +133,9 @@ export default async function Home() {
                 {(about?.paragraph1 as string) || "Gigi's Concept is a boutique content & photo-booth studio based in Dallas, serving clients across Texas and beyond."}
               </p>
               <p className="text-[14px] text-brand-600 leading-[2] mb-12">
-                {(about?.paragraph2 as string) || "Every shoot is treated like a small cover story — because the best moments rarely shout. They whisper."}
+                {(about?.paragraph2 as string) || "Every shoot is treated like a small cover story, because the best moments rarely shout. They whisper."}
               </p>
-              <p className="font-script text-3xl text-brand-700">{(about?.signature as string) || "— Gigi"}</p>
+              <p className="font-script text-3xl text-brand-700">{(about?.signature as string) || "Gigi"}</p>
             </div>
           </div>
         </div>
@@ -167,24 +190,14 @@ export default async function Home() {
           <PackagesSection
             boothHtml={<PackagesDisplay service="booth" />}
             contentHtml={<PackagesDisplay service="content" />}
+            depositPercent={depositPercent}
           />
         </div>
       </section>
 
-      {/* ═══ 5 · TESTIMONIAL ═══ */}
+      {/* ═══ 5 · TESTIMONIALS CAROUSEL ═══ */}
       <section className="py-16 sm:py-28 md:py-36 bg-brand-100">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <svg className="w-10 h-10 mx-auto text-brand-400/50 mb-10" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-          </svg>
-          <p className="font-script text-[1.35rem] md:text-[1.6rem] text-brand-900 leading-[1.7] mb-12">
-            {testimonial?.quote || "My mom started crying! She loves it so much — thank you so much. You are amazing at what you do."}
-          </p>
-          <div className="w-14 h-px bg-brand-400 mx-auto mb-6" />
-          <p className="text-[10px] tracking-[0.35em] text-brand-600 uppercase">
-            {testimonial?.authorName || "Latoya E."} &middot; {testimonial?.eventDescription || "60th Birthday Celebration"}
-          </p>
-        </div>
+        <TestimonialCarousel />
       </section>
 
       {/* ═══ FOMO STRIP ═══ */}
@@ -254,7 +267,7 @@ export default async function Home() {
               <p className="text-3xl font-light text-brand-900 mb-4">Step 1</p>
               <p className="text-[13px] text-brand-600 leading-[1.9]">
                 Shoot us your inquiry with your chosen package and any fun add ons!
-                Dates get locked in after a non-refundable 50% deposit is paid and the contract is signed.
+                Dates get locked in after a non-refundable {depositPercent}% deposit is paid and the contract is signed.
               </p>
             </div>
             <div>
@@ -289,13 +302,13 @@ export default async function Home() {
           </div>
           <div className="space-y-6">
             {[
-              { q: "How do I book?", a: "Fill out the inquiry form or DM us on Instagram. We'll send you a custom quote within 24 hours. Once you accept, sign the contract and pay the 50% deposit to lock in your date." },
-              { q: "What's the deposit policy?", a: "A 50% non-refundable retainer is required to secure your date. The remaining 50% is due at the start of your session." },
-              { q: "How fast do I get my content?", a: "Raw footage is delivered within 24 hours. Edited videos take 3–5 business days. Rush delivery (24 hours) is available for $50." },
-              { q: "Do you travel outside Dallas?", a: "Yes! We serve all of Texas and beyond. Events within 25 miles of Dallas (75219) have no travel fee. Beyond that, a $0.50/mile travel fee applies." },
+              { q: "How do I book?", a: `Fill out the inquiry form or DM us on Instagram. We'll send you a custom quote within 24 hours. Once you accept, sign the contract and pay the ${depositPercent}% deposit to lock in your date.` },
+              { q: "What's the deposit policy?", a: `A ${depositPercent}% non-refundable retainer is required to secure your date. The remaining ${100 - depositPercent}% is due at the start of your session.` },
+              { q: "How fast do I get my content?", a: `Raw footage is delivered within 24 hours. Edited videos take 3–5 business days. Rush delivery (24 hours) is available for ${rushPrice}.` },
+              { q: "Do you travel outside Dallas?", a: `Yes! We serve all of Texas and beyond. Events within ${travelFreeRadiusMiles} miles of Dallas (75219) have no travel fee. Beyond that, a ${travelPerMile}/mile travel fee applies.` },
               { q: "What's included with the photo booth?", a: "Every booking includes a custom backdrop, on-site attendant, unlimited instant prints, props & accessories, and a digital gallery delivered within 24 hours." },
-              { q: "Can I customize my photo booth backdrop?", a: "Absolutely! We offer Classic Spandex ($25), Curtain ($25–$50), and Flower Wall ($50–$100) backdrops. We can also work with your event designer for custom setups." },
-              { q: "Do you offer content for social media?", a: "Yes — that's our specialty. Our content creation packages deliver short-form and long-form video perfect for Instagram, TikTok, and YouTube." },
+              { q: "Can I customize my photo booth backdrop?", a: `Absolutely! We offer ${backdropText}. We can also work with your event designer for custom setups.` },
+              { q: "Do you offer content for social media?", a: "Yes! That's our specialty. Our content creation packages deliver short-form and long-form video perfect for Instagram, TikTok, and YouTube." },
             ].map((faq, i) => (
               <details key={i} className="group bg-white border border-brand-200 rounded-lg">
                 <summary className="cursor-pointer px-6 py-5 text-[15px] text-brand-900 font-medium flex justify-between items-center">
@@ -324,19 +337,18 @@ export default async function Home() {
             address: { "@type": "PostalAddress", addressLocality: "Dallas", addressRegion: "TX", postalCode: "75219", addressCountry: "US" },
             geo: { "@type": "GeoCoordinates", latitude: 32.7767, longitude: -96.7970 },
             areaServed: { "@type": "GeoCircle", geoMidpoint: { "@type": "GeoCoordinates", latitude: 32.7767, longitude: -96.7970 }, geoRadius: "40000" },
-            priceRange: "$290–$800",
+            priceRange: `$${minPrice}–$${maxPrice}`,
             image: "https://gigis-concept.vercel.app/og-image.png",
             sameAs: ["https://instagram.com/gigisconcept"],
             hasOfferCatalog: {
               "@type": "OfferCatalog",
               name: "Services",
-              itemListElement: [
-                { "@type": "Offer", name: "Content Creation — Basic Package", price: "60", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Content Creation — The Storyteller", price: "550", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Content Creation — Signature Full-Day", price: "800", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Photo Booth — The Good Angle", price: "290", priceCurrency: "USD" },
-                { "@type": "Offer", name: "Photo Booth — 5-Hour Extended", price: "450", priceCurrency: "USD" },
-              ],
+              itemListElement: packages.map(p => ({
+                "@type": "Offer",
+                name: `${p.category === "content_creation" ? "Content Creation" : "Photo Booth"} | ${p.name}`,
+                price: String(p.priceCents / 100),
+                priceCurrency: "USD",
+              })),
             },
           }),
         }}

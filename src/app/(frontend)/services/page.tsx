@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { renderBlocks } from "@/lib/render-blocks";
+import { getPayload } from "@/lib/payload";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Services | Gigi's Concept",
@@ -8,7 +12,7 @@ export const metadata: Metadata = {
     "Content creation and luxury photo booth services for weddings, events, and brand shoots in Dallas, Texas.",
 };
 
-export default function ServicesPage() {
+function FallbackContent() {
   return (
     <>
       {/* Hero */}
@@ -26,7 +30,7 @@ export default function ServicesPage() {
             <div className="aspect-[4/3] bg-brand-200 relative overflow-hidden">
               <Image
                 src="/hero-wedding.png"
-                alt="Elegant wedding celebration — content creation"
+                alt="Elegant wedding celebration, content creation"
                 fill
                 className="object-cover"
               />
@@ -108,7 +112,7 @@ export default function ServicesPage() {
                 Photo Booth
               </h2>
               <p className="text-lg text-brand-600 leading-relaxed mb-6">
-                A slow, cinematic take on the classic photo booth — custom backdrops,
+                A slow, cinematic take on the classic photo booth. Custom backdrops,
                 heavyweight prints on-site, and a digital gallery the next day. For weddings,
                 launches, and the nights worth remembering.
               </p>
@@ -192,4 +196,28 @@ export default function ServicesPage() {
       </section>
     </>
   );
+}
+
+export default async function ServicesPage() {
+  let blocks: Record<string, unknown>[] | null = null;
+
+  try {
+    const payload = await getPayload();
+    const page = await payload.find({
+      collection: "pages",
+      where: { slug: { equals: "services" } },
+      limit: 1,
+      depth: 2,
+    });
+    blocks =
+      ((page.docs[0] as Record<string, unknown>)?.layout as Record<string, unknown>[]) || null;
+  } catch {
+    // CMS not available, fall through to hardcoded fallback
+  }
+
+  if (blocks && blocks.length > 0) {
+    return <>{renderBlocks(blocks)}</>;
+  }
+
+  return <FallbackContent />;
 }

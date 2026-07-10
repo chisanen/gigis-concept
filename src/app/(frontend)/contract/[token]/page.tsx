@@ -12,11 +12,23 @@ export default function ContractSignPage() {
   const [signatureName, setSignatureName] = useState("");
   const [consent, setConsent] = useState(false);
   const [signed, setSigned] = useState(false);
+  const [depositPercent, setDepositPercent] = useState(50);
+  const [travelRadius, setTravelRadius] = useState(25);
+  const [travelPerMile, setTravelPerMile] = useState("$0.50");
 
   useEffect(() => {
-    fetch(`/api/contracts?where[id][equals]=${token}&limit=1`)
-      .then(r => r.json())
-      .then(d => { if (d.docs?.[0]) setContract(d.docs[0]); })
+    Promise.all([
+      fetch(`/api/contracts?where[id][equals]=${token}&limit=1`).then(r => r.json()),
+      fetch("/api/pricing").then(r => r.json()).catch(() => null),
+    ])
+      .then(([contractData, pricingData]) => {
+        if (contractData.docs?.[0]) setContract(contractData.docs[0]);
+        if (pricingData) {
+          setDepositPercent(pricingData.depositPercent ?? 50);
+          setTravelRadius(pricingData.travelFreeRadiusMiles ?? 25);
+          setTravelPerMile(`$${((pricingData.travelPerMileCents ?? 50) / 100).toFixed(2)}`);
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [token]);
@@ -73,12 +85,12 @@ export default function ContractSignPage() {
           <div className="prose prose-sm max-w-none text-brand-900">
             <h3>Terms & Conditions</h3>
             <ul className="text-sm text-brand-600 space-y-2">
-              <li>A 50% non-refundable retainer is required to secure your date.</li>
-              <li>Remaining 50% balance is due at the start of your session.</li>
+              <li>A {depositPercent}% non-refundable retainer is required to secure your date.</li>
+              <li>Remaining {100 - depositPercent}% balance is due at the start of your session.</li>
               <li>Cancellation within 48 hours of the event forfeits the full retainer.</li>
               <li>Raw footage delivered within 24 hours. Edited content within 3-5 business days.</li>
               <li>Client grants Gigi&apos;s Concept permission to use event content for portfolio and social media (organic use only).</li>
-              <li>Travel fees apply for events beyond 25 miles of Dallas (75219) at $0.50/mile.</li>
+              <li>Travel fees apply for events beyond {travelRadius} miles of Dallas (75219) at {travelPerMile}/mile.</li>
             </ul>
           </div>
         </div>

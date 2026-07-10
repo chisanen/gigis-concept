@@ -19,6 +19,15 @@ const HeroBlock: Block = {
     { name: "ctaSecondaryLabel", type: "text", defaultValue: "INQUIRE", admin: { description: "Text for the secondary button" } },
     { name: "ctaSecondaryHref", type: "text", defaultValue: "/contact", admin: { description: "Where the secondary button links to" } },
     { name: "backgroundImage", type: "upload", relationTo: "media", admin: { components: { afterInput: ["@/components/admin/AIImageButton#AIImageButton"] }, description: "The large background image for the hero section" } },
+    {
+      name: "carouselImages",
+      type: "array",
+      admin: { description: "Hero background slideshow images. If empty, the default images will be used." },
+      fields: [
+        { name: "image", type: "upload", relationTo: "media", admin: { description: "Slideshow image" } },
+        { name: "alt", type: "text", admin: { description: "Alt text for the image" } },
+      ],
+    },
     { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section without deleting it" } },
   ],
 };
@@ -191,6 +200,93 @@ const FAQBlock: Block = {
   ],
 };
 
+const ServiceDetailBlock: Block = {
+  slug: "serviceDetail",
+  labels: { singular: "Service Detail", plural: "Service Details" },
+  fields: [
+    { name: "eyebrow", type: "text", admin: { description: "Small label above the heading (e.g. 'SERVICE ONE')" } },
+    { name: "title", type: "text", required: true, admin: { description: "Service title (e.g. 'Content Creation')" } },
+    { name: "description", type: "textarea", admin: { description: "Main description of the service" } },
+    { name: "secondaryDescription", type: "textarea", admin: { description: "Optional additional description paragraph" } },
+    { name: "image", type: "upload", relationTo: "media", admin: { description: "Image for this service section" } },
+    {
+      name: "layoutDirection",
+      type: "select",
+      options: [
+        { label: "Image Left", value: "imageLeft" },
+        { label: "Image Right", value: "imageRight" },
+      ],
+      defaultValue: "imageLeft",
+      admin: { description: "Whether the image appears on the left or right side" },
+    },
+    {
+      name: "includedItems",
+      type: "array",
+      admin: { description: "List of items included in this service" },
+      fields: [
+        { name: "label", type: "text", admin: { description: "Item name (e.g. 'Custom Backdrop')" } },
+        { name: "value", type: "text", admin: { description: "Item status (e.g. 'INCLUDED')" } },
+      ],
+    },
+    { name: "includedHeading", type: "text", admin: { description: "Heading above the included items list (e.g. 'WHAT\\'S INCLUDED')" } },
+    { name: "cta1Label", type: "text", admin: { description: "Text for the first call-to-action button" } },
+    { name: "cta1Href", type: "text", admin: { description: "Link for the first call-to-action button" } },
+    { name: "cta2Label", type: "text", admin: { description: "Text for the second call-to-action button" } },
+    { name: "cta2Href", type: "text", admin: { description: "Link for the second call-to-action button" } },
+    { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section without deleting it" } },
+  ],
+};
+
+const ValuesGridBlock: Block = {
+  slug: "valuesGrid",
+  labels: { singular: "Values Grid", plural: "Values Grids" },
+  fields: [
+    { name: "heading", type: "text", admin: { description: "Optional heading above the values grid" } },
+    {
+      name: "values",
+      type: "array",
+      admin: { description: "Add your core values or principles" },
+      fields: [
+        { name: "title", type: "text", admin: { description: "Value title" } },
+        { name: "description", type: "textarea", admin: { description: "Value description" } },
+      ],
+    },
+    { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section without deleting it" } },
+  ],
+};
+
+const FomoStripBlock: Block = {
+  slug: "fomoStrip",
+  labels: { singular: "FOMO Strip", plural: "FOMO Strips" },
+  fields: [
+    { name: "text", type: "text", required: true, admin: { description: "Urgency text displayed in the strip" } },
+    { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section without deleting it" } },
+  ],
+};
+
+const ReviewFormBlock: Block = {
+  slug: "reviewForm",
+  labels: { singular: "Review Form", plural: "Review Forms" },
+  fields: [
+    { name: "eyebrow", type: "text", defaultValue: "Share Your Experience", admin: { description: "Small label above the heading" } },
+    { name: "heading", type: "text", defaultValue: "Leave a Review", admin: { description: "Section heading" } },
+    {
+      name: "description",
+      type: "textarea",
+      defaultValue: "We'd love to hear about your experience with Gigi's Concept. Your feedback means the world to us.",
+      admin: { description: "Introductory text above the review form" },
+    },
+    { name: "successHeading", type: "text", defaultValue: "Thank You!", admin: { description: "Heading shown after a review is submitted" } },
+    {
+      name: "successMessage",
+      type: "textarea",
+      defaultValue: "Your review has been submitted and is pending approval. We truly appreciate you taking the time to share your experience.",
+      admin: { description: "Message shown after a review is successfully submitted" },
+    },
+    { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section without deleting it" } },
+  ],
+};
+
 export const Pages: CollectionConfig = {
   slug: "pages",
   admin: {
@@ -230,6 +326,10 @@ export const Pages: CollectionConfig = {
         StepsBlock,
         VideoEmbedBlock,
         FAQBlock,
+        ServiceDetailBlock,
+        ValuesGridBlock,
+        FomoStripBlock,
+        ReviewFormBlock,
       ],
       admin: { description: "Build your page by adding sections below. Drag to reorder" },
     },

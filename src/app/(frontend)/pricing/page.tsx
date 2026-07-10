@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PackagesDisplay } from "@/components/PackagesDisplay";
 import { PackagesSection } from "@/components/PackagesSection";
 import { QuoteCalculator } from "@/components/QuoteCalculator";
+import { getPricingData } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Pricing | Gigi's Concept",
@@ -10,7 +11,11 @@ export const metadata: Metadata = {
     "View our content creation packages and photo booth pricing. Build your custom quote instantly.",
 };
 
-export default function PricingPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PricingPage() {
+  const { packages, addOns, depositPercent } = await getPricingData();
+
   return (
     <>
       {/* Hero */}
@@ -27,6 +32,7 @@ export default function PricingPage() {
           <PackagesSection
             boothHtml={<PackagesDisplay service="booth" />}
             contentHtml={<PackagesDisplay service="content" />}
+            depositPercent={depositPercent}
           />
         </div>
       </section>
@@ -38,7 +44,7 @@ export default function PricingPage() {
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-5 uppercase">Estimate</p>
             <h2 className="font-script text-4xl md:text-5xl text-brand-900">Build Your Quote</h2>
           </div>
-          <QuoteCalculator />
+          <QuoteCalculator packages={packages} addOns={addOns} depositPercent={depositPercent} />
         </div>
       </section>
 

@@ -13,7 +13,7 @@ function getImageUrl(img: unknown): string | null {
 }
 
 export const metadata: Metadata = {
-  title: "Blog | Gigi's Concept — Dallas TX Wedding & Event Content",
+  title: "Blog | Gigi's Concept | Dallas TX Wedding & Event Content",
   description:
     "Tips, guides, and inspiration for weddings, events, photo booths, and content creation in Dallas, Texas.",
 };

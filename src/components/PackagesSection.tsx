@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export function PackagesSection({ boothHtml, contentHtml }: { boothHtml: React.ReactNode; contentHtml: React.ReactNode }) {
+export function PackagesSection({ boothHtml, contentHtml, depositPercent = 50 }: { boothHtml: React.ReactNode; contentHtml: React.ReactNode; depositPercent?: number }) {
   const [service, setService] = useState<"booth" | "content">("booth");
 
   return (
@@ -28,7 +28,7 @@ export function PackagesSection({ boothHtml, contentHtml }: { boothHtml: React.R
         <a href="/contact" className="inline-block bg-brand-900 text-white px-10 py-3.5 text-[10px] tracking-[0.25em] hover:bg-brand-700 transition-colors">
           BOOK NOW
         </a>
-        <p className="text-[12px] text-brand-500 mt-3">50% non-refundable retainer required. Travel fees may apply outside Dallas.</p>
+        <p className="text-[12px] text-brand-500 mt-3">{depositPercent}% non-refundable retainer required. Travel fees may apply outside Dallas.</p>
       </div>
     </div>
   );

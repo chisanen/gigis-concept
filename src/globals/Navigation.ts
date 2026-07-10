@@ -43,5 +43,35 @@ export const Navigation: GlobalConfig = {
       admin: { description: "Links that appear in the footer at the bottom of every page" },
       fields: linkFields,
     },
+    {
+      name: "logo",
+      type: "upload",
+      relationTo: "media",
+      admin: { description: "Site logo image. Used in the navbar and footer" },
+    },
+    {
+      name: "ctaLabel",
+      type: "text",
+      defaultValue: "INQUIRE",
+      admin: { description: "Desktop navigation CTA button text" },
+    },
+    {
+      name: "ctaHref",
+      type: "text",
+      defaultValue: "/contact",
+      admin: { description: "Desktop navigation CTA button link" },
+    },
+    {
+      name: "mobileCta",
+      type: "text",
+      defaultValue: "BUILD YOUR QUOTE",
+      admin: { description: "Mobile navigation CTA button text" },
+    },
+    {
+      name: "mobileCtaHref",
+      type: "text",
+      defaultValue: "/pricing",
+      admin: { description: "Mobile navigation CTA button link" },
+    },
   ],
 };

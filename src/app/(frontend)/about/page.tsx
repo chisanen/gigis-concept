@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { renderBlocks } from "@/lib/render-blocks";
+import { getPayload } from "@/lib/payload";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About | Gigi's Concept",
@@ -7,7 +11,7 @@ export const metadata: Metadata = {
     "Gigi's Concept is a boutique content & photo-booth studio based in Dallas, serving clients across Texas and beyond.",
 };
 
-export default function AboutPage() {
+function FallbackContent() {
   return (
     <>
       {/* Hero */}
@@ -25,7 +29,7 @@ export default function AboutPage() {
             <div className="order-1 md:order-none overflow-hidden group">
               <Image
                 src="/gigi-portrait.png"
-                alt="Gigi — Founder of Gigi's Concept"
+                alt="Gigi, Founder of Gigi's Concept"
                 width={800}
                 height={533}
                 className="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -46,7 +50,7 @@ export default function AboutPage() {
                 one you&apos;ve been dreaming about.
               </p>
               <p className="text-lg text-brand-600 leading-relaxed mb-6">
-                Every shoot is treated like a small cover story — because the best moments
+                Every shoot is treated like a small cover story, because the best moments
                 rarely shout. They whisper.
               </p>
               <p className="text-lg text-brand-600 leading-relaxed mb-6">
@@ -56,7 +60,7 @@ export default function AboutPage() {
                 to the composition of our behind-the-scenes content, every detail is handled
                 with a strategic white-glove approach.
               </p>
-              <p className="font-script text-3xl text-brand-900 mt-8">— Gigi</p>
+              <p className="font-script text-3xl text-brand-900 mt-8">Gigi</p>
             </div>
           </div>
         </div>
@@ -89,4 +93,28 @@ export default function AboutPage() {
       </section>
     </>
   );
+}
+
+export default async function AboutPage() {
+  let blocks: Record<string, unknown>[] | null = null;
+
+  try {
+    const payload = await getPayload();
+    const page = await payload.find({
+      collection: "pages",
+      where: { slug: { equals: "about" } },
+      limit: 1,
+      depth: 2,
+    });
+    blocks =
+      ((page.docs[0] as Record<string, unknown>)?.layout as Record<string, unknown>[]) || null;
+  } catch {
+    // CMS not available, fall through to hardcoded fallback
+  }
+
+  if (blocks && blocks.length > 0) {
+    return <>{renderBlocks(blocks)}</>;
+  }
+
+  return <FallbackContent />;
 }

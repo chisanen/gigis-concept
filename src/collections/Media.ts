@@ -41,5 +41,19 @@ export const Media: CollectionConfig = {
       defaultValue: "image",
       admin: { description: "What type of file is this?" },
     },
+    {
+      name: "isAiGenerated",
+      type: "checkbox",
+      defaultValue: false,
+      admin: { description: "Automatically set when an image is created by AI generation" },
+    },
+    {
+      name: "aiPrompt",
+      type: "textarea",
+      admin: {
+        description: "The prompt used to generate this image",
+        condition: (data: Record<string, unknown>) => data?.isAiGenerated === true,
+      },
+    },
   ],
 };

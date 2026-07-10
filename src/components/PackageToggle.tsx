@@ -40,8 +40,8 @@ const contentPackages = [
     price: "$30",
     unit: "STARTING",
     features: [
-      "Short-form edit — $30",
-      "Long-form edit — $40",
+      "Short-form edit - $30",
+      "Long-form edit - $40",
       "One long edit free with any shoot",
     ],
     featured: false,

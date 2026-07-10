@@ -5,7 +5,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
-const navLinks = [
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+const defaultLinks: NavLink[] = [
   { href: "/", label: "HOME" },
   { href: "/about", label: "ABOUT" },
   { href: "/services", label: "SERVICES" },
@@ -14,7 +19,29 @@ const navLinks = [
   { href: "/pricing", label: "PRICING" },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  links?: NavLink[];
+  logoUrl?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  mobileCta?: string;
+  mobileCtaHref?: string;
+  contactEmail?: string;
+  phone?: string;
+}
+
+export function Navbar({
+  links,
+  logoUrl,
+  ctaLabel = "INQUIRE",
+  ctaHref = "/contact",
+  mobileCta = "BUILD YOUR QUOTE",
+  mobileCtaHref = "/pricing",
+  contactEmail = "hello@gigisconcept.com",
+  phone = "+1 (832) 873-7776",
+}: NavbarProps) {
+  const navLinks = links && links.length > 0 ? links : defaultLinks;
+  const logo = logoUrl || "/logo.png";
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -27,7 +54,7 @@ export function Navbar() {
       <header className="sticky top-0 z-50 bg-brand-50 border-b border-brand-200/50">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <Link href="/" className="flex-shrink-0">
-            <Image src="/logo.png" alt="Gigi's Concept" width={200} height={189} className="h-10 sm:h-14 md:h-16 w-auto" priority />
+            <Image src={logo} alt="Gigi's Concept" width={200} height={189} className="h-10 sm:h-14 md:h-16 w-auto" priority />
           </Link>
 
           {/* Desktop */}
@@ -38,8 +65,8 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link href="/contact" className="border border-brand-900 px-5 py-2 text-[11px] xl:text-sm tracking-[0.2em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
-              INQUIRE
+            <Link href={ctaHref} className="border border-brand-900 px-5 py-2 text-[11px] xl:text-sm tracking-[0.2em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
+              {ctaLabel}
             </Link>
           </div>
 
@@ -53,7 +80,7 @@ export function Navbar() {
           </button>
         </nav>
 
-        {/* Mobile dropdown — renders INSIDE the header, below the nav bar */}
+        {/* Mobile dropdown */}
         {open && (
           <div className="lg:hidden bg-brand-50 border-t border-brand-200 pb-6">
             {navLinks.map((link) => (
@@ -63,16 +90,16 @@ export function Navbar() {
               </Link>
             ))}
             <div className="px-6 pt-4 space-y-3">
-              <Link href="/contact" onClick={() => setOpen(false)}
+              <Link href={ctaHref} onClick={() => setOpen(false)}
                 className="block text-center bg-brand-900 text-white py-3.5 text-[11px] tracking-[0.2em]">
-                INQUIRE
+                {ctaLabel}
               </Link>
-              <Link href="/pricing" onClick={() => setOpen(false)}
+              <Link href={mobileCtaHref} onClick={() => setOpen(false)}
                 className="block text-center border border-brand-900 py-3.5 text-[11px] tracking-[0.2em] text-brand-900">
-                BUILD YOUR QUOTE
+                {mobileCta}
               </Link>
               <p className="text-center text-[11px] text-brand-500 pt-2">
-                +1 (832) 873-7776 &middot; hello@gigisconcept.com
+                {phone} &middot; {contactEmail}
               </p>
             </div>
           </div>

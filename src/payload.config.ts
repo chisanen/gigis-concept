@@ -56,8 +56,23 @@ export default buildConfig({
         "@/components/admin/LeadsCRM#LeadsCRM",
         "@/components/admin/Reports#StudioReports",
         "@/components/admin/QuoteBuilder#QuoteBuilder",
+        "@/components/admin/AIImageGallery#AIImageGallery",
         "@/components/admin/PageBuilder#PageBuilder",
-        "@/components/admin/LivePreview#LivePreview",
+        "@/components/admin/GalleryManager#GalleryManager",
+      ],
+    },
+    livePreview: {
+      url: ({ data }) => {
+        const slug = (data as Record<string, unknown>)?.slug as string || '';
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+        if (slug === 'home' || !slug) return baseUrl;
+        return `${baseUrl}/${slug}`;
+      },
+      collections: ['pages'],
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
       ],
     },
   },

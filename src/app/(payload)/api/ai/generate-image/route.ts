@@ -45,6 +45,8 @@ export async function POST(request: NextRequest) {
         collection: "media",
         data: {
           alt: prompt.slice(0, 100),
+          isAiGenerated: true,
+          aiPrompt: prompt,
         },
         file: {
           data: buffer,

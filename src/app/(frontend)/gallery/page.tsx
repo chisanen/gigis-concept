@@ -3,6 +3,7 @@ import { GalleryGrid } from "@/components/GalleryGrid";
 import { PrivateGallery } from "@/components/PrivateGallery";
 import { InstagramFeed } from "@/components/InstagramFeed";
 import { getPayload } from "@/lib/payload";
+import { getMediaUrl } from "@/lib/render-blocks";
 
 export const metadata: Metadata = {
   title: "Gallery | Gigi's Concept",
@@ -36,11 +37,77 @@ async function getSettings() {
   }
 }
 
+async function getGalleryImages() {
+  try {
+    const payload = await getPayload();
+    const result = await payload.find({
+      collection: "gallery-images",
+      where: { category: { equals: "public" } },
+      sort: "sortOrder",
+      limit: 50,
+      depth: 2,
+    });
+    const photos = result.docs
+      .map((doc: Record<string, unknown>) => {
+        const url = getMediaUrl(doc.image);
+        if (!url) return null;
+        const media = doc.image as Record<string, unknown> | null;
+        const kind = (media?.kind as string) || "image";
+        return { src: url, alt: (doc.title as string) || "", kind };
+      })
+      .filter(Boolean) as { src: string; alt: string; kind?: string }[];
+    return photos.length > 0 ? photos : null;
+  } catch {
+    return null;
+  }
+}
+
+async function getGalleryPage() {
+  try {
+    const payload = await getPayload();
+    const result = await payload.find({
+      collection: "pages",
+      where: { slug: { equals: "gallery" } },
+      limit: 1,
+      depth: 1,
+    });
+    if (result.docs.length > 0) {
+      const page = result.docs[0] as Record<string, unknown>;
+      const blocks = page.layout as Record<string, unknown>[] | undefined;
+      return blocks || null;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function findBlock(blocks: Record<string, unknown>[] | null, blockType: string) {
+  if (!blocks) return null;
+  return blocks.find((b) => b.blockType === blockType) || null;
+}
+
 export default async function GalleryPage() {
-  const settings = await getSettings();
+  const [settings, cmsPhotos, pageBlocks] = await Promise.all([
+    getSettings(),
+    getGalleryImages(),
+    getGalleryPage(),
+  ]);
+
   const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "";
   const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "";
   const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
+
+  const photos = cmsPhotos || fallbackPhotos;
+
+  // Extract headings from CMS blocks if available
+  const heroBlock = findBlock(pageBlocks, "hero");
+  const heroEyebrow = (heroBlock?.subtitle as string) || (heroBlock?.eyebrow as string) || "Our Work";
+  const heroHeading = (heroBlock?.heading as string) || "Gallery";
+
+  const galleryBlock = findBlock(pageBlocks, "gallerySection");
+  const galleryEyebrow = (galleryBlock?.eyebrow as string) || "Portfolio";
+  const galleryHeading = (galleryBlock?.heading as string) || "Public Gallery";
 
   return (
     <>
@@ -48,9 +115,9 @@ export default async function GalleryPage() {
       <section className="bg-brand-200 py-20">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">
-            Our Work
+            {heroEyebrow}
           </p>
-          <h1 className="font-script text-5xl md:text-7xl text-brand-900">Gallery</h1>
+          <h1 className="font-script text-5xl md:text-7xl text-brand-900">{heroHeading}</h1>
         </div>
       </section>
 
@@ -71,10 +138,10 @@ export default async function GalleryPage() {
       <section className="py-24 md:py-32 bg-brand-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Portfolio</p>
-            <h2 className="font-script text-4xl md:text-5xl text-brand-900">Public Gallery</h2>
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">{galleryEyebrow}</p>
+            <h2 className="font-script text-4xl md:text-5xl text-brand-900">{galleryHeading}</h2>
           </div>
-          <GalleryGrid photos={fallbackPhotos} />
+          <GalleryGrid photos={photos} />
         </div>
       </section>
 

@@ -34,8 +34,8 @@ export async function generateMetadata({
       : undefined;
 
   return {
-    title: `${post.title} | Gigi's Concept Blog — Dallas TX`,
-    description: post.excerpt || `${post.title} — wedding and event tips from Gigi's Concept, Dallas Texas.`,
+    title: `${post.title} | Gigi's Concept Blog | Dallas TX`,
+    description: post.excerpt || `${post.title} | wedding and event tips from Gigi's Concept, Dallas Texas.`,
     openGraph: {
       title: post.title,
       description: post.excerpt || undefined,

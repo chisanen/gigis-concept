@@ -33,11 +33,18 @@ export const SiteSettings: GlobalConfig = {
         {
           label: "Pricing",
           fields: [
-            { name: "boothRatePerHour", type: "number", defaultValue: 150, admin: { description: "Photo booth hourly rate in dollars — used for quote calculations" } },
-            { name: "basicRatePerHour", type: "number", defaultValue: 50, admin: { description: "Basic content creation hourly rate in dollars" } },
-            { name: "storytellerPrice", type: "number", defaultValue: 450, admin: { description: "Storyteller package price in dollars" } },
-            { name: "shortEditPrice", type: "number", defaultValue: 30, admin: { description: "Price per short-form edit in dollars" } },
-            { name: "longEditPrice", type: "number", defaultValue: 40, admin: { description: "Price per long-form edit in dollars" } },
+            { name: "depositPercent", type: "number", defaultValue: 50, admin: { description: "Deposit percentage required to book (e.g. 50 = 50%). This updates everywhere on the site including the quote calculator" } },
+            {
+              name: "pricingNote",
+              type: "ui",
+              admin: {
+                components: {
+                  Field: {
+                    path: "@/components/admin/PricingNote",
+                  },
+                },
+              },
+            },
           ],
         },
         {
@@ -54,6 +61,33 @@ export const SiteSettings: GlobalConfig = {
             { name: "defaultMetaTitle", type: "text", defaultValue: "Gigi's Concept | Content Creation & Luxury Photo Booth — Dallas TX", admin: { description: "Default page title for search engines — shows in Google results" } },
             { name: "defaultMetaDescription", type: "textarea", defaultValue: "Editorial content and a timeless photo-booth experience in Dallas, Texas. Quietly crafted, beautifully delivered.", admin: { description: "Default description for search engines — shows under the title in Google results" } },
             { name: "googleVerification", type: "text", admin: { description: "Google Search Console verification code — paste the content value from Google here" } },
+          ],
+        },
+        {
+          label: "Forms",
+          fields: [
+            {
+              name: "eventTypes",
+              type: "array",
+              admin: { description: "Event type options shown in the inquiry form dropdown. If empty, defaults will be used" },
+              fields: [
+                { name: "label", type: "text", required: true },
+              ],
+            },
+            {
+              name: "hearAboutOptions",
+              type: "array",
+              admin: { description: "How did you hear about us options in the inquiry form. If empty, defaults will be used" },
+              fields: [
+                { name: "label", type: "text", required: true },
+              ],
+            },
+            {
+              name: "domain",
+              type: "text",
+              defaultValue: "https://gigis-concept.vercel.app",
+              admin: { description: "Your website domain URL. Used in email links and structured data" },
+            },
           ],
         },
       ],
