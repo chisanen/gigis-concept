@@ -16,6 +16,19 @@ export async function GET(req: NextRequest) {
   try {
     const payload = await getPayload();
 
+    // Action: drop-popups - drop the bad table so push:true can recreate it
+    if (action === "drop-popups") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const db = payload.db as any;
+      const drizzle = db.drizzle;
+      if (drizzle && typeof drizzle.execute === "function") {
+        const { sql } = await import("drizzle-orm");
+        await drizzle.execute(sql`DROP TABLE IF EXISTS "popups" CASCADE`);
+        return NextResponse.json({ success: true, message: "Popups table dropped. Payload push:true should recreate it on next request." });
+      }
+      return NextResponse.json({ error: "Cannot access database" }, { status: 500 });
+    }
+
     // Action: create-popups - manually create the popups table
     if (action === "create-popups") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
