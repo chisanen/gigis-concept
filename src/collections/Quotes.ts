@@ -6,6 +6,7 @@ export const Quotes: CollectionConfig = {
     useAsTitle: "quoteNumber",
     defaultColumns: ["quoteNumber", "clientName", "totalCents", "status"],
     group: "Studio",
+    description: "Price quotes for clients. Create quotes from the dashboard Quote Builder or manually. Each quote has a shareable link.",
   },
   fields: [
     { name: "quoteNumber", type: "text", admin: { description: "Unique quote number (e.g. QT-001)" } },

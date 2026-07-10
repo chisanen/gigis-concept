@@ -6,6 +6,7 @@ export const Consultations: CollectionConfig = {
     useAsTitle: "clientName",
     group: "Studio",
     defaultColumns: ["clientName", "date", "type", "status"],
+    description: "Discovery calls and meetings. Schedule and track consultations with potential clients.",
   },
   access: {
     create: () => true,

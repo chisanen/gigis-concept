@@ -6,6 +6,7 @@ export const Testimonials: CollectionConfig = {
     useAsTitle: "authorName",
     group: "Website",
     defaultColumns: ["authorName", "rating", "status", "eventDescription", "featured"],
+    description: "Client reviews. When someone submits a review on your website, it appears here as Pending. Set Status to Approved and check Featured to show it on your homepage.",
   },
   access: {
     create: () => true,

@@ -6,6 +6,7 @@ export const Inquiries: CollectionConfig = {
     useAsTitle: "email",
     defaultColumns: ["firstName", "lastName", "serviceRequired", "status", "createdAt"],
     group: "Studio",
+    description: "Messages from your website contact form. Review inquiries and convert promising ones into leads.",
   },
   access: {
     create: () => true,

@@ -5,6 +5,7 @@ export const Automations: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Operations",
+    description: "Automatic actions that fire when things happen, like auto-sending a thank you email on new inquiries.",
   },
   fields: [
     {

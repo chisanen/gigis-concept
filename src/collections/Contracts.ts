@@ -6,6 +6,7 @@ export const Contracts: CollectionConfig = {
     useAsTitle: "clientName",
     defaultColumns: ["clientName", "status", "sentAt"],
     group: "Studio",
+    description: "Client service agreements. Contracts have a shareable link where clients can e-sign digitally.",
   },
   fields: [
     { name: "bookingRef", type: "text", admin: { description: "Link to the related booking (enter the booking ID or name)" } },

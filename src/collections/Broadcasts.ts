@@ -5,6 +5,7 @@ export const Broadcasts: CollectionConfig = {
   admin: {
     useAsTitle: "subject",
     group: "Operations",
+    description: "Bulk emails to your client list. Create campaigns for promotions, announcements, and seasonal updates.",
   },
   fields: [
     {

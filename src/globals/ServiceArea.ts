@@ -5,6 +5,7 @@ export const ServiceArea: GlobalConfig = {
   label: "Service Area & Travel",
   admin: {
     group: "Operations",
+    description: "Travel zone settings. Set your base ZIP, free radius, and per-mile fee for events outside your area.",
   },
   fields: [
     {

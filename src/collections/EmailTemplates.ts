@@ -5,6 +5,7 @@ export const EmailTemplates: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Operations",
+    description: "Reusable email templates for booking confirmations, follow-ups, and thank yous.",
   },
   fields: [
     { name: "name", type: "text", required: true, admin: { description: "Internal name for this template (e.g. 'Booking Confirmation', 'Quote Follow-Up')" } },

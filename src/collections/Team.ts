@@ -5,6 +5,7 @@ export const Team: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Operations",
+    description: "Your team members. Add second shooters, booth attendants, editors. Assign them to bookings.",
   },
   fields: [
     { name: "name", type: "text", required: true, admin: { description: "Team member's full name" } },
