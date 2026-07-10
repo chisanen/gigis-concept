@@ -61,11 +61,11 @@ export function Navbar({
           <div className="hidden lg:flex items-center gap-6 xl:gap-10">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}
-                className={`text-[11px] xl:text-sm tracking-[0.2em] transition-colors ${pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"}`}>
+                className={`text-sm lg:text-[15px] tracking-[0.15em] transition-colors ${pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"}`}>
                 {link.label}
               </Link>
             ))}
-            <Link href={ctaHref} className="border border-brand-900 px-5 py-2 text-[11px] xl:text-sm tracking-[0.2em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
+            <Link href={ctaHref} className="border border-brand-900 px-6 py-2.5 text-sm lg:text-[15px] tracking-[0.15em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
               {ctaLabel}
             </Link>
           </div>
