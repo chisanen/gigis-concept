@@ -52,7 +52,12 @@ export function HeroCarousel({ slides: slidesProp }: { slides?: HeroSlide[] } = 
               muted
               loop
               playsInline
+              preload={i === 0 ? "auto" : "metadata"}
+              disablePictureInPicture
               aria-label={slide.alt}
+              // eslint-disable-next-line react/no-unknown-property
+              {...{ "webkit-playsinline": "true" } as Record<string, string>}
+              style={{ objectPosition: "center center" }}
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
                 i === current ? "opacity-100" : "opacity-0"
               }`}

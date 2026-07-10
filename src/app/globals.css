@@ -35,6 +35,14 @@
     color: var(--color-brand-900);
   }
 
+  /* Hero background video: fill container on all devices */
+  video[class*="object-cover"] {
+    object-fit: cover;
+    object-position: center center;
+    min-width: 100%;
+    min-height: 100%;
+  }
+
   input, select, textarea {
     font-family: var(--font-serif);
     border-radius: 0;
