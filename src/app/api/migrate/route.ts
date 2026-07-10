@@ -52,6 +52,49 @@ export async function GET(req: NextRequest) {
         }
       }
 
+      // If &create=true, actually create the missing tables
+      if (req.nextUrl.searchParams.get("create") === "true") {
+        const created: string[] = [];
+
+        async function createBlockTable(name: string, extraCols: string) {
+          if (existingNames.has(name)) return;
+          await drizzle.execute(sql.raw(`CREATE TABLE IF NOT EXISTS "${name}" ("_order" integer NOT NULL, "_parent_id" integer NOT NULL, "_path" text NOT NULL, "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, ${extraCols} "_uuid" varchar)`));
+          created.push(name);
+        }
+
+        async function createArrayTable(name: string, extraCols: string) {
+          if (existingNames.has(name)) return;
+          await drizzle.execute(sql.raw(`CREATE TABLE IF NOT EXISTS "${name}" ("_order" integer NOT NULL, "_parent_id" integer NOT NULL, "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, ${extraCols} "_uuid" varchar)`));
+          created.push(name);
+        }
+
+        const sdCols = `"eyebrow" varchar, "title" varchar, "description" varchar, "secondary_description" varchar, "image_id" integer, "layout_direction" varchar DEFAULT 'imageLeft', "included_heading" varchar, "cta1_label" varchar, "cta1_href" varchar, "cta2_label" varchar, "cta2_href" varchar, "is_visible" boolean DEFAULT true,`;
+        await createBlockTable("pages_blocks_service_detail", sdCols);
+        await createBlockTable("_pages_v_blocks_service_detail", sdCols);
+
+        const itemCols = `"label" varchar, "value" varchar,`;
+        await createArrayTable("pages_blocks_service_detail_included_items", itemCols);
+        await createArrayTable("_pages_v_blocks_service_detail_included_items", itemCols);
+
+        const vgCols = `"heading" varchar, "is_visible" boolean DEFAULT true,`;
+        await createBlockTable("pages_blocks_values_grid", vgCols);
+        await createBlockTable("_pages_v_blocks_values_grid", vgCols);
+
+        const valCols = `"title" varchar, "description" varchar,`;
+        await createArrayTable("pages_blocks_values_grid_values", valCols);
+        await createArrayTable("_pages_v_blocks_values_grid_values", valCols);
+
+        const fsCols = `"text" varchar, "is_visible" boolean DEFAULT true,`;
+        await createBlockTable("pages_blocks_fomo_strip", fsCols);
+        await createBlockTable("_pages_v_blocks_fomo_strip", fsCols);
+
+        const rfCols = `"eyebrow" varchar, "heading" varchar, "description" varchar, "success_heading" varchar, "success_message" varchar, "is_visible" boolean DEFAULT true,`;
+        await createBlockTable("pages_blocks_review_form", rfCols);
+        await createBlockTable("_pages_v_blocks_review_form", rfCols);
+
+        results.push(`Created ${created.length} tables: ${created.join(", ")}`);
+      }
+
       return NextResponse.json({ results, existingTables: Array.from(existingNames).sort() });
     }
 
