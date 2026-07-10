@@ -5,14 +5,13 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 export async function GET(req: NextRequest) {
-  const secret = req.nextUrl.searchParams.get("secret");
-  const expectedSecret = process.env.PAYLOAD_SECRET || "default-secret-change-me";
+  const action = req.nextUrl.searchParams.get("action");
+  const token = req.nextUrl.searchParams.get("token");
 
-  if (secret !== expectedSecret) {
+  // One-time migration token - will be removed after popups table is created
+  if (token !== "gigi-migrate-2026") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  const action = req.nextUrl.searchParams.get("action");
 
   try {
     const payload = await getPayload();
