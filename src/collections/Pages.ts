@@ -191,6 +191,83 @@ const FAQBlock: Block = {
   ],
 };
 
+const ServiceDetailBlock: Block = {
+  slug: "serviceDetail",
+  labels: { singular: "Service Detail", plural: "Service Details" },
+  fields: [
+    { name: "eyebrow", type: "text", admin: { description: "Small label above heading (e.g. 'SERVICE ONE')" } },
+    { name: "title", type: "text", required: true, admin: { description: "Service title (e.g. 'Content Creation')" } },
+    { name: "description", type: "textarea", admin: { description: "Main description of the service" } },
+    { name: "secondaryDescription", type: "textarea", admin: { description: "Optional additional paragraph" } },
+    { name: "image", type: "upload", relationTo: "media", admin: { description: "Service image" } },
+    {
+      name: "layoutDirection",
+      type: "select",
+      defaultValue: "imageLeft",
+      options: [
+        { label: "Image Left", value: "imageLeft" },
+        { label: "Image Right", value: "imageRight" },
+      ],
+      admin: { description: "Which side the image appears on" },
+    },
+    {
+      name: "includedItems",
+      type: "array",
+      admin: { description: "List of included features (e.g. 'Custom Backdrop' / 'INCLUDED')" },
+      fields: [
+        { name: "label", type: "text", admin: { description: "Item name" } },
+        { name: "value", type: "text", admin: { description: "Item value (e.g. INCLUDED, UNLIMITED)" } },
+      ],
+    },
+    { name: "includedHeading", type: "text", admin: { description: "Heading above included items (e.g. 'WHAT\\'S INCLUDED')" } },
+    { name: "cta1Label", type: "text", admin: { description: "First button text" } },
+    { name: "cta1Href", type: "text", admin: { description: "First button link" } },
+    { name: "cta2Label", type: "text", admin: { description: "Second button text" } },
+    { name: "cta2Href", type: "text", admin: { description: "Second button link" } },
+    { name: "isVisible", type: "checkbox", defaultValue: true },
+  ],
+};
+
+const ValuesGridBlock: Block = {
+  slug: "valuesGrid",
+  labels: { singular: "Values Grid", plural: "Values Grids" },
+  fields: [
+    { name: "heading", type: "text", admin: { description: "Optional section heading" } },
+    {
+      name: "values",
+      type: "array",
+      admin: { description: "Each value card with a title and description" },
+      fields: [
+        { name: "title", type: "text", admin: { description: "Value title (e.g. 'Editorial Eye')" } },
+        { name: "description", type: "textarea", admin: { description: "Value description" } },
+      ],
+    },
+    { name: "isVisible", type: "checkbox", defaultValue: true },
+  ],
+};
+
+const FomoStripBlock: Block = {
+  slug: "fomoStrip",
+  labels: { singular: "Urgency Strip", plural: "Urgency Strips" },
+  fields: [
+    { name: "text", type: "text", required: true, admin: { description: "Urgency message (e.g. 'Limited Saturdays available')" } },
+    { name: "isVisible", type: "checkbox", defaultValue: true },
+  ],
+};
+
+const ReviewFormBlock: Block = {
+  slug: "reviewForm",
+  labels: { singular: "Review Form", plural: "Review Forms" },
+  fields: [
+    { name: "eyebrow", type: "text", defaultValue: "Share Your Experience", admin: { description: "Small label above heading" } },
+    { name: "heading", type: "text", defaultValue: "Leave a Review", admin: { description: "Page heading" } },
+    { name: "description", type: "textarea", defaultValue: "We'd love to hear about your experience with Gigi's Concept. Your feedback means the world to us.", admin: { description: "Intro text below heading" } },
+    { name: "successHeading", type: "text", defaultValue: "Thank You!", admin: { description: "Heading shown after submission" } },
+    { name: "successMessage", type: "textarea", defaultValue: "Your review has been submitted and is pending approval. We truly appreciate you taking the time to share your experience.", admin: { description: "Message shown after submission" } },
+    { name: "isVisible", type: "checkbox", defaultValue: true },
+  ],
+};
+
 export const Pages: CollectionConfig = {
   slug: "pages",
   admin: {
@@ -231,6 +308,10 @@ export const Pages: CollectionConfig = {
         StepsBlock,
         VideoEmbedBlock,
         FAQBlock,
+        ServiceDetailBlock,
+        ValuesGridBlock,
+        FomoStripBlock,
+        ReviewFormBlock,
       ],
       admin: { description: "Build your page by adding sections below. Drag to reorder" },
     },
