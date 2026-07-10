@@ -29,6 +29,7 @@ export const Navigation: GlobalConfig = {
   label: "Navigation",
   admin: {
     group: "Website",
+    description: "Control your website navigation. Add, remove, or reorder links in the header and footer. Upload your logo and customize the CTA buttons.",
   },
   fields: [
     {

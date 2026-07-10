@@ -16,7 +16,7 @@ export const Media: CollectionConfig = {
   admin: {
     useAsTitle: "alt",
     group: "Website",
-    description: "Your image and video library. Drag and drop files to upload. Supports JPG, PNG, WebP, GIF, MP4, MOV, and more.",
+    description: "Your image and video library. Drag and drop files here to upload them. All images uploaded here can be used on any page, in popups, blog posts, and the gallery. Always add a description (alt text) for better Google rankings.",
   },
   fields: [
     {

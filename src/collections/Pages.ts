@@ -292,6 +292,7 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     group: "Website",
+    description: "Your website pages. Each page is built from drag-and-drop blocks (hero sections, about sections, galleries, etc.). Click 'Create New' to add a page, then add blocks to build it. Set the slug to match the URL path (e.g. 'about' for /about). Click Publish when ready to go live.",
   },
   versions: {
     drafts: true,

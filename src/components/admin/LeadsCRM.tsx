@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AdminErrorBoundary } from "./AdminErrorBoundary";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function safeFetch(url: string, fallback: any = { docs: [], totalDocs: 0 }): Promise<any> {
+  return fetch(url)
+    .then(r => { if (!r.ok) return fallback; return r.json().catch(() => fallback); })
+    .catch(() => fallback);
+}
 
 interface Lead {
   id: string;
@@ -38,25 +46,31 @@ export const LeadsCRM: React.FC = () => {
   const [view, setView] = useState<"board" | "list">("board");
 
   useEffect(() => {
-    fetch("/api/leads?limit=100&sort=-createdAt")
-      .then((r) => r.json())
+    safeFetch("/api/leads?limit=100&sort=-createdAt", { docs: [] })
       .then((d) => setLeads(d.docs || []))
-      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
   async function moveStage(id: string, newStage: string) {
-    await fetch(`/api/leads/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stage: newStage }),
-    });
+    try {
+      const res = await fetch(`/api/leads/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stage: newStage }),
+      });
+      if (!res.ok) { console.error("PATCH failed:", res.status); return; }
+      await res.json().catch(() => null);
+    } catch (e) {
+      console.error("moveStage error:", e);
+      return;
+    }
     setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, stage: newStage } : l)));
   }
 
   if (loading) return <div style={{ padding: "40px", textAlign: "center", color: "#A48374" }}>Loading CRM...</div>;
 
   return (
+    <AdminErrorBoundary name="LeadsCRM">
     <div style={{ padding: "16px", fontFamily: "'Jost', system-ui, sans-serif" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
         <div>
@@ -194,5 +208,6 @@ export const LeadsCRM: React.FC = () => {
         </div>
       )}
     </div>
+    </AdminErrorBoundary>
   );
 };

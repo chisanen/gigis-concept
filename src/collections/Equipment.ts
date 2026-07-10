@@ -6,6 +6,7 @@ export const Equipment: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "type", "status"],
     group: "Operations",
+    description: "Your gear inventory. Track cameras, lights, backdrops, and other equipment.",
   },
   fields: [
     { name: "name", type: "text", required: true, admin: { description: "What is this piece of equipment called? (e.g. 'Ring Light #2', 'Mirror Booth')" } },

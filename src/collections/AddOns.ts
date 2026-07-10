@@ -6,6 +6,7 @@ export const AddOns: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "appliesTo", "priceDisplay", "unit", "sortOrder"],
     group: "Studio",
+    description: "Extra services clients can add to their booking. These show as add-on options in the quote calculator. Set prices in cents and choose whether the add-on is flat rate, per hour, or per item.",
   },
   fields: [
     { name: "name", type: "text", required: true, admin: { description: "Name of the add-on shown to clients (e.g. 'Extra Hour', 'Custom Backdrop')" } },

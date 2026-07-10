@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AdminErrorBoundary } from "./AdminErrorBoundary";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function safeFetch(url: string, fallback: any = { docs: [], totalDocs: 0 }): Promise<any> {
+  return fetch(url)
+    .then(r => { if (!r.ok) return fallback; return r.json().catch(() => fallback); })
+    .catch(() => fallback);
+}
 
 interface DashboardData {
   leads: number;
@@ -26,17 +34,17 @@ export const StudioDashboard: React.FC = () => {
     async function fetchData() {
       try {
         const [leads, bookings, tasks, blogPosts, testimonials, inquiries, invoices, packages, media, gallery, siteSettings] = await Promise.all([
-          fetch("/api/leads?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-          fetch("/api/bookings?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-          fetch("/api/tasks?where[status][equals]=open&sort=dueDate&limit=10").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
-          fetch("/api/blog-posts?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-          fetch("/api/testimonials?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-          fetch("/api/inquiries?sort=-createdAt&limit=5").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
-          fetch("/api/invoices?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
-          fetch("/api/packages?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-          fetch("/api/media?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-          fetch("/api/gallery-images?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-          fetch("/api/globals/site-settings").then(r => r.json()).catch(() => ({})),
+          safeFetch("/api/leads?limit=0", { totalDocs: 0 }),
+          safeFetch("/api/bookings?limit=0", { totalDocs: 0 }),
+          safeFetch("/api/tasks?where[status][equals]=open&sort=dueDate&limit=10", { totalDocs: 0, docs: [] }),
+          safeFetch("/api/blog-posts?limit=0", { totalDocs: 0 }),
+          safeFetch("/api/testimonials?limit=0", { totalDocs: 0 }),
+          safeFetch("/api/inquiries?sort=-createdAt&limit=5", { totalDocs: 0, docs: [] }),
+          safeFetch("/api/invoices?limit=0", { totalDocs: 0, docs: [] }),
+          safeFetch("/api/packages?limit=0", { totalDocs: 0 }),
+          safeFetch("/api/media?limit=0", { totalDocs: 0 }),
+          safeFetch("/api/gallery-images?limit=0", { totalDocs: 0 }),
+          safeFetch("/api/globals/site-settings", {}),
         ]);
 
         const revenueCents = (invoices.docs || []).reduce(
@@ -136,6 +144,7 @@ export const StudioDashboard: React.FC = () => {
   };
 
   return (
+    <AdminErrorBoundary name="Dashboard">
     <div style={{ padding: "16px", maxWidth: "1200px", margin: "0 auto", fontFamily: "'Jost', system-ui, sans-serif" }}>
       {/* Header */}
       <div style={{ marginBottom: "36px" }}>
@@ -434,5 +443,6 @@ export const StudioDashboard: React.FC = () => {
         </div>
       </div>
     </div>
+    </AdminErrorBoundary>
   );
 };

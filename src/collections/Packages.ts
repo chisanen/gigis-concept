@@ -6,6 +6,7 @@ export const Packages: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "category", "priceDisplay", "isHourly", "badge", "sortOrder"],
     group: "Studio",
+    description: "Your service packages and pricing. Changes here automatically update the pricing page, quote calculator, and services page. Set prices in cents (e.g. 29000 = $290). Check 'Is Hourly' for per-hour rates.",
   },
   fields: [
     {

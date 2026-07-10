@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AdminErrorBoundary } from "./AdminErrorBoundary";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function safeFetch(url: string, fallback: any = { docs: [], totalDocs: 0 }): Promise<any> {
+  return fetch(url)
+    .then(r => { if (!r.ok) return fallback; return r.json().catch(() => fallback); })
+    .catch(() => fallback);
+}
 
 interface Pkg { id: string; name: string; priceCents: number; priceDisplay: string; category: string; }
 interface AddOn { id: string; name: string; priceCents: number; priceDisplay: string; unit: string; }
@@ -18,9 +26,9 @@ export const QuoteBuilder: React.FC = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/packages?limit=20").then(r => r.json()).catch(() => ({ docs: [] })),
-      fetch("/api/add-ons?limit=20").then(r => r.json()).catch(() => ({ docs: [] })),
-      fetch("/api/pricing").then(r => r.json()).catch(() => null),
+      safeFetch("/api/packages?limit=20", { docs: [] }),
+      safeFetch("/api/add-ons?limit=20", { docs: [] }),
+      safeFetch("/api/pricing", null),
     ]).then(([p, a, pricing]) => {
       setPackages(p.docs || []);
       setAddOns(a.docs || []);
@@ -50,22 +58,29 @@ export const QuoteBuilder: React.FC = () => {
     if (!clientName || !selectedPkg) return;
     setSaving(true);
     const num = `Q-${Date.now().toString(36).toUpperCase()}`;
-    await fetch("/api/quotes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        quoteNumber: num, clientName, clientEmail,
-        lineItems, subtotalCents: subtotal, discountCents: 0,
-        totalCents: subtotal, depositCents: deposit,
-        status: "draft", notes: "",
-      }),
-    }).catch(() => {});
+    try {
+      const res = await fetch("/api/quotes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          quoteNumber: num, clientName, clientEmail,
+          lineItems, subtotalCents: subtotal, discountCents: 0,
+          totalCents: subtotal, depositCents: deposit,
+          status: "draft", notes: "",
+        }),
+      });
+      if (!res.ok) { console.error("Save quote failed:", res.status); }
+      await res.json().catch(() => null);
+    } catch (e) {
+      console.error("Save quote error:", e);
+    }
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   }
 
   return (
+    <AdminErrorBoundary name="QuoteBuilder">
     <div style={{ padding: "32px 40px", fontFamily: "'Jost', system-ui, sans-serif" }}>
       <h2 style={{ fontSize: "22px", fontWeight: 300, color: "#3A2D28", margin: "0 0 24px" }}>Quote Builder</h2>
 
@@ -151,5 +166,6 @@ export const QuoteBuilder: React.FC = () => {
         </div>
       </div>
     </div>
+    </AdminErrorBoundary>
   );
 };

@@ -6,6 +6,7 @@ export const BlogPosts: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "status", "publishedDate"],
     group: "Website",
+    description: "Your blog articles. Blog posts help attract visitors from Google. Click 'Create New' to write a post, add a featured image, choose a category, and click Publish. AI can auto-generate posts for you on a schedule.",
   },
   versions: {
     drafts: true,

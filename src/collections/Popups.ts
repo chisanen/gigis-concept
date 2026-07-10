@@ -5,7 +5,7 @@ export const Popups: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Website",
-    description: "Create popups and special offers that appear on your website. Add images, promo codes, and control when they show.",
+    description: "Promotional popups that appear on your website. Create a popup with a heading, message, image, and call-to-action button. Set the trigger (on page load, after delay, on scroll, or when leaving). Toggle Active to turn it on or off.",
     defaultColumns: ["name", "heading", "isActive", "trigger"],
   },
   fields: [

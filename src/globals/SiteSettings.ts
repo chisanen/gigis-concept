@@ -5,6 +5,7 @@ export const SiteSettings: GlobalConfig = {
   label: "Site Settings",
   admin: {
     group: "Settings",
+    description: "Your business settings. Update your contact info, social links, pricing deposit, theme colors, SEO settings, and form options. Changes here update across your entire website.",
   },
   fields: [
     {
@@ -33,16 +34,7 @@ export const SiteSettings: GlobalConfig = {
         {
           label: "Pricing",
           fields: [
-            { name: "depositPercent", type: "number", defaultValue: 50, admin: { description: "Deposit percentage required to book (e.g. 50 = 50%). This updates everywhere on the site including the quote calculator" } },
-            {
-              name: "pricingNote",
-              type: "ui",
-              admin: {
-                components: {
-                  Field: "@/components/admin/PricingNote#default",
-                },
-              },
-            },
+            { name: "depositPercent", type: "number", defaultValue: 50, admin: { description: "Deposit percentage required to book (e.g. 50 = 50%). This updates everywhere on the site including the quote calculator. Package and add-on prices are managed in Studio > Packages and Studio > Add-Ons." } },
           ],
         },
         {

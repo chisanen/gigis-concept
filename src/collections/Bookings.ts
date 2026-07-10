@@ -7,6 +7,7 @@ export const Bookings: CollectionConfig = {
     useAsTitle: "clientName",
     defaultColumns: ["clientName", "eventDate", "service", "status"],
     group: "Studio",
+    description: "Confirmed events and sessions. Create a booking when a client signs their contract and pays the deposit. Track the status, assign team members, and manage event details.",
   },
   hooks: {
     afterChange: [

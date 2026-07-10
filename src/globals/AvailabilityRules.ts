@@ -5,6 +5,7 @@ export const AvailabilityRules: GlobalConfig = {
   label: "Availability Rules",
   admin: {
     group: "Operations",
+    description: "Your available days and hours. Set which days you work, your business hours, buffer time between bookings, and any blocked dates (holidays, vacations).",
   },
   fields: [
     {

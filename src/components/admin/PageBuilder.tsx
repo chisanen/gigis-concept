@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AdminErrorBoundary } from "./AdminErrorBoundary";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function safeFetch(url: string, fallback: any = { docs: [], totalDocs: 0 }): Promise<any> {
+  return fetch(url)
+    .then(r => { if (!r.ok) return fallback; return r.json().catch(() => fallback); })
+    .catch(() => fallback);
+}
 
 interface BlockData {
   blockType: string;
@@ -74,8 +82,7 @@ export const PageBuilder: React.FC = () => {
   useEffect(() => {
     async function fetchPages() {
       try {
-        const res = await fetch("/api/pages?limit=10");
-        const json = await res.json();
+        const json = await safeFetch("/api/pages?limit=10", { docs: [] }) as { docs: PageData[] };
         setPages(json.docs || []);
       } catch (e) {
         console.error("PageBuilder fetch error:", e);
@@ -97,6 +104,7 @@ export const PageBuilder: React.FC = () => {
   }
 
   return (
+    <AdminErrorBoundary name="PageBuilder">
     <div
       style={{
         padding: "32px 40px",
@@ -342,5 +350,6 @@ export const PageBuilder: React.FC = () => {
         </div>
       )}
     </div>
+    </AdminErrorBoundary>
   );
 };

@@ -2,6 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { AdminErrorBoundary } from "./AdminErrorBoundary";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function safeFetch(url: string, fallback: any = { docs: [], totalDocs: 0 }): Promise<any> {
+  return fetch(url)
+    .then(r => { if (!r.ok) return fallback; return r.json().catch(() => fallback); })
+    .catch(() => fallback);
+}
 
 interface ReportData {
   totalLeads: number;
@@ -21,12 +29,12 @@ export const StudioReports: React.FC = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/leads?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
-      fetch("/api/leads?limit=100").then(r => r.json()).catch(() => ({ docs: [] })),
-      fetch("/api/bookings?limit=100").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
-      fetch("/api/invoices?limit=100").then(r => r.json()).catch(() => ({ totalDocs: 0, docs: [] })),
-      fetch("/api/blog-posts?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
-      fetch("/api/testimonials?limit=0").then(r => r.json()).catch(() => ({ totalDocs: 0 })),
+      safeFetch("/api/leads?limit=0", { totalDocs: 0, docs: [] }),
+      safeFetch("/api/leads?limit=100", { docs: [] }),
+      safeFetch("/api/bookings?limit=100", { totalDocs: 0, docs: [] }),
+      safeFetch("/api/invoices?limit=100", { totalDocs: 0, docs: [] }),
+      safeFetch("/api/blog-posts?limit=0", { totalDocs: 0 }),
+      safeFetch("/api/testimonials?limit=0", { totalDocs: 0 }),
     ]).then(([leadsCount, leadsAll, bookings, invoices, blog, testimonials]) => {
       const leadsBySource: Record<string, number> = {};
       (leadsAll.docs || []).forEach((l: Record<string, unknown>) => {
@@ -70,6 +78,7 @@ export const StudioReports: React.FC = () => {
   const statusData = Object.entries(data.bookingsByStatus).map(([name, value]) => ({ name, value }));
 
   return (
+    <AdminErrorBoundary name="Reports">
     <div style={{ padding: "16px", fontFamily: "'Jost', system-ui, sans-serif" }}>
       <h2 style={{ fontSize: "22px", fontWeight: 300, color: "#3A2D28", margin: "0 0 24px" }}>Reports</h2>
 
@@ -139,5 +148,6 @@ export const StudioReports: React.FC = () => {
         ))}
       </div>
     </div>
+    </AdminErrorBoundary>
   );
 };

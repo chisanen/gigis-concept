@@ -9,9 +9,6 @@ import { NavLinks } from '@/components/admin/NavLinks'
 import { AIImageButton } from '@/components/admin/AIImageButton'
 import { QuoteBuilder } from '@/components/admin/QuoteBuilder'
 import { PageBuilder } from '@/components/admin/PageBuilder'
-import { AIImageGallery } from '@/components/admin/AIImageGallery'
-import { GalleryManager } from '@/components/admin/GalleryManager'
-import PricingNote from '@/components/admin/PricingNote'
 
 export const importMap = {
   '@/components/admin/NavLinks#NavLinks': NavLinks,
@@ -22,9 +19,6 @@ export const importMap = {
   '@/components/admin/LeadsCRM#LeadsCRM': LeadsCRM,
   '@/components/admin/Reports#StudioReports': StudioReports,
   '@/components/admin/PageBuilder#PageBuilder': PageBuilder,
-  '@/components/admin/AIImageGallery#AIImageGallery': AIImageGallery,
-  '@/components/admin/GalleryManager#GalleryManager': GalleryManager,
-  '@/components/admin/PricingNote#default': PricingNote,
   '@payloadcms/plugin-seo/client#MetaDescriptionComponent': MetaDescriptionComponent,
   '@payloadcms/plugin-seo/client#MetaImageComponent': MetaImageComponent,
   '@payloadcms/plugin-seo/client#MetaTitleComponent': MetaTitleComponent,
