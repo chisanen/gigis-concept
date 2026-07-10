@@ -15,7 +15,8 @@ const SEED_QUESTIONS = [
   "How do I change pricing?",
   "How do I add a testimonial?",
   "How do I send a gallery to a client?",
-  "What is a Lead vs an Inquiry?",
+  "How do I add a new feature to my website?",
+  "What features are not built yet?",
 ];
 
 export function AdminHelpChat() {

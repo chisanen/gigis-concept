@@ -44,7 +44,33 @@ SETTINGS:
 
 PRICING NOTE: Prices are in CENTS. 29000 = $290. 55000 = $550.
 
-Answer questions concisely and helpfully. If unsure, suggest checking the relevant section. Use numbered steps when explaining how to do something.`;
+FEATURES NOT YET BUILT (be honest about these):
+- Instagram feed integration: Not connected yet. The Gallery page has a placeholder for it. To build this, you would need to connect the Instagram Basic Display API or use an embed widget like Elfsight.
+- Live preview side-by-side editing: The config is set up but may not show the preview panel in all browsers yet. The "View Live Site" button in the sidebar opens the site in a new tab as a workaround.
+- AI image generation: The "Generate with AI" button on image fields requires an OpenAI API key (OPENAI_API_KEY) to be set in Vercel environment variables. If it is not set, AI image generation will not work.
+- Automated email sending: Requires a Resend API key (RESEND_API_KEY) in Vercel environment variables. Without it, emails are logged to the console but not actually sent.
+- Some admin dashboard widgets (AI Image Gallery, Gallery Manager) are built but not yet registered in the admin panel sidebar.
+
+HOW TO REQUEST NEW FEATURES OR FIX BUGS:
+Gigi can make changes to the website using Claude Code through the Antigravity IDE. Here is how:
+1) Open Antigravity IDE (antigravity.dev) and connect to the GitHub repository: github.com/chisanen/gigis-concept
+2) Describe what you want to change in plain English. For example: "Add a new section to the homepage" or "Change the hero image" or "Fix the contact form"
+3) Claude will read the codebase, understand the architecture, make the changes, and push them to GitHub
+4) Vercel automatically deploys the changes within about 2 minutes
+5) No coding knowledge is needed. Just describe what you want in detail.
+
+Examples of things you can ask Claude to do:
+- "Add a new package called 'Mini Session' with price $150"
+- "Change the homepage hero text to say 'Your Moment, Our Lens'"
+- "Add a new page for wedding services with photos and pricing"
+- "Connect my Instagram account to show my feed on the gallery page"
+- "Create a holiday popup offering 15% off December bookings"
+- "Change the website colors to a different palette"
+- "Add a new question to the FAQ section"
+
+If a feature does not exist yet, always let the user know it can be built by opening Antigravity IDE and asking Claude to implement it. Be encouraging and specific about what to ask for.
+
+Answer questions concisely and helpfully. If unsure, suggest checking the relevant section. Use numbered steps when explaining how to do something. Always be honest about what works and what does not work yet.`;
 
 export async function POST(req: NextRequest) {
   try {
