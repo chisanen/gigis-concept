@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AdminHelpChat } from "./AdminHelpChat";
 
 export const NavLinks: React.FC = () => {
   const [isDark, setIsDark] = useState(false);
@@ -11,11 +12,21 @@ export const NavLinks: React.FC = () => {
 
     // Make collection description boxes collapsible on click
     function setupDescriptionToggles() {
-      document.querySelectorAll(".collection-list__header > p").forEach((el) => {
-        if (el.getAttribute("data-toggle-setup")) return;
-        el.setAttribute("data-toggle-setup", "true");
-        el.setAttribute("tabindex", "0");
-        el.addEventListener("click", () => el.classList.toggle("expanded"));
+      // Target all description paragraphs in list headers
+      const selectors = [
+        "[class*='list-header'] p",
+        "[class*='list__header'] p",
+        ".collection-list__header p",
+        ".list-header p",
+        "[class*='Description']",
+      ];
+      selectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach((el) => {
+          if (el.getAttribute("data-gc-toggle")) return;
+          el.setAttribute("data-gc-toggle", "true");
+          el.setAttribute("tabindex", "0");
+          el.addEventListener("click", () => el.classList.toggle("gc-expanded"));
+        });
       });
     }
     setupDescriptionToggles();
@@ -34,75 +45,78 @@ export const NavLinks: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: "0 16px 12px", borderBottom: "1px solid var(--theme-elevation-300, #D1C7BD)", marginBottom: "8px" }}>
-      {/* Home / Dashboard button */}
-      <a
-        href="/admin"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "10px 12px",
-          marginBottom: "8px",
-          borderRadius: "8px",
-          textDecoration: "none",
-          fontSize: "13px",
-          fontWeight: 500,
-          letterSpacing: "0.08em",
-          color: "var(--theme-elevation-1000, #3A2D28)",
-          background: "var(--theme-elevation-50, #F1EDE6)",
-          transition: "background 0.2s",
-        }}
-      >
-        <span style={{ fontSize: "16px" }}>&#8962;</span>
-        Dashboard
-      </a>
+    <>
+      <div style={{ padding: "0 16px 12px", borderBottom: "1px solid var(--theme-elevation-300, #D1C7BD)", marginBottom: "8px" }}>
+        {/* Home / Dashboard button */}
+        <a
+          href="/admin"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "10px 12px",
+            marginBottom: "8px",
+            borderRadius: "8px",
+            textDecoration: "none",
+            fontSize: "13px",
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            color: "var(--theme-elevation-1000, #3A2D28)",
+            background: "var(--theme-elevation-50, #F1EDE6)",
+            transition: "background 0.2s",
+          }}
+        >
+          <span style={{ fontSize: "16px" }}>&#8962;</span>
+          Dashboard
+        </a>
 
-      {/* View Site button */}
-      <a
-        href="/"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "8px 12px",
-          marginBottom: "8px",
-          borderRadius: "8px",
-          textDecoration: "none",
-          fontSize: "12px",
-          letterSpacing: "0.06em",
-          color: "var(--theme-elevation-500, #A48374)",
-          transition: "color 0.2s",
-        }}
-      >
-        <span style={{ fontSize: "14px" }}>&#8599;</span>
-        View Live Site
-      </a>
+        {/* View Site button */}
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "8px 12px",
+            marginBottom: "8px",
+            borderRadius: "8px",
+            textDecoration: "none",
+            fontSize: "12px",
+            letterSpacing: "0.06em",
+            color: "var(--theme-elevation-500, #A48374)",
+            transition: "color 0.2s",
+          }}
+        >
+          <span style={{ fontSize: "14px" }}>&#8599;</span>
+          View Live Site
+        </a>
 
-      {/* Theme toggle */}
-      <button
-        onClick={toggleTheme}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "8px 12px",
-          width: "100%",
-          borderRadius: "8px",
-          border: "1px solid var(--theme-elevation-300, #D1C7BD)",
-          background: "transparent",
-          cursor: "pointer",
-          fontSize: "11px",
-          letterSpacing: "0.08em",
-          color: "var(--theme-elevation-500, #A48374)",
-          transition: "background 0.2s",
-        }}
-      >
-        <span style={{ fontSize: "14px" }}>{isDark ? "☀" : "☾"}</span>
-        {isDark ? "Switch to Light" : "Switch to Dark"}
-      </button>
-    </div>
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "8px 12px",
+            width: "100%",
+            borderRadius: "8px",
+            border: "1px solid var(--theme-elevation-300, #D1C7BD)",
+            background: "transparent",
+            cursor: "pointer",
+            fontSize: "11px",
+            letterSpacing: "0.08em",
+            color: "var(--theme-elevation-500, #A48374)",
+            transition: "background 0.2s",
+          }}
+        >
+          <span style={{ fontSize: "14px" }}>{isDark ? "☀" : "☾"}</span>
+          {isDark ? "Switch to Light" : "Switch to Dark"}
+        </button>
+      </div>
+      <AdminHelpChat />
+    </>
   );
 };

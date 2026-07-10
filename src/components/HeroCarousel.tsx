@@ -1,9 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
-const defaultSlides = [
+interface HeroSlide {
+  src: string;
+  alt: string;
+  type?: "image" | "video";
+}
+
+const VIDEO_EXT_RE = /\.(mp4|mov|webm|avi|mkv|m4v)$/i;
+
+function isVideoSlide(slide: HeroSlide): boolean {
+  return slide.type === "video" || VIDEO_EXT_RE.test(slide.src);
+}
+
+const defaultSlides: HeroSlide[] = [
   { src: "/hero-wedding.png", alt: "Elegant bride and groom on wedding steps" },
   { src: "/hero-champagne.png", alt: "Luxurious champagne tower at reception" },
   { src: "/hero-nigerian.png", alt: "Nigerian Americans in traditional attire at photo booth" },
@@ -11,34 +23,57 @@ const defaultSlides = [
   { src: "/hero-reception.png", alt: "Opulent wedding reception celebration" },
 ];
 
-export function HeroCarousel({ slides: slidesProp }: { slides?: { src: string; alt: string }[] } = {}) {
+export function HeroCarousel({ slides: slidesProp }: { slides?: HeroSlide[] } = {}) {
   const slides = slidesProp && slidesProp.length > 0 ? slidesProp : defaultSlides;
   const [current, setCurrent] = useState(0);
 
+  const currentIsVideo = useMemo(() => isVideoSlide(slides[current]), [slides, current]);
+
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % slides.length);
-  }, []);
+  }, [slides.length]);
 
   useEffect(() => {
+    // Pause auto-rotation when the current slide is a video
+    if (currentIsVideo) return;
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, currentIsVideo]);
 
   return (
     <>
-      {slides.map((slide, i) => (
-        <Image
-          key={slide.src}
-          src={slide.src}
-          alt={slide.alt}
-          fill
-          className={`object-cover transition-opacity duration-1000 ${
-            i === current ? "opacity-100" : "opacity-0"
-          }`}
-          priority={i === 0}
-          sizes="100vw"
-        />
-      ))}
+      {slides.map((slide, i) => {
+        if (isVideoSlide(slide)) {
+          return (
+            <video
+              key={slide.src}
+              src={slide.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-label={slide.alt}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                i === current ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          );
+        }
+
+        return (
+          <Image
+            key={slide.src}
+            src={slide.src}
+            alt={slide.alt}
+            fill
+            className={`object-cover transition-opacity duration-1000 ${
+              i === current ? "opacity-100" : "opacity-0"
+            }`}
+            priority={i === 0}
+            sizes="100vw"
+          />
+        );
+      })}
 
       {/* Dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2.5">

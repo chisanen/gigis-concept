@@ -27,7 +27,18 @@ export function getMediaAlt(media: unknown): string {
 // ── Block: Hero ──────────────────────────────────────────────
 function HeroBlock({ b }: { b: Block }) {
   const carouselSlides = (b.carouselImages as { image: unknown; alt: string }[] | undefined)
-    ?.map(s => ({ src: getMediaUrl(s.image) || "", alt: s.alt || getMediaAlt(s.image) }))
+    ?.map(s => {
+      const url = getMediaUrl(s.image) || "";
+      const media = s.image as Record<string, unknown> | null;
+      const kind = media?.kind as string;
+      const mimeType = (media?.mimeType as string) || "";
+      const isVideo = kind === "video" || mimeType.startsWith("video/");
+      return {
+        src: url,
+        alt: s.alt || getMediaAlt(s.image),
+        type: isVideo ? "video" as const : "image" as const,
+      };
+    })
     .filter(s => s.src) || [];
 
   return (
