@@ -114,7 +114,10 @@ export async function GET(req: NextRequest) {
         const r = await payload.find({ collection: slug as never, limit: 0 });
         results[slug] = `OK (${r.totalDocs} docs)`;
       } catch (e) {
-        results[slug] = `ERROR: ${String(e).slice(0, 120)}`;
+        const errMsg = e instanceof Error ? e.message : String(e);
+        // Try to get the Postgres error detail
+        const pgErr = (e as Record<string, unknown>)?.cause || (e as Record<string, unknown>)?.detail || "";
+        results[slug] = `ERROR: ${errMsg.slice(0, 200)} | ${String(pgErr).slice(0, 200)}`;
       }
     }
 
