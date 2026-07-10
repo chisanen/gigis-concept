@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -254,7 +255,10 @@ export function AdminHelpChat() {
       }
     : panelStyle;
 
-  return (
+  // Portal to document.body so the fixed positioning works outside the sidebar
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <>
       {/* Floating help button */}
       {!isOpen && (
@@ -483,6 +487,7 @@ export function AdminHelpChat() {
           `}</style>
         </div>
       )}
-    </>
+    </>,
+    document.body
   );
 }
