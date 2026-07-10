@@ -6,7 +6,6 @@ export const Tasks: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["title", "dueDate", "status", "priority"],
     group: "Studio",
-    description: "Your to-do list. Track tasks for shoots, edits, follow-ups, and more. Set priorities and due dates to stay organized.",
   },
   fields: [
     { name: "title", type: "text", required: true, admin: { description: "What needs to be done? Keep it short and clear" } },

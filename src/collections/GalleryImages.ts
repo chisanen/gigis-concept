@@ -6,7 +6,7 @@ export const GalleryImages: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["title", "category", "collectionName", "eventDate"],
     group: "Website",
-    description: "Client gallery photos and videos. Group images by event using the Collection Name field. Set Public for your portfolio, Password Protected for client galleries, or Private for internal use. Share galleries with clients by copying the link.",
+    description: "Organize your photos and videos into collections. Each collection can be public, password-protected, or private to a specific client.",
   },
   access: {
     read: () => true,

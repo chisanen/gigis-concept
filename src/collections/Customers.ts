@@ -6,7 +6,6 @@ export const Customers: CollectionConfig = {
   admin: {
     useAsTitle: "email",
     group: "Studio",
-    description: "Your client database. Each customer's contact info, booking history, and notes in one place.",
   },
   fields: [
     {

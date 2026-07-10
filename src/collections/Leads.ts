@@ -7,7 +7,6 @@ export const Leads: CollectionConfig = {
     useAsTitle: "email",
     defaultColumns: ["firstName", "lastName", "stage", "eventDate", "serviceRequired"],
     group: "Studio",
-    description: "Your sales pipeline. Every inquiry becomes a lead. Move leads through stages: New, Contacted, Consultation, Quote Sent, Booked, or Lost. Click a lead to see their details, add notes, and track the conversation.",
   },
   access: {
     create: () => true,

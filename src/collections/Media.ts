@@ -16,7 +16,7 @@ export const Media: CollectionConfig = {
   admin: {
     useAsTitle: "alt",
     group: "Website",
-    description: "Your image and video library. Drag and drop files here to upload them. All images uploaded here can be used on any page, in popups, blog posts, and the gallery. Always add a description (alt text) for better Google rankings.",
+    description: "Your image and video library. Drag and drop files to upload. Supports JPG, PNG, WebP, GIF, MP4, MOV, and more.",
   },
   fields: [
     {
@@ -40,20 +40,6 @@ export const Media: CollectionConfig = {
       ],
       defaultValue: "image",
       admin: { description: "What type of file is this?" },
-    },
-    {
-      name: "isAiGenerated",
-      type: "checkbox",
-      defaultValue: false,
-      admin: { description: "Automatically set when an image is created by AI generation" },
-    },
-    {
-      name: "aiPrompt",
-      type: "textarea",
-      admin: {
-        description: "The prompt used to generate this image",
-        condition: (data: Record<string, unknown>) => data?.isAiGenerated === true,
-      },
     },
   ],
 };

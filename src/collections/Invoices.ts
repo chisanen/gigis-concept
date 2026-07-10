@@ -6,7 +6,6 @@ export const Invoices: CollectionConfig = {
     useAsTitle: "invoiceNumber",
     defaultColumns: ["invoiceNumber", "clientName", "totalCents", "status", "dueDate"],
     group: "Studio",
-    description: "Payment tracking for your bookings. Create invoices with line items and send them to clients. Track paid vs outstanding amounts.",
   },
   fields: [
     { name: "invoiceNumber", type: "text", admin: { description: "Unique invoice number (e.g. INV-001). Auto-generated or enter your own" } },

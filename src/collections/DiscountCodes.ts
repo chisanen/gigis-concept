@@ -5,7 +5,6 @@ export const DiscountCodes: CollectionConfig = {
   admin: {
     useAsTitle: "code",
     group: "Website",
-    description: "Promo codes for discounts. Create codes your clients can enter when booking. Set the discount as a percentage or fixed dollar amount. Link codes to popups to promote them.",
   },
   fields: [
     { name: "code", type: "text", required: true, unique: true, admin: { description: "The code clients type in (e.g. 'WEDDING20', 'SUMMER50'). Make it memorable!" } },
