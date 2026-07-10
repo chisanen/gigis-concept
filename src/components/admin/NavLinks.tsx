@@ -11,50 +11,69 @@ export const NavLinks: React.FC = () => {
     setIsDark(html.getAttribute("data-theme") === "dark");
 
     // Style description boxes as collapsible instruction cards
+    // Only runs on list pages, debounced, with observer paused during DOM changes
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+    let isProcessing = false;
+
     function styleDescriptions() {
-      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
-      let node: Node | null;
-      while ((node = walker.nextNode())) {
-        const el = node as HTMLElement;
-        if (el.getAttribute("data-gc-styled")) continue;
-        const text = el.textContent || "";
-        if ((text.includes("HOW TO USE:") || text.includes("TIP:")) &&
-            el.children.length === 0 && text.length > 100) {
-          el.setAttribute("data-gc-styled", "true");
+      if (isProcessing) return;
+      // Only run on collection list pages, not edit pages
+      if (/\/collections\/[^/]+\/\d/.test(window.location.pathname)) return;
 
-          // Wrap in a container with header + collapsible body
-          const wrapper = document.createElement("div");
-          wrapper.style.cssText = "margin:8px 0 16px;border:1px solid #D1C7BD;border-left:4px solid #A48374;border-radius:0 8px 8px 0;overflow:hidden;background:linear-gradient(135deg,#F8F5F1,#FFFFFF)";
+      isProcessing = true;
+      observer.disconnect();
 
-          // Header bar (always visible, clickable)
-          const header = document.createElement("div");
-          header.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none";
-          header.innerHTML = '<span style="font-size:12px;font-weight:600;letter-spacing:0.1em;color:#A48374;text-transform:uppercase">Instructions</span><span style="font-size:16px;color:#A48374;transition:transform 0.3s" data-arrow>+</span>';
+      try {
+        const els = document.querySelectorAll("p, span, div");
+        for (let i = 0; i < els.length; i++) {
+          const el = els[i] as HTMLElement;
+          if (el.getAttribute("data-gc-styled")) continue;
+          if (el.closest("[data-gc-styled]")) continue;
+          const text = el.textContent || "";
+          if (text.includes("HOW TO USE:") && el.children.length === 0 && text.length > 100) {
+            el.setAttribute("data-gc-styled", "true");
 
-          // Body (collapsible)
-          const body = document.createElement("div");
-          body.style.cssText = "max-height:0;overflow:hidden;transition:max-height 0.4s ease;padding:0 16px";
-          body.innerHTML = `<div style="padding:0 0 14px;font-size:13px;line-height:1.8;color:#5C463B">${text}</div>`;
+            const wrapper = document.createElement("div");
+            wrapper.setAttribute("data-gc-styled", "true");
+            wrapper.style.cssText = "margin:8px 0 16px;border:1px solid #D1C7BD;border-left:4px solid #A48374;border-radius:0 8px 8px 0;overflow:hidden;background:linear-gradient(135deg,#F8F5F1,#FFFFFF)";
 
-          // Toggle
-          let expanded = false;
-          header.addEventListener("click", () => {
-            expanded = !expanded;
-            body.style.maxHeight = expanded ? body.scrollHeight + "px" : "0";
-            const arrow = header.querySelector("[data-arrow]") as HTMLElement;
-            if (arrow) arrow.textContent = expanded ? "\u2212" : "+";
-          });
+            const header = document.createElement("div");
+            header.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none";
+            header.innerHTML = '<span style="font-size:12px;font-weight:600;letter-spacing:0.1em;color:#A48374;text-transform:uppercase">Instructions</span><span style="font-size:16px;color:#A48374" data-arrow>+</span>';
 
-          wrapper.appendChild(header);
-          wrapper.appendChild(body);
-          el.replaceWith(wrapper);
+            const body = document.createElement("div");
+            body.style.cssText = "max-height:0;overflow:hidden;transition:max-height 0.4s ease;padding:0 16px";
+            body.innerHTML = '<div style="padding:0 0 14px;font-size:13px;line-height:1.8;color:#5C463B">' + text.replace(/</g, "&lt;") + "</div>";
+
+            let expanded = false;
+            header.addEventListener("click", () => {
+              expanded = !expanded;
+              body.style.maxHeight = expanded ? body.scrollHeight + "px" : "0";
+              const arrow = header.querySelector("[data-arrow]") as HTMLElement;
+              if (arrow) arrow.textContent = expanded ? "\u2212" : "+";
+            });
+
+            wrapper.appendChild(header);
+            wrapper.appendChild(body);
+            el.replaceWith(wrapper);
+            break; // Only process one per page
+          }
         }
+      } finally {
+        isProcessing = false;
+        observer.observe(document.body, { childList: true, subtree: true });
       }
     }
-    styleDescriptions();
-    const observer = new MutationObserver(styleDescriptions);
+
+    const observer = new MutationObserver(() => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(styleDescriptions, 500);
+    });
+
+    // Initial run after a delay
+    setTimeout(styleDescriptions, 1000);
     observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); if (debounceTimer) clearTimeout(debounceTimer); };
   }, []);
 
   function toggleTheme() {
