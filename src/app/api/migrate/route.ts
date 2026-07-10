@@ -16,6 +16,37 @@ export async function GET(req: NextRequest) {
   try {
     const payload = await getPayload();
 
+    // Action: check-table - see if a table exists and what columns it has
+    if (action === "check-table") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const db = payload.db as any;
+      const drizzle = db.drizzle;
+      if (drizzle) {
+        const { sql } = await import("drizzle-orm");
+        const tables = await drizzle.execute(sql`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`);
+        const popupCols = await drizzle.execute(sql`SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'popups' ORDER BY ordinal_position`).catch(() => []);
+        return NextResponse.json({
+          allTables: tables.map((r: Record<string, string>) => r.table_name),
+          popupColumns: popupCols,
+        });
+      }
+    }
+
+    // Action: force-create - use Payload's drizzle schema to push
+    if (action === "force-create") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const db = payload.db as any;
+      if (db.push && typeof db.push === "function") {
+        try {
+          await db.push({ forceAcceptWarning: true });
+          return NextResponse.json({ success: true, message: "DB push completed" });
+        } catch (e) {
+          return NextResponse.json({ error: `Push failed: ${String(e)}` }, { status: 500 });
+        }
+      }
+      return NextResponse.json({ error: "db.push not available", dbKeys: Object.keys(db) }, { status: 500 });
+    }
+
     // Action: drop-popups - drop the bad table so push:true can recreate it
     if (action === "drop-popups") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
