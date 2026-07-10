@@ -1,14 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AdminErrorBoundary } from "./AdminErrorBoundary";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function safeFetch(url: string, fallback: any = { docs: [], totalDocs: 0 }): Promise<any> {
-  return fetch(url)
-    .then(r => { if (!r.ok) return fallback; return r.json().catch(() => fallback); })
-    .catch(() => fallback);
-}
 
 interface Pkg { id: string; name: string; priceCents: number; priceDisplay: string; category: string; }
 interface AddOn { id: string; name: string; priceCents: number; priceDisplay: string; unit: string; }
@@ -22,18 +14,12 @@ export const QuoteBuilder: React.FC = () => {
   const [clientEmail, setClientEmail] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [depositPercent, setDepositPercent] = useState(50);
 
   useEffect(() => {
     Promise.all([
-      safeFetch("/api/packages?limit=20", { docs: [] }),
-      safeFetch("/api/add-ons?limit=20", { docs: [] }),
-      safeFetch("/api/pricing", null),
-    ]).then(([p, a, pricing]) => {
-      setPackages(p.docs || []);
-      setAddOns(a.docs || []);
-      if (pricing?.depositPercent) setDepositPercent(pricing.depositPercent);
-    });
+      fetch("/api/packages?limit=20").then(r => r.json()).catch(() => ({ docs: [] })),
+      fetch("/api/add-ons?limit=20").then(r => r.json()).catch(() => ({ docs: [] })),
+    ]).then(([p, a]) => { setPackages(p.docs || []); setAddOns(a.docs || []); });
   }, []);
 
   const pkg = packages.find(p => p.id === selectedPkg);
@@ -51,36 +37,29 @@ export const QuoteBuilder: React.FC = () => {
   });
 
   const subtotal = lineItems.reduce((s, i) => s + i.totalCents, 0);
-  const deposit = Math.round(subtotal * depositPercent / 100);
+  const deposit = Math.round(subtotal * 0.5);
   const fmt = (c: number) => `$${(c / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
 
   async function saveQuote() {
     if (!clientName || !selectedPkg) return;
     setSaving(true);
     const num = `Q-${Date.now().toString(36).toUpperCase()}`;
-    try {
-      const res = await fetch("/api/quotes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          quoteNumber: num, clientName, clientEmail,
-          lineItems, subtotalCents: subtotal, discountCents: 0,
-          totalCents: subtotal, depositCents: deposit,
-          status: "draft", notes: "",
-        }),
-      });
-      if (!res.ok) { console.error("Save quote failed:", res.status); }
-      await res.json().catch(() => null);
-    } catch (e) {
-      console.error("Save quote error:", e);
-    }
+    await fetch("/api/quotes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        quoteNumber: num, clientName, clientEmail,
+        lineItems, subtotalCents: subtotal, discountCents: 0,
+        totalCents: subtotal, depositCents: deposit,
+        status: "draft", notes: "",
+      }),
+    }).catch(() => {});
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   }
 
   return (
-    <AdminErrorBoundary name="QuoteBuilder">
     <div style={{ padding: "32px 40px", fontFamily: "'Jost', system-ui, sans-serif" }}>
       <h2 style={{ fontSize: "22px", fontWeight: 300, color: "#3A2D28", margin: "0 0 24px" }}>Quote Builder</h2>
 
@@ -147,7 +126,7 @@ export const QuoteBuilder: React.FC = () => {
                   <span>Total</span><span>{fmt(subtotal)}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#A48374", marginTop: "4px" }}>
-                  <span>{depositPercent}% Deposit</span><span>{fmt(deposit)}</span>
+                  <span>50% Deposit</span><span>{fmt(deposit)}</span>
                 </div>
               </div>
             </>
@@ -166,6 +145,5 @@ export const QuoteBuilder: React.FC = () => {
         </div>
       </div>
     </div>
-    </AdminErrorBoundary>
   );
 };

@@ -1,14 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AdminErrorBoundary } from "./AdminErrorBoundary";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function safeFetch(url: string, fallback: any = { docs: [], totalDocs: 0 }): Promise<any> {
-  return fetch(url)
-    .then(r => { if (!r.ok) return fallback; return r.json().catch(() => fallback); })
-    .catch(() => fallback);
-}
 
 interface Event {
   id: string;
@@ -31,8 +23,8 @@ export const StudioCalendar: React.FC = () => {
 
   useEffect(() => {
     Promise.all([
-      safeFetch("/api/bookings?limit=100", { docs: [] }),
-      safeFetch("/api/consultations?limit=100", { docs: [] }),
+      fetch("/api/bookings?limit=100").then(r => r.json()).catch(() => ({ docs: [] })),
+      fetch("/api/consultations?limit=100").then(r => r.json()).catch(() => ({ docs: [] })),
     ]).then(([b, c]) => {
       const bookingEvents = (b.docs || []).map((d: Record<string, unknown>) => ({
         id: d.id as string, name: d.clientName as string || "Booking",
@@ -59,7 +51,6 @@ export const StudioCalendar: React.FC = () => {
   }
 
   return (
-    <AdminErrorBoundary name="Calendar">
     <div style={{ padding: "16px", fontFamily: "'Jost', system-ui, sans-serif" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
         <h2 style={{ fontSize: "22px", fontWeight: 300, color: "#3A2D28", margin: 0 }}>Calendar</h2>
@@ -119,6 +110,5 @@ export const StudioCalendar: React.FC = () => {
         ))}
       </div>
     </div>
-    </AdminErrorBoundary>
   );
 };
