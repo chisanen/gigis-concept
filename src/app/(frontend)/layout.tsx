@@ -4,6 +4,7 @@ import "../globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PopupManager } from "@/components/PopupManager";
+import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
 import { getPayload } from "@/lib/payload";
 import { getMediaUrl } from "@/lib/render-blocks";
 
@@ -112,6 +113,7 @@ export default async function FrontendLayout({
           tiktokUrl={s?.tiktokUrl || undefined}
         />
         <PopupManager />
+        <RefreshRouteOnSave />
       </body>
     </html>
   );
