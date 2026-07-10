@@ -32,22 +32,39 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Action: force-create - use Payload's db.push to sync schema
+    // Action: force-create - use raw SQL from Payload's schema to create popups
     if (action === "force-create") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const db = payload.db as any;
-      try {
-        await db.push({ acceptWarnings: true, forceAcceptWarning: true });
-        return NextResponse.json({ success: true, message: "DB push completed" });
-      } catch (e) {
-        // Try without args
+      const drizzle = db.drizzle;
+      if (drizzle && typeof drizzle.execute === "function") {
+        const { sql } = await import("drizzle-orm");
+        // Get the exact Drizzle schema that Payload built for popups
+        const schema = db.schema;
+        const tables = db.tables;
+        const tableNames = tables ? Object.keys(tables) : [];
+        const schemaKeys = schema ? Object.keys(schema) : [];
+
+        // Try to create table using Payload's generateSchema
         try {
-          await db.push();
-          return NextResponse.json({ success: true, message: "DB push completed (no args)" });
-        } catch (e2) {
-          return NextResponse.json({ error: `Push failed: ${String(e)} / ${String(e2)}` }, { status: 500 });
-        }
+          if (typeof db.generateSchema === "function") {
+            await db.generateSchema();
+          }
+        } catch (e) { /* ignore */ }
+
+        // Check if popups table exists now
+        const check = await drizzle.execute(sql`
+          SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='popups') as exists
+        `);
+
+        return NextResponse.json({
+          tableNames: tableNames.slice(0, 20),
+          schemaKeys: schemaKeys.slice(0, 20),
+          popupsExists: check,
+          pushType: typeof db.push,
+        });
       }
+      return NextResponse.json({ error: "No drizzle instance" }, { status: 500 });
     }
 
     // Action: drop-popups - drop the bad table so push:true can recreate it
