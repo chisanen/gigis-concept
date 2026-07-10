@@ -6,7 +6,7 @@ export const Equipment: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "type", "status"],
     group: "Operations",
-    description: "Your gear inventory. Track cameras, lights, backdrops, and other equipment.",
+    description: "Your gear inventory. HOW TO USE: 1) Click 'Create New'. 2) Enter the equipment name, type, serial number, and condition. 3) Track which gear goes to which event. TIP: Review your equipment list before each event season to identify what needs maintenance or replacement.",
   },
   fields: [
     { name: "name", type: "text", required: true, admin: { description: "What is this piece of equipment called? (e.g. 'Ring Light #2', 'Mirror Booth')" } },

@@ -6,7 +6,7 @@ export const Quotes: CollectionConfig = {
     useAsTitle: "quoteNumber",
     defaultColumns: ["quoteNumber", "clientName", "totalCents", "status"],
     group: "Studio",
-    description: "Price quotes for clients. Create quotes from the dashboard Quote Builder or manually. Each quote has a shareable link.",
+    description: "Price quotes for clients. HOW TO USE: 1) Use the Quote Builder on the Dashboard to create quotes quickly. 2) Or click 'Create New' here to build one manually with line items. 3) Each quote gets a unique number and shareable link. 4) Send the link to clients so they can review and accept. 5) Track status: Draft, Sent, Accepted, or Declined. TIP: Quotes are valid for 30 days by default.",
   },
   fields: [
     { name: "quoteNumber", type: "text", admin: { description: "Unique quote number (e.g. QT-001)" } },

@@ -29,6 +29,7 @@ export const Navigation: GlobalConfig = {
   label: "Navigation",
   admin: {
     group: "Website",
+    description: "Control your website's navigation menu. HOW TO USE: 1) Add links to 'Header Links' (top navigation bar) and 'Footer Links' (bottom of every page). 2) Each link needs a label (text shown) and href (URL path like '/about'). 3) Set Sort Order to control the order (lower numbers appear first). 4) Uncheck 'Visible' to hide a link without deleting it. TIP: Keep the header to 5-7 links max for a clean look.",
   },
   fields: [
     {

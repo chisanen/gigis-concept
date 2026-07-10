@@ -5,7 +5,7 @@ export const Team: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Operations",
-    description: "Your team members. Add second shooters, booth attendants, editors. Assign them to bookings.",
+    description: "Your team members (second shooters, booth attendants, editors). HOW TO USE: 1) Click 'Create New'. 2) Enter their name, role, email, and phone. 3) Set a calendar color to tell them apart on the booking calendar. 4) Assign team members to bookings from the Bookings page. TIP: Keep contact info updated so you can reach everyone quickly on event days.",
   },
   fields: [
     { name: "name", type: "text", required: true, admin: { description: "Team member's full name" } },

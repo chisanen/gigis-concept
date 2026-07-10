@@ -6,6 +6,7 @@ export const Packages: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "category", "priceDisplay", "badge", "sortOrder"],
     group: "Studio",
+    description: "Your service packages and pricing. Changes here update the pricing page, quote calculator, and services page automatically. HOW TO USE: 1) Click 'Create New' or edit an existing package. 2) Choose the category (Content Creation or Photo Booth). 3) Set the name, price in cents (e.g. 29000 = $290), and display price (e.g. '$290'). 4) Add features that are included. 5) Check 'Is Featured' and add a badge (e.g. 'Popular') to highlight a package. 6) Uncheck 'Is Visible' to hide without deleting. TIP: Price is in CENTS, not dollars.",
   },
   fields: [
     {

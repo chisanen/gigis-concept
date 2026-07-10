@@ -258,6 +258,36 @@ html[data-theme="dark"] .nav__logo::after { color: #EDE7C7; }
   font-weight: 300;
 }
 
+/* ─── FIX: Content area left cutoff when nav is open ─── */
+.template-default__wrap {
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+}
+.template-default .document-fields,
+.template-default .collection-list {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+/* Ensure select/dropdown text is not clipped */
+.react-select__single-value,
+.react-select__input-container {
+  padding-left: 4px !important;
+}
+.react-select__value-container {
+  padding-left: 12px !important;
+}
+/* Ensure field labels have breathing room */
+.field-type {
+  min-width: 0 !important;
+}
+.render-fields {
+  padding-left: 0 !important;
+}
+/* Fix document header overlap */
+.doc-header {
+  padding-left: 24px !important;
+}
+
 /* ─── SHARED GEOMETRY ─── */
 .btn--style-primary,
 .btn--style-secondary { border-radius: 999px; }

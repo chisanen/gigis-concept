@@ -6,7 +6,7 @@ export const Contracts: CollectionConfig = {
     useAsTitle: "clientName",
     defaultColumns: ["clientName", "status", "sentAt"],
     group: "Studio",
-    description: "Client service agreements. Contracts have a shareable link where clients can e-sign digitally.",
+    description: "Client service agreements with e-signature. HOW TO USE: 1) Click 'Create New'. 2) Enter client name, email, and the contract terms. 3) Save to generate a shareable link. 4) Send the link to the client. 5) They can read the terms and sign electronically. 6) The signed status, name, and timestamp are recorded automatically. TIP: Always send the contract before the invoice.",
   },
   fields: [
     { name: "bookingRef", type: "text", admin: { description: "Link to the related booking (enter the booking ID or name)" } },

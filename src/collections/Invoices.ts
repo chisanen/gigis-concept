@@ -6,7 +6,7 @@ export const Invoices: CollectionConfig = {
     useAsTitle: "invoiceNumber",
     defaultColumns: ["invoiceNumber", "clientName", "totalCents", "status", "dueDate"],
     group: "Studio",
-    description: "Payment tracking. Create invoices with line items and send to clients. Track paid vs outstanding.",
+    description: "Payment tracking for your bookings. HOW TO USE: 1) Click 'Create New'. 2) Add the client name, email, and line items with prices. 3) Save to generate a shareable invoice link. 4) Send to the client. 5) Update the 'Amount Paid' field as payments come in. TIP: Send the deposit invoice right after the contract is signed.",
   },
   fields: [
     { name: "invoiceNumber", type: "text", admin: { description: "Unique invoice number (e.g. INV-001). Auto-generated or enter your own" } },

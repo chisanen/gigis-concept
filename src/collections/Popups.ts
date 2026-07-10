@@ -5,7 +5,7 @@ export const Popups: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Website",
-    description: "Create popups and special offers that appear on your website. Add images, promo codes, and control when they show.",
+    description: "Promotional popups that appear on your website. HOW TO USE: 1) Click 'Create New'. 2) Add a heading, message, and optional image. 3) Add an offer label (e.g. '10% OFF') and a discount code if applicable. 4) Set button text and link. 5) Choose when it appears: On Page Load, After Delay (set seconds), After Scrolling, or Exit Intent (when they try to leave). 6) Set how often visitors see it: Once per session, Once per day, or Every visit. 7) Check 'Is Active' to turn it on. TIP: Use 'After Delay' with 5 seconds and 'Once per session' for the best experience.",
     defaultColumns: ["name", "heading", "isActive", "trigger"],
   },
   fields: [

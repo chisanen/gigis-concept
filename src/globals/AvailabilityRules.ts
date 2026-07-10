@@ -5,7 +5,7 @@ export const AvailabilityRules: GlobalConfig = {
   label: "Availability Rules",
   admin: {
     group: "Operations",
-    description: "Your available days and hours. Set business hours, buffer time, and blocked dates.",
+    description: "Your business hours and blocked dates. HOW TO USE: 1) Set which days of the week you are available. 2) Set your start and end times for each day. 3) Set buffer time between appointments (in minutes). 4) Add blocked dates for holidays, vacations, and personal days. TIP: Block out dates at least 2 weeks in advance so clients cannot book during your time off.",
   },
   fields: [
     {

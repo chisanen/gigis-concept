@@ -5,6 +5,7 @@ export const SiteSettings: GlobalConfig = {
   label: "Site Settings",
   admin: {
     group: "Settings",
+    description: "Your core business settings. Changes here update across the entire website. TABS: General (business name, email, phone), Social (Instagram, TikTok, Facebook links), Pricing (deposit percentage), Theme (brand colors), SEO (Google settings). TIP: Make sure your contact email and phone are correct. These show on every page.",
   },
   fields: [
     {

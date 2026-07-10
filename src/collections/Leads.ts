@@ -7,7 +7,7 @@ export const Leads: CollectionConfig = {
     useAsTitle: "email",
     defaultColumns: ["firstName", "lastName", "stage", "eventDate", "serviceRequired"],
     group: "Studio",
-    description: "Your sales pipeline. Every inquiry becomes a lead. Move leads through stages: New, Contacted, Consultation, Quote Sent, Booked, or Lost.",
+    description: "Your sales pipeline. Every website inquiry becomes a lead here. HOW TO USE: 1) New leads appear with status 'New'. 2) Click a lead to see their details, event info, and message. 3) Update the stage as you work with them: New > Contacted > Consultation > Quote Sent > Booked (or Lost). 4) Add notes to track your conversations. 5) Use the CRM board on the Dashboard for a visual pipeline view. TIP: Follow up within 24 hours for the best conversion rate.",
   },
   access: {
     create: () => true,

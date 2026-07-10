@@ -5,7 +5,7 @@ export const Automations: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Operations",
-    description: "Automatic actions that fire when things happen, like auto-sending a thank you email on new inquiries.",
+    description: "Automatic actions that run when specific events happen. HOW TO USE: 1) Click an automation to see its trigger (e.g. 'New Inquiry') and action (e.g. 'Send Thank You Email'). 2) Toggle 'Is Active' to turn automations on or off. 3) The auto-reply to new inquiries is already set up. TIP: Automations save you hours. Let them handle routine emails while you focus on creating.",
   },
   fields: [
     {

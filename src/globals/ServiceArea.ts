@@ -5,7 +5,7 @@ export const ServiceArea: GlobalConfig = {
   label: "Service Area & Travel",
   admin: {
     group: "Operations",
-    description: "Travel zone settings. Set your base ZIP, free radius, and per-mile fee for events outside your area.",
+    description: "Your travel zone and fee settings. HOW TO USE: 1) Set your base ZIP code (where you are located). 2) Set the free radius in miles (events within this distance have no travel fee). 3) Set the per-mile fee in cents for events beyond the free radius (e.g. 50 = $0.50/mile). TIP: The travel fee shows automatically in the FAQ and quote calculator on your website.",
   },
   fields: [
     {

@@ -6,7 +6,7 @@ export const Consultations: CollectionConfig = {
     useAsTitle: "clientName",
     group: "Studio",
     defaultColumns: ["clientName", "date", "type", "status"],
-    description: "Discovery calls and meetings. Schedule and track consultations with potential clients.",
+    description: "Discovery calls and meetings with potential clients. HOW TO USE: 1) Click 'Create New'. 2) Enter the client's name, email, date/time, and meeting type (phone, video, in-person). 3) Add notes during or after the call. 4) Update status: Scheduled, Completed, Cancelled, or No-Show. TIP: Schedule a consultation within 48 hours of an inquiry for best results.",
   },
   access: {
     create: () => true,

@@ -7,7 +7,7 @@ export const Bookings: CollectionConfig = {
     useAsTitle: "clientName",
     defaultColumns: ["clientName", "eventDate", "service", "status"],
     group: "Studio",
-    description: "Confirmed events and sessions. Create a booking when a client signs their contract and pays the deposit.",
+    description: "Confirmed events and sessions. HOW TO USE: 1) Click 'Create New' when a client signs their contract. 2) Fill in client name, email, service, package, event date, start time, venue, and guest count. 3) Update status as you go: Inquiry > Confirmed > In Production > Delivered > Completed. 4) Assign team members to each booking. 5) Add internal notes for day-of logistics. TIP: Check the Calendar on the Dashboard to see all upcoming bookings.",
   },
   hooks: {
     afterChange: [
