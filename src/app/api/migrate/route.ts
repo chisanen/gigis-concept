@@ -57,8 +57,12 @@ export async function GET(req: NextRequest) {
         const created: string[] = [];
 
         async function createBlockTable(name: string, extraCols: string) {
-          if (existingNames.has(name)) return;
-          await drizzle.execute(sql.raw(`CREATE TABLE IF NOT EXISTS "${name}" ("_order" integer NOT NULL, "_parent_id" integer NOT NULL, "_path" text NOT NULL, "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, ${extraCols} "_uuid" varchar)`));
+          if (existingNames.has(name)) {
+            // Add block_name column if missing
+            await drizzle.execute(sql.raw(`ALTER TABLE "${name}" ADD COLUMN IF NOT EXISTS "block_name" varchar`)).catch(() => {});
+            return;
+          }
+          await drizzle.execute(sql.raw(`CREATE TABLE IF NOT EXISTS "${name}" ("_order" integer NOT NULL, "_parent_id" integer NOT NULL, "_path" text NOT NULL, "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, ${extraCols} "block_name" varchar, "_uuid" varchar)`));
           created.push(name);
         }
 
