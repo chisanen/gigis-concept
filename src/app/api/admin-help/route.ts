@@ -91,22 +91,22 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const messages = [
-      { role: "system" as const, content: SYSTEM_PROMPT },
+    const messages: { role: string; content: string }[] = [
+      { role: "system", content: SYSTEM_PROMPT },
     ];
 
     // Add conversation history
     if (history && Array.isArray(history)) {
       for (const msg of history) {
         messages.push({
-          role: msg.role === "user" ? "user" as const : "assistant" as const,
+          role: msg.role === "user" ? "user" : "assistant",
           content: msg.text,
         });
       }
     }
 
     // Add the new message
-    messages.push({ role: "user" as const, content: message });
+    messages.push({ role: "user", content: message });
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
