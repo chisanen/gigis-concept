@@ -44,20 +44,27 @@ SETTINGS:
 
 PRICING NOTE: Prices are in CENTS. 29000 = $290. 55000 = $550.
 
-FEATURES NOT YET BUILT (be honest about these):
-- Instagram feed integration: Not connected yet. The Gallery page has a placeholder for it. To build this, you would need to connect the Instagram Basic Display API or use an embed widget like Elfsight.
-- Live preview side-by-side editing: The config is set up but may not show the preview panel in all browsers yet. The "View Live Site" button in the sidebar opens the site in a new tab as a workaround.
-- AI image generation: The "Generate with AI" button on image fields requires an OpenAI API key (OPENAI_API_KEY) to be set in Vercel environment variables. If it is not set, AI image generation will not work.
-- Automated email sending: Requires a Resend API key (RESEND_API_KEY) in Vercel environment variables. Without it, emails are logged to the console but not actually sent.
-- Some admin dashboard widgets (AI Image Gallery, Gallery Manager) are built but not yet registered in the admin panel sidebar.
+FEATURES THAT ARE SET UP AND WORKING:
+- AI image generation: The "Generate with AI" button on image fields uses OpenAI to create images. It works on hero images, about photos, popup images, and gallery images.
+- Automated email sending: Resend is connected. Auto-reply emails go out when new inquiries come in. Gallery emails can be sent to clients.
+- Blog post AI generation: AI can auto-generate SEO-optimized blog posts about Dallas weddings, events, and photo tips.
+- Quote calculator: Clients can build their own quotes on the pricing page. Changes to Packages and Add Ons auto-update the calculator.
+- Password-protected client galleries: Upload photos, set a password, share the link. Clients enter the password to view and download.
+- Popup system: Create popups that show on the website with different triggers and frequencies.
+
+FEATURES NOT YET CONNECTED (can be built):
+- Instagram feed integration: Not connected yet. The Gallery page has a placeholder. This can be built using an Elfsight widget or the Instagram API.
+- Live preview side-by-side editing: Partially configured. Use "View Live Site" in the sidebar as a workaround.
+- AI Image Gallery and Gallery Manager dashboard widgets: Built but not yet added to the admin sidebar.
 
 HOW TO REQUEST NEW FEATURES OR FIX BUGS:
 Gigi can make changes to the website using Claude Code through the Antigravity IDE. Here is how:
-1) Open Antigravity IDE (antigravity.dev) and connect to the GitHub repository: github.com/chisanen/gigis-concept
-2) Describe what you want to change in plain English. For example: "Add a new section to the homepage" or "Change the hero image" or "Fix the contact form"
-3) Claude will read the codebase, understand the architecture, make the changes, and push them to GitHub
-4) Vercel automatically deploys the changes within about 2 minutes
-5) No coding knowledge is needed. Just describe what you want in detail.
+1) Open Antigravity IDE at antigravity.dev
+2) Connect to the GitHub repository: github.com/chisanen/gigis-concept
+3) Describe what you want in plain English. For example: "Add a new section to the homepage" or "Change the hero image" or "Fix the contact form"
+4) Claude will read the codebase, understand the architecture, make the changes, and push them to GitHub
+5) Vercel automatically deploys the changes within about 2 minutes
+6) No coding knowledge is needed. Just describe what you want in detail.
 
 Examples of things you can ask Claude to do:
 - "Add a new package called 'Mini Session' with price $150"
@@ -67,96 +74,64 @@ Examples of things you can ask Claude to do:
 - "Create a holiday popup offering 15% off December bookings"
 - "Change the website colors to a different palette"
 - "Add a new question to the FAQ section"
+- "Make the testimonial carousel show 5 reviews instead of 2"
 
 If a feature does not exist yet, always let the user know it can be built by opening Antigravity IDE and asking Claude to implement it. Be encouraging and specific about what to ask for.
 
-Answer questions concisely and helpfully. If unsure, suggest checking the relevant section. Use numbered steps when explaining how to do something. Always be honest about what works and what does not work yet.`;
+Answer questions concisely and helpfully. Use numbered steps when explaining how to do something. Always be honest about what works and what does not work yet.`;
 
 export async function POST(req: NextRequest) {
   try {
     const { message, history } = await req.json();
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json({
-        reply:
-          "Help assistant is not configured. Please add the GEMINI_API_KEY environment variable.",
+        reply: "Help assistant is not configured. The OPENAI_API_KEY environment variable needs to be set in Vercel.",
       });
     }
 
     const messages = [
-      { role: "user" as const, parts: [{ text: SYSTEM_PROMPT }] },
-      {
-        role: "model" as const,
-        parts: [
-          {
-            text: "I understand. I'm the Gigi's Concept admin help assistant. I'll help you navigate and use every feature of your admin panel. What would you like to know?",
-          },
-        ],
-      },
+      { role: "system" as const, content: SYSTEM_PROMPT },
     ];
 
     // Add conversation history
     if (history && Array.isArray(history)) {
       for (const msg of history) {
         messages.push({
-          role: msg.role === "user" ? ("user" as const) : ("model" as const),
-          parts: [{ text: msg.text }],
+          role: msg.role === "user" ? "user" as const : "assistant" as const,
+          content: msg.text,
         });
       }
     }
 
     // Add the new message
-    messages.push({ role: "user" as const, parts: [{ text: message }] });
+    messages.push({ role: "user" as const, content: message });
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: messages,
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 500,
-          },
-        }),
-      }
-    );
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages,
+        temperature: 0.7,
+        max_tokens: 500,
+      }),
+    });
 
     if (!response.ok) {
       const err = await response.text();
-      console.error("Gemini API error:", response.status, err);
-
-      // If gemini-2.0-flash fails, try gemini-1.5-flash
-      if (response.status === 404 || response.status === 400) {
-        const fallbackResponse = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: messages,
-              generationConfig: { temperature: 0.7, maxOutputTokens: 500 },
-            }),
-          }
-        );
-        if (fallbackResponse.ok) {
-          const fbData = await fallbackResponse.json();
-          const fbReply = fbData.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (fbReply) return NextResponse.json({ reply: fbReply });
-        }
-      }
-
+      console.error("OpenAI API error:", response.status, err);
       return NextResponse.json({
-        reply: `Help assistant error (${response.status}). Please try again in a moment.`,
+        reply: `Help assistant is temporarily unavailable (${response.status}). Please try again in a moment.`,
       });
     }
 
     const data = await response.json();
-    const reply =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "I could not generate a response. Please try rephrasing your question.";
+    const reply = data.choices?.[0]?.message?.content || "I could not generate a response. Please try rephrasing your question.";
 
     return NextResponse.json({ reply });
   } catch (error) {
