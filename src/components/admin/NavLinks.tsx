@@ -8,6 +8,20 @@ export const NavLinks: React.FC = () => {
   useEffect(() => {
     const html = document.documentElement;
     setIsDark(html.getAttribute("data-theme") === "dark");
+
+    // Make collection description boxes collapsible on click
+    function setupDescriptionToggles() {
+      document.querySelectorAll(".collection-list__header > p").forEach((el) => {
+        if (el.getAttribute("data-toggle-setup")) return;
+        el.setAttribute("data-toggle-setup", "true");
+        el.setAttribute("tabindex", "0");
+        el.addEventListener("click", () => el.classList.toggle("expanded"));
+      });
+    }
+    setupDescriptionToggles();
+    const observer = new MutationObserver(setupDescriptionToggles);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, []);
 
   function toggleTheme() {

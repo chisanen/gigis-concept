@@ -258,6 +258,52 @@ html[data-theme="dark"] .nav__logo::after { color: #EDE7C7; }
   font-weight: 300;
 }
 
+/* ─── STYLED INSTRUCTION BOX for collection descriptions ─── */
+.collection-list__header > p,
+.global-edit > .render-fields > .field-type:first-child .field-description {
+  background: linear-gradient(135deg, #F8F5F1 0%, #FFFFFF 100%) !important;
+  border: 1px solid #D1C7BD !important;
+  border-left: 4px solid #A48374 !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 14px 18px !important;
+  margin: 0 0 20px 0 !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  color: #5C463B !important;
+  max-height: 3.4em !important;
+  overflow: hidden !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: max-height 0.3s ease !important;
+}
+.collection-list__header > p::after,
+.global-edit > .render-fields > .field-type:first-child .field-description::after {
+  content: "Click to expand instructions" !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  height: 2em !important;
+  background: linear-gradient(transparent 0%, #F8F5F1 70%) !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  font-size: 10px !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  color: #A48374 !important;
+  padding-bottom: 4px !important;
+}
+.collection-list__header > p.expanded {
+  max-height: 500px !important;
+  cursor: pointer !important;
+}
+.collection-list__header > p.expanded::after {
+  content: "Click to collapse" !important;
+  height: 1.5em !important;
+  background: linear-gradient(transparent 0%, #F8F5F1 50%) !important;
+}
+
 /* ─── FIX: Content area left cutoff when nav is open ─── */
 .template-default__wrap {
   min-width: 0 !important;
