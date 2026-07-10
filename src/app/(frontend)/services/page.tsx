@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { renderBlocks } from "@/lib/render-blocks";
+import { PackagesDisplay } from "@/components/PackagesDisplay";
 import { getPayload } from "@/lib/payload";
 
 export const dynamic = "force-dynamic";
@@ -92,6 +93,17 @@ function FallbackContent() {
         </div>
       </section>
 
+      {/* Content Creation Packages */}
+      <section className="py-16 bg-brand-50">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Content Packages</p>
+            <h2 className="font-script text-4xl text-brand-900">Choose Your Package</h2>
+          </div>
+          <PackagesDisplay service="content" />
+        </div>
+      </section>
+
       {/* Photo Booth */}
       <section className="bg-brand-100 py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6">
@@ -149,6 +161,17 @@ function FallbackContent() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Photo Booth Packages */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Booth Packages</p>
+            <h2 className="font-script text-4xl text-brand-900">Choose Your Package</h2>
+          </div>
+          <PackagesDisplay service="booth" />
         </div>
       </section>
 

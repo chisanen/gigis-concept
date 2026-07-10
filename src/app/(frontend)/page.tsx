@@ -23,16 +23,21 @@ function getMediaUrl(media: unknown): string | null {
 async function getSiteData() {
   try {
     const payload = await getPayload();
-    const [settings, homePage] = await Promise.all([
+    const [settings, homePage, testimonials] = await Promise.all([
       payload.findGlobal({ slug: "site-settings" }),
       payload.find({ collection: "pages", where: { slug: { equals: "home" } }, limit: 1, depth: 2 }),
+      payload.find({ collection: "testimonials", where: { featured: { equals: true }, status: { equals: "approved" } }, limit: 10, sort: "sortOrder" }),
     ]);
+    const cmsTestimonials = (testimonials.docs as Record<string, unknown>[])
+      .map(t => ({ quote: t.quote as string, author: t.authorName as string, event: t.eventDescription as string }))
+      .filter(t => t.quote);
     return {
       settings,
       blocks: (homePage.docs[0] as Record<string, unknown>)?.layout as Record<string, unknown>[] || null,
+      testimonials: cmsTestimonials.length > 0 ? cmsTestimonials : undefined,
     };
   } catch {
-    return { settings: null, blocks: null };
+    return { settings: null, blocks: null, testimonials: undefined };
   }
 }
 
@@ -47,7 +52,7 @@ function getBlock(blocks: Record<string, unknown>[] | null, type: string): Recor
 }
 
 export default async function Home() {
-  const [{ settings, blocks }, pricing] = await Promise.all([
+  const [{ settings, blocks, testimonials }, pricing] = await Promise.all([
     getSiteData(),
     getPricingData(),
   ]);
@@ -197,7 +202,7 @@ export default async function Home() {
 
       {/* ═══ 5 · TESTIMONIALS CAROUSEL ═══ */}
       <section className="py-16 sm:py-28 md:py-36 bg-brand-100">
-        <TestimonialCarousel />
+        <TestimonialCarousel testimonials={testimonials} />
       </section>
 
       {/* ═══ FOMO STRIP ═══ */}

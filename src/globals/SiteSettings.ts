@@ -39,9 +39,7 @@ export const SiteSettings: GlobalConfig = {
               type: "ui",
               admin: {
                 components: {
-                  Field: {
-                    path: "@/components/admin/PricingNote",
-                  },
+                  Field: "@/components/admin/PricingNote#default",
                 },
               },
             },
