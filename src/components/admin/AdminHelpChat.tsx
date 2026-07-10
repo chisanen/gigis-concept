@@ -19,6 +19,7 @@ const SEED_QUESTIONS = [
 ];
 
 export function AdminHelpChat() {
+  const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -26,6 +27,8 @@ export function AdminHelpChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const hasLoadedRef = useRef(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   // Load chat history from localStorage on mount
   useEffect(() => {
@@ -255,8 +258,8 @@ export function AdminHelpChat() {
       }
     : panelStyle;
 
-  // Portal to document.body so the fixed positioning works outside the sidebar
-  if (typeof document === "undefined") return null;
+  // Wait for client-side mount before rendering portal
+  if (!mounted) return null;
 
   return createPortal(
     <>

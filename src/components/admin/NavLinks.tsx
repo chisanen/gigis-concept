@@ -10,27 +10,44 @@ export const NavLinks: React.FC = () => {
     const html = document.documentElement;
     setIsDark(html.getAttribute("data-theme") === "dark");
 
-    // Make collection description boxes collapsible on click
-    function setupDescriptionToggles() {
-      // Target all description paragraphs in list headers
-      const selectors = [
-        "[class*='list-header'] p",
-        "[class*='list__header'] p",
-        ".collection-list__header p",
-        ".list-header p",
-        "[class*='Description']",
-      ];
-      selectors.forEach(sel => {
-        document.querySelectorAll(sel).forEach((el) => {
-          if (el.getAttribute("data-gc-toggle")) return;
-          el.setAttribute("data-gc-toggle", "true");
-          el.setAttribute("tabindex", "0");
-          el.addEventListener("click", () => el.classList.toggle("gc-expanded"));
-        });
-      });
+    // Style description boxes as collapsible instruction cards
+    function styleDescriptions() {
+      // Find elements containing "HOW TO USE" text (our admin descriptions)
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
+      let node: Node | null;
+      while ((node = walker.nextNode())) {
+        const el = node as HTMLElement;
+        if (el.getAttribute("data-gc-styled")) continue;
+        const text = el.textContent || "";
+        // Match our instruction descriptions (contain "HOW TO USE" or "TIP:")
+        if ((text.includes("HOW TO USE:") || text.includes("TIP:")) &&
+            el.children.length === 0 && text.length > 100) {
+          el.setAttribute("data-gc-styled", "true");
+          const s = el.style;
+          s.background = "linear-gradient(135deg, #F8F5F1, #FFFFFF)";
+          s.border = "1px solid #D1C7BD";
+          s.borderLeft = "4px solid #A48374";
+          s.borderRadius = "0 8px 8px 0";
+          s.padding = "14px 18px";
+          s.margin = "8px 0 16px";
+          s.fontSize = "13px";
+          s.lineHeight = "1.7";
+          s.color = "#5C463B";
+          s.maxHeight = "3.6em";
+          s.overflow = "hidden";
+          s.cursor = "pointer";
+          s.transition = "max-height 0.4s ease";
+          s.position = "relative";
+          // Add expand/collapse on click
+          el.addEventListener("click", () => {
+            const expanded = el.style.maxHeight !== "3.6em";
+            el.style.maxHeight = expanded ? "3.6em" : "600px";
+          });
+        }
+      }
     }
-    setupDescriptionToggles();
-    const observer = new MutationObserver(setupDescriptionToggles);
+    styleDescriptions();
+    const observer = new MutationObserver(styleDescriptions);
     observer.observe(document.body, { childList: true, subtree: true });
     return () => observer.disconnect();
   }, []);
