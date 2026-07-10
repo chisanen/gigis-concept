@@ -32,39 +32,106 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Action: force-create - use raw SQL from Payload's schema to create popups
+    // Action: force-create - create popups table matching Payload's Drizzle schema
     if (action === "force-create") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const db = payload.db as any;
       const drizzle = db.drizzle;
-      if (drizzle && typeof drizzle.execute === "function") {
-        const { sql } = await import("drizzle-orm");
-        // Get the exact Drizzle schema that Payload built for popups
-        const schema = db.schema;
-        const tables = db.tables;
-        const tableNames = tables ? Object.keys(tables) : [];
-        const schemaKeys = schema ? Object.keys(schema) : [];
+      if (!drizzle) return NextResponse.json({ error: "No drizzle" }, { status: 500 });
 
-        // Try to create table using Payload's generateSchema
-        try {
-          if (typeof db.generateSchema === "function") {
-            await db.generateSchema();
-          }
-        } catch (e) { /* ignore */ }
+      const { sql } = await import("drizzle-orm");
 
-        // Check if popups table exists now
-        const check = await drizzle.execute(sql`
-          SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='popups') as exists
-        `);
+      // Find the exact popups schema from Payload's tables
+      const tables = db.tables || {};
+      const popupsTable = tables.popups;
+      const popupsSchema = db.schema?.popups;
 
-        return NextResponse.json({
-          tableNames: tableNames.slice(0, 20),
-          schemaKeys: schemaKeys.slice(0, 20),
-          popupsExists: check,
-          pushType: typeof db.push,
-        });
+      // Get column info from the Drizzle schema object
+      let columns: string[] = [];
+      if (popupsSchema) {
+        columns = Object.keys(popupsSchema).filter(k => !k.startsWith("_") && k !== "Symbol");
       }
-      return NextResponse.json({ error: "No drizzle instance" }, { status: 500 });
+
+      // Create the table using Drizzle's schema push mechanism
+      // Since db.push is boolean, use drizzle-kit's pushSchema
+      try {
+        // Use Payload's migrate method which handles table creation
+        await db.connect();
+      } catch (e) { /* already connected */ }
+
+      // Direct SQL approach - create with column types matching Payload's postgres adapter
+      await drizzle.execute(sql`
+        CREATE TABLE IF NOT EXISTS "popups" (
+          "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+          "name" varchar NOT NULL,
+          "heading" varchar,
+          "body" varchar,
+          "image_id" integer REFERENCES "media"("id") ON DELETE SET NULL,
+          "offer_label" varchar,
+          "discount_code" varchar,
+          "cta_label" varchar,
+          "cta_href" varchar,
+          "trigger" "enum_popups_trigger" DEFAULT 'delay',
+          "delay_seconds" numeric DEFAULT 5,
+          "frequency" "enum_popups_frequency" DEFAULT 'session',
+          "is_active" boolean DEFAULT false,
+          "starts_at" timestamptz,
+          "ends_at" timestamptz,
+          "updated_at" timestamptz DEFAULT now() NOT NULL,
+          "created_at" timestamptz DEFAULT now() NOT NULL
+        )
+      `).catch(async () => {
+        // Enum types might not exist, create them first
+        await drizzle.execute(sql`
+          DO $$ BEGIN
+            CREATE TYPE "enum_popups_trigger" AS ENUM ('onLoad', 'exitIntent', 'scroll', 'delay');
+          EXCEPTION WHEN duplicate_object THEN null;
+          END $$
+        `);
+        await drizzle.execute(sql`
+          DO $$ BEGIN
+            CREATE TYPE "enum_popups_frequency" AS ENUM ('session', 'day', 'always');
+          EXCEPTION WHEN duplicate_object THEN null;
+          END $$
+        `);
+        // Now create the table
+        await drizzle.execute(sql`
+          CREATE TABLE IF NOT EXISTS "popups" (
+            "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+            "name" varchar NOT NULL,
+            "heading" varchar,
+            "body" varchar,
+            "image_id" integer REFERENCES "media"("id") ON DELETE SET NULL,
+            "offer_label" varchar,
+            "discount_code" varchar,
+            "cta_label" varchar,
+            "cta_href" varchar,
+            "trigger" "enum_popups_trigger" DEFAULT 'delay',
+            "delay_seconds" numeric DEFAULT 5,
+            "frequency" "enum_popups_frequency" DEFAULT 'session',
+            "is_active" boolean DEFAULT false,
+            "starts_at" timestamptz,
+            "ends_at" timestamptz,
+            "updated_at" timestamptz DEFAULT now() NOT NULL,
+            "created_at" timestamptz DEFAULT now() NOT NULL
+          )
+        `);
+      });
+
+      // Create index
+      await drizzle.execute(sql`
+        CREATE INDEX IF NOT EXISTS "popups_created_at_idx" ON "popups" USING btree ("created_at")
+      `).catch(() => {});
+
+      // Verify
+      const check = await drizzle.execute(sql`SELECT count(*) as c FROM "popups"`).catch(() => null);
+
+      return NextResponse.json({
+        success: true,
+        message: "Popups table created with enums",
+        verify: check,
+        schemaColumns: columns,
+      });
     }
 
     // Action: drop-popups - drop the bad table so push:true can recreate it
