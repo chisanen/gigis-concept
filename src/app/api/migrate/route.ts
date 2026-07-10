@@ -32,19 +32,22 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // Action: force-create - use Payload's drizzle schema to push
+    // Action: force-create - use Payload's db.push to sync schema
     if (action === "force-create") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const db = payload.db as any;
-      if (db.push && typeof db.push === "function") {
+      try {
+        await db.push({ acceptWarnings: true, forceAcceptWarning: true });
+        return NextResponse.json({ success: true, message: "DB push completed" });
+      } catch (e) {
+        // Try without args
         try {
-          await db.push({ forceAcceptWarning: true });
-          return NextResponse.json({ success: true, message: "DB push completed" });
-        } catch (e) {
-          return NextResponse.json({ error: `Push failed: ${String(e)}` }, { status: 500 });
+          await db.push();
+          return NextResponse.json({ success: true, message: "DB push completed (no args)" });
+        } catch (e2) {
+          return NextResponse.json({ error: `Push failed: ${String(e)} / ${String(e2)}` }, { status: 500 });
         }
       }
-      return NextResponse.json({ error: "db.push not available", dbKeys: Object.keys(db) }, { status: 500 });
     }
 
     // Action: drop-popups - drop the bad table so push:true can recreate it
