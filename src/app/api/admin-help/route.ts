@@ -100,10 +100,30 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const err = await response.text();
-      console.error("Gemini API error:", err);
+      console.error("Gemini API error:", response.status, err);
+
+      // If gemini-2.0-flash fails, try gemini-1.5-flash
+      if (response.status === 404 || response.status === 400) {
+        const fallbackResponse = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: messages,
+              generationConfig: { temperature: 0.7, maxOutputTokens: 500 },
+            }),
+          }
+        );
+        if (fallbackResponse.ok) {
+          const fbData = await fallbackResponse.json();
+          const fbReply = fbData.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (fbReply) return NextResponse.json({ reply: fbReply });
+        }
+      }
+
       return NextResponse.json({
-        reply:
-          "Sorry, I could not process your question right now. Please try again.",
+        reply: `Help assistant error (${response.status}). Please try again in a moment.`,
       });
     }
 
