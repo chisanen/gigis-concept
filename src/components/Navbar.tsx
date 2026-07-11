@@ -61,7 +61,7 @@ export function Navbar({
           <div className="hidden lg:flex items-center gap-8 xl:gap-12">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}
-                className={`text-base lg:text-[17px] tracking-[0.12em] transition-colors ${pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"}`}>
+                className={`text-base lg:text-[17px] tracking-[0.12em] transition-colors py-2.5 ${pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"}`}>
                 {link.label}
               </Link>
             ))}
