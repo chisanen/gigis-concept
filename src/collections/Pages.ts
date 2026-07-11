@@ -286,6 +286,9 @@ export const Pages: CollectionConfig = {
     useAsTitle: "title",
     group: "Website",
     description: "Your website pages. HOW TO USE: 1) Click 'Create New' to add a page. 2) Enter a title and slug (the URL path, e.g. 'about' for yoursite.com/about). 3) Click 'Add Block' to add sections like hero banners, text sections, galleries, FAQs, etc. 4) Drag blocks to reorder them. 5) Toggle 'Is Visible' on each block to show/hide it. 6) Click 'Save Draft' to save without publishing, or 'Publish' to make it live. TIP: The 'home' slug is your homepage.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   versions: {
     drafts: true,

@@ -10,8 +10,10 @@ import { AIImageButton } from '@/components/admin/AIImageButton'
 import { QuoteBuilder } from '@/components/admin/QuoteBuilder'
 import { PageBuilder } from '@/components/admin/PageBuilder'
 import { LivePreview } from '@/components/admin/LivePreview'
+import { InstructionsBox } from '@/components/admin/InstructionsBox'
 
 export const importMap = {
+  '@/components/admin/InstructionsBox#InstructionsBox': InstructionsBox,
   '@/components/admin/NavLinks#NavLinks': NavLinks,
   '@/components/admin/AIImageButton#AIImageButton': AIImageButton,
   '@/components/admin/QuoteBuilder#QuoteBuilder': QuoteBuilder,

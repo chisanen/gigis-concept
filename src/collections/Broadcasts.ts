@@ -6,6 +6,9 @@ export const Broadcasts: CollectionConfig = {
     useAsTitle: "subject",
     group: "Operations",
     description: "Send bulk emails to your client list. HOW TO USE: 1) Click 'Create New'. 2) Write your email subject and body. 3) Choose your recipients (all clients, or a filtered list). 4) Preview, then send. TIP: Send seasonal promotions (holiday mini-sessions, summer specials) 4-6 weeks before the season. Keep emails short with one clear call-to-action.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   fields: [
     {

@@ -7,6 +7,9 @@ export const BlogPosts: CollectionConfig = {
     defaultColumns: ["title", "category", "status", "publishedDate"],
     group: "Website",
     description: "Blog articles that help attract visitors from Google. HOW TO USE: 1) Click 'Create New'. 2) Write your title, choose a category, and add content using the rich text editor. 3) Upload a featured image (click the image field, then upload or choose from Media). 4) Write a short excerpt for Google search results. 5) Set the publish date and click 'Publish'. TIP: Aim for 1-2 posts per week about Dallas weddings, events, and photo tips to boost your Google ranking.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   versions: {
     drafts: true,

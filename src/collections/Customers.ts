@@ -7,6 +7,9 @@ export const Customers: CollectionConfig = {
     useAsTitle: "email",
     group: "Studio",
     description: "Your client database. HOW TO USE: 1) Customers are created automatically from bookings and inquiries. 2) Click a customer to see their full history: bookings, invoices, and notes. 3) Add private notes about preferences, special requests, or VIP status. TIP: Keep notes updated so you remember details for repeat clients.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   fields: [
     {

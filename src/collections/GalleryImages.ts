@@ -7,6 +7,9 @@ export const GalleryImages: CollectionConfig = {
     defaultColumns: ["title", "category", "collectionName", "eventDate"],
     group: "Website",
     description: "Client gallery photos and videos organized by event. HOW TO USE: 1) Click 'Create New'. 2) Upload the image/video, give it a title, and enter the Collection Name (e.g. 'Smith Wedding 2026') to group photos together. 3) Set Category: 'Public' for your portfolio, 'Password Protected' for client galleries (enter a password), or 'Private' for internal use. 4) Add the client's name and email for password-protected galleries. 5) Share the gallery link with clients. TIP: All photos with the same Collection Name appear together.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   access: {
     read: () => true,

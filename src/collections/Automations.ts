@@ -6,6 +6,9 @@ export const Automations: CollectionConfig = {
     useAsTitle: "name",
     group: "Operations",
     description: "Automatic actions that run when specific events happen. HOW TO USE: 1) Click an automation to see its trigger (e.g. 'New Inquiry') and action (e.g. 'Send Thank You Email'). 2) Toggle 'Is Active' to turn automations on or off. 3) The auto-reply to new inquiries is already set up. TIP: Automations save you hours. Let them handle routine emails while you focus on creating.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   fields: [
     {

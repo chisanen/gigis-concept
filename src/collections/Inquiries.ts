@@ -7,6 +7,9 @@ export const Inquiries: CollectionConfig = {
     defaultColumns: ["firstName", "lastName", "serviceRequired", "status", "createdAt"],
     group: "Studio",
     description: "Messages from your website contact form. HOW TO USE: 1) New inquiries appear here automatically when someone fills out the contact form. 2) Click an inquiry to see their full message, event details, and contact info. 3) Respond via email, then convert promising inquiries into Leads. TIP: Set up the auto-reply email in Automations to instantly acknowledge every inquiry.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   access: {
     create: () => true,

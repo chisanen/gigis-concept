@@ -6,6 +6,9 @@ export const EmailTemplates: CollectionConfig = {
     useAsTitle: "name",
     group: "Operations",
     description: "Reusable email templates for client communication. HOW TO USE: 1) Click 'Create New'. 2) Give it a name (e.g. 'Booking Confirmation'), write the subject line, and compose the email body using the rich text editor. 3) Templates are used by Automations to send emails automatically. TIP: Write emails in a warm, personal tone that matches your brand voice.",
+    components: {
+      beforeList: ["@/components/admin/InstructionsBox#InstructionsBox"],
+    },
   },
   fields: [
     { name: "name", type: "text", required: true, admin: { description: "Internal name for this template (e.g. 'Booking Confirmation', 'Quote Follow-Up')" } },
