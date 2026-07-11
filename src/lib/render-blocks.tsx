@@ -25,21 +25,20 @@ export function getMediaAlt(media: unknown): string {
 }
 
 // ── Block: Hero ──────────────────────────────────────────────
+function mediaToSlide(media: unknown): { src: string; alt: string; type: "image" | "video" } | null {
+  const url = getMediaUrl(media);
+  if (!url) return null;
+  const m = media as Record<string, unknown> | null;
+  const kind = m?.kind as string;
+  const mimeType = (m?.mimeType as string) || "";
+  const isVideo = kind === "video" || mimeType.startsWith("video/");
+  return { src: url, alt: getMediaAlt(media), type: isVideo ? "video" : "image" };
+}
+
 function HeroBlock({ b }: { b: Block }) {
-  const carouselSlides = (b.carouselImages as { image: unknown; alt: string }[] | undefined)
-    ?.map(s => {
-      const url = getMediaUrl(s.image) || "";
-      const media = s.image as Record<string, unknown> | null;
-      const kind = media?.kind as string;
-      const mimeType = (media?.mimeType as string) || "";
-      const isVideo = kind === "video" || mimeType.startsWith("video/");
-      return {
-        src: url,
-        alt: s.alt || getMediaAlt(s.image),
-        type: isVideo ? "video" as const : "image" as const,
-      };
-    })
-    .filter(s => s.src) || [];
+  // Build slides from individual upload fields
+  const slideFields = [b.backgroundImage, b.slide2, b.slide3, b.slide4, b.slide5];
+  const carouselSlides = slideFields.map(mediaToSlide).filter(Boolean) as { src: string; alt: string; type: "image" | "video" }[];
 
   return (
     <section className="relative min-h-[70vh] sm:min-h-[85vh] flex items-center justify-center overflow-hidden">
@@ -168,10 +167,11 @@ function CTABlock({ b, contactInfo }: { b: Block; contactInfo?: string }) {
 
 // ── Block: Gallery Section ───────────────────────────────────
 function GallerySectionBlock({ b }: { b: Block }) {
-  // Map CMS photos to Gallery component format
-  const cmsPhotos = (b.photos as { image: unknown; caption?: string }[] | undefined)
-    ?.map(p => ({ src: getMediaUrl(p.image) || "", alt: (p.caption || getMediaAlt(p.image) || "") }))
-    .filter(p => p.src) || [];
+  // Build gallery from individual photo upload fields
+  const photoFields = [b.photo1, b.photo2, b.photo3, b.photo4, b.photo5, b.photo6, b.photo7, b.photo8];
+  const cmsPhotos = photoFields
+    .map(p => { const url = getMediaUrl(p); return url ? { src: url, alt: getMediaAlt(p) } : null; })
+    .filter(Boolean) as { src: string; alt: string }[];
 
   return (
     <section className="py-16 sm:py-28 md:py-36 bg-brand-50">
