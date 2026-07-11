@@ -49,7 +49,10 @@ export async function GET(req: NextRequest) {
       const r = await payload.find({ collection: "pages" as never, limit: 0 });
       return NextResponse.json({ pages: `OK (${r.totalDocs} docs)` });
     } catch (e) {
-      return NextResponse.json({ pages: `ERROR: ${String(e).slice(0, 200)}` });
+      const msg = e instanceof Error ? e.message : String(e);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const cause = (e as any)?.cause?.message || (e as any)?.detail || "";
+      return NextResponse.json({ pages: `ERROR: ${msg.slice(0, 200)}`, detail: `${cause}`.slice(0, 200) });
     }
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
