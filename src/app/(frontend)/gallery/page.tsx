@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GalleryGrid } from "@/components/GalleryGrid";
+import { GalleryTabs } from "@/components/GalleryTabs";
 import { PrivateGallery } from "@/components/PrivateGallery";
 import { InstagramFeed } from "@/components/InstagramFeed";
 import { getPayload } from "@/lib/payload";
@@ -44,19 +44,10 @@ async function getGalleryImages() {
       collection: "gallery-images",
       where: { category: { equals: "public" } },
       sort: "sortOrder",
-      limit: 50,
+      limit: 200,
       depth: 2,
     });
-    const photos = result.docs
-      .map((doc: Record<string, unknown>) => {
-        const url = getMediaUrl(doc.image);
-        if (!url) return null;
-        const media = doc.image as Record<string, unknown> | null;
-        const kind = (media?.kind as string) || "image";
-        return { src: url, alt: (doc.title as string) || "", kind };
-      })
-      .filter(Boolean) as { src: string; alt: string; kind?: string }[];
-    return photos.length > 0 ? photos : null;
+    return result.docs.length > 0 ? result.docs : null;
   } catch {
     return null;
   }
@@ -87,8 +78,46 @@ function findBlock(blocks: Record<string, unknown>[] | null, blockType: string) 
   return blocks.find((b) => b.blockType === blockType) || null;
 }
 
+interface GalleryPhoto {
+  src: string;
+  alt: string;
+  kind?: string;
+}
+
+interface GalleryCollection {
+  name: string;
+  photos: GalleryPhoto[];
+}
+
+function buildCollections(docs: Record<string, unknown>[]): GalleryCollection[] {
+  const collectionMap = new Map<string, GalleryPhoto[]>();
+
+  for (const doc of docs) {
+    const url = getMediaUrl(doc.image);
+    if (!url) continue;
+
+    const media = doc.image as Record<string, unknown> | null;
+    const kind = (media?.kind as string) || "image";
+    const photo: GalleryPhoto = { src: url, alt: (doc.title as string) || "", kind };
+    const name = (doc.collectionName as string) || "Uncategorized";
+
+    const existing = collectionMap.get(name);
+    if (existing) {
+      existing.push(photo);
+    } else {
+      collectionMap.set(name, [photo]);
+    }
+  }
+
+  const collections: GalleryCollection[] = [];
+  for (const [name, photos] of collectionMap) {
+    collections.push({ name, photos });
+  }
+  return collections;
+}
+
 export default async function GalleryPage() {
-  const [settings, cmsPhotos, pageBlocks] = await Promise.all([
+  const [settings, cmsDocs, pageBlocks] = await Promise.all([
     getSettings(),
     getGalleryImages(),
     getGalleryPage(),
@@ -98,7 +127,10 @@ export default async function GalleryPage() {
   const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "";
   const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
 
-  const photos = cmsPhotos || fallbackPhotos;
+  // Build collections from CMS docs, or fall back to a single "All" collection
+  const collections: GalleryCollection[] = cmsDocs
+    ? buildCollections(cmsDocs as Record<string, unknown>[])
+    : [{ name: "All", photos: fallbackPhotos }];
 
   // Extract headings from CMS blocks if available
   const heroBlock = findBlock(pageBlocks, "hero");
@@ -134,14 +166,14 @@ export default async function GalleryPage() {
         </section>
       )}
 
-      {/* Public Gallery */}
+      {/* Public Gallery with Tabs */}
       <section className="py-24 md:py-32 bg-brand-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">{galleryEyebrow}</p>
             <h2 className="font-script text-4xl md:text-5xl text-brand-900">{galleryHeading}</h2>
           </div>
-          <GalleryGrid photos={photos} />
+          <GalleryTabs collections={collections} />
         </div>
       </section>
 

@@ -5,11 +5,16 @@ import { getPayload } from "@/lib/payload";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { collectionName, galleryUrl } = body;
-    let { to, password } = body;
+    const { collectionName } = body;
+    let { to, password, galleryUrl } = body;
 
-    if (!to || !collectionName || !galleryUrl) {
-      return NextResponse.json({ error: "to, collectionName, and galleryUrl are required" }, { status: 400 });
+    if (!to || !collectionName) {
+      return NextResponse.json({ error: "to and collectionName are required" }, { status: 400 });
+    }
+
+    // Auto-generate gallery URL if not provided
+    if (!galleryUrl) {
+      galleryUrl = `https://gigis-concept.vercel.app/gallery/${encodeURIComponent(collectionName)}`;
     }
 
     // Auto-lookup password if not provided
