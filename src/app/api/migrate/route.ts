@@ -39,13 +39,21 @@ export async function GET(req: NextRequest) {
         }
       }
 
-      // Hero carousel images (pages + versions)
-      const heroCarouselCols = `"_order" integer NOT NULL, "_parent_id" integer NOT NULL, "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, "image_id" integer, "alt" varchar, "block_name" varchar, "_uuid" varchar`;
+      // Drop incorrectly typed tables first
+      try {
+        await drizzle.execute(sql.raw(`DROP TABLE IF EXISTS "pages_blocks_hero_carousel_images" CASCADE`));
+        await drizzle.execute(sql.raw(`DROP TABLE IF EXISTS "_pages_v_blocks_hero_carousel_images" CASCADE`));
+        await drizzle.execute(sql.raw(`DROP TABLE IF EXISTS "pages_blocks_gallery_section_photos" CASCADE`));
+        await drizzle.execute(sql.raw(`DROP TABLE IF EXISTS "_pages_v_blocks_gallery_section_photos" CASCADE`));
+      } catch { /* ignore */ }
+
+      // Hero carousel images - id and _parent_id must be varchar to match Payload's schema
+      const heroCarouselCols = `"_order" integer NOT NULL, "_parent_id" varchar NOT NULL, "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(), "image_id" integer, "alt" varchar, "_uuid" varchar`;
       await createTable("pages_blocks_hero_carousel_images", heroCarouselCols);
       await createTable("_pages_v_blocks_hero_carousel_images", heroCarouselCols);
 
-      // Gallery section photos (pages + versions)
-      const galleryPhotosCols = `"_order" integer NOT NULL, "_parent_id" integer NOT NULL, "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY, "image_id" integer, "caption" varchar, "block_name" varchar, "_uuid" varchar`;
+      // Gallery section photos
+      const galleryPhotosCols = `"_order" integer NOT NULL, "_parent_id" varchar NOT NULL, "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(), "image_id" integer, "caption" varchar, "_uuid" varchar`;
       await createTable("pages_blocks_gallery_section_photos", galleryPhotosCols);
       await createTable("_pages_v_blocks_gallery_section_photos", galleryPhotosCols);
 
