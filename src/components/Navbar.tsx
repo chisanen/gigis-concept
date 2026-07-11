@@ -58,14 +58,14 @@ export function Navbar({
           </Link>
 
           {/* Desktop */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-10">
+          <div className="hidden lg:flex items-center gap-8 xl:gap-12">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}
-                className={`text-sm lg:text-[15px] tracking-[0.15em] transition-colors ${pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"}`}>
+                className={`text-base lg:text-[17px] tracking-[0.12em] transition-colors ${pathname === link.href ? "text-brand-700" : "text-brand-900 hover:text-brand-700"}`}>
                 {link.label}
               </Link>
             ))}
-            <Link href={ctaHref} className="border border-brand-900 px-6 py-2.5 text-sm lg:text-[15px] tracking-[0.15em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
+            <Link href={ctaHref} className="border border-brand-900 px-7 py-2.5 text-base lg:text-[17px] tracking-[0.12em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
               {ctaLabel}
             </Link>
           </div>

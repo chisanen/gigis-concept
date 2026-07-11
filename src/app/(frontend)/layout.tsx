@@ -77,7 +77,7 @@ export default async function FrontendLayout({
     ?.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
     ?.map(l => ({ href: l.href, label: l.label }));
   const headerLinks = cmsHeaderLinks && cmsHeaderLinks.length > 0
-    ? (cmsHeaderLinks.some(l => l.href === "/") ? cmsHeaderLinks : [{ href: "/", label: "HOME" }, ...cmsHeaderLinks])
+    ? (cmsHeaderLinks.some(l => l.href === "/") ? cmsHeaderLinks : [{ href: "/", label: "Home" }, ...cmsHeaderLinks])
     : undefined;
 
   const footerLinks = (n?.footerLinks as { label: string; href: string; visible?: boolean; sortOrder?: number }[] | undefined)
