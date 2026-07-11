@@ -18,6 +18,14 @@ export async function GET(req: NextRequest) {
     const db = payload.db as any;
     const drizzle = db.drizzle;
 
+    // Check existing table structure
+    if (action === "inspect" && drizzle) {
+      const { sql } = await import("drizzle-orm");
+      const cols = await drizzle.execute(sql`SELECT column_name, data_type, udt_name FROM information_schema.columns WHERE table_name = 'pages_blocks_hero' ORDER BY ordinal_position`);
+      const arrayTableCols = await drizzle.execute(sql`SELECT column_name, data_type, udt_name FROM information_schema.columns WHERE table_name = 'pages_blocks_steps_steps' ORDER BY ordinal_position`).catch(() => []);
+      return NextResponse.json({ hero_block_cols: cols.rows || cols, steps_array_cols: (arrayTableCols as { rows?: unknown[] }).rows || arrayTableCols });
+    }
+
     if (action === "create-tables" && drizzle) {
       const { sql } = await import("drizzle-orm");
       const created: string[] = [];
