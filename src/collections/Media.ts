@@ -4,6 +4,7 @@ export const Media: CollectionConfig = {
   slug: "media",
   upload: {
     mimeTypes: ["image/*", "video/*"],
+    adminThumbnail: "thumbnail",
     imageSizes: [
       { name: "thumbnail", width: 300, height: 300, position: "centre" },
       { name: "card", width: 600, height: 450, position: "centre" },
@@ -15,6 +16,7 @@ export const Media: CollectionConfig = {
   },
   admin: {
     useAsTitle: "alt",
+    defaultColumns: ["filename", "alt", "kind", "updatedAt"],
     group: "Website",
     description: "Your image and video library. All uploads go here. HOW TO USE: 1) Click 'Create New' or drag files directly into this page to upload. 2) Add a description (alt text) to every image for better Google rankings and accessibility. 3) Choose the type: Photo, Video, or Logo. 4) Once uploaded, images can be selected from any image field on other pages. TIP: Use high-quality images (at least 1600px wide) for best results on the website.",
     components: {
