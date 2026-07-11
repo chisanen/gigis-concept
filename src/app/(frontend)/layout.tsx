@@ -71,11 +71,14 @@ export default async function FrontendLayout({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const s = settings as Record<string, any> | null;
 
-  // Build nav links from CMS
-  const headerLinks = (n?.headerLinks as { label: string; href: string; visible?: boolean; sortOrder?: number }[] | undefined)
+  // Build nav links from CMS, always include HOME
+  const cmsHeaderLinks = (n?.headerLinks as { label: string; href: string; visible?: boolean; sortOrder?: number }[] | undefined)
     ?.filter(l => l.visible !== false)
     ?.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
     ?.map(l => ({ href: l.href, label: l.label }));
+  const headerLinks = cmsHeaderLinks && cmsHeaderLinks.length > 0
+    ? (cmsHeaderLinks.some(l => l.href === "/") ? cmsHeaderLinks : [{ href: "/", label: "HOME" }, ...cmsHeaderLinks])
+    : undefined;
 
   const footerLinks = (n?.footerLinks as { label: string; href: string; visible?: boolean; sortOrder?: number }[] | undefined)
     ?.filter(l => l.visible !== false)
