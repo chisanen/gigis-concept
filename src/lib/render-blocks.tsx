@@ -168,6 +168,11 @@ function CTABlock({ b, contactInfo }: { b: Block; contactInfo?: string }) {
 
 // ── Block: Gallery Section ───────────────────────────────────
 function GallerySectionBlock({ b }: { b: Block }) {
+  // Map CMS photos to Gallery component format
+  const cmsPhotos = (b.photos as { image: unknown; caption?: string }[] | undefined)
+    ?.map(p => ({ src: getMediaUrl(p.image) || "", alt: (p.caption || getMediaAlt(p.image) || "") }))
+    .filter(p => p.src) || [];
+
   return (
     <section className="py-16 sm:py-28 md:py-36 bg-brand-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -175,7 +180,7 @@ function GallerySectionBlock({ b }: { b: Block }) {
           <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-6 uppercase">{b.eyebrow || "Our Work"}</p>
           <h2 className="font-script text-5xl md:text-6xl text-brand-900">{b.heading || "Gallery"}</h2>
         </div>
-        <Gallery />
+        <Gallery items={cmsPhotos.length > 0 ? cmsPhotos : undefined} />
         {b.showFullGalleryLink !== false && (
           <div className="text-center mt-12">
             <Link href="/gallery" className="inline-block border border-brand-900 px-10 py-3.5 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">VIEW FULL GALLERY</Link>

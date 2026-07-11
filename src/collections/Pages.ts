@@ -18,7 +18,16 @@ const HeroBlock: Block = {
     { name: "ctaPrimaryHref", type: "text", defaultValue: "/services", admin: { description: "Where the main button links to" } },
     { name: "ctaSecondaryLabel", type: "text", defaultValue: "INQUIRE", admin: { description: "Text for the secondary button" } },
     { name: "ctaSecondaryHref", type: "text", defaultValue: "/contact", admin: { description: "Where the secondary button links to" } },
-    { name: "backgroundImage", type: "upload", relationTo: "media", admin: { components: { afterInput: ["@/components/admin/AIImageButton#AIImageButton"] }, description: "The large background image for the hero section" } },
+    { name: "backgroundImage", type: "upload", relationTo: "media", admin: { components: { afterInput: ["@/components/admin/AIImageButton#AIImageButton"] }, description: "Single background image (used if no carousel images are added)" } },
+    {
+      name: "carouselImages",
+      type: "array",
+      admin: { description: "Hero slideshow images and videos. Add multiple to create a carousel. Drag to reorder. If empty, default images are used." },
+      fields: [
+        { name: "image", type: "upload", relationTo: "media", required: true, admin: { description: "Upload or choose an image/video" } },
+        { name: "alt", type: "text", admin: { description: "Image description for accessibility" } },
+      ],
+    },
     { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section without deleting it" } },
   ],
 };
@@ -110,6 +119,15 @@ const GalleryBlock: Block = {
     { name: "eyebrow", type: "text", defaultValue: "Our Work", admin: { description: "Small label above the heading" } },
     { name: "heading", type: "text", defaultValue: "Gallery", admin: { description: "Section heading" } },
     { name: "showFullGalleryLink", type: "checkbox", defaultValue: true, admin: { description: "Show a 'View Full Gallery' link below the photos" } },
+    {
+      name: "photos",
+      type: "array",
+      admin: { description: "Gallery photos for this section. Add, remove, or drag to reorder. If empty, default portfolio photos are used." },
+      fields: [
+        { name: "image", type: "upload", relationTo: "media", required: true, admin: { description: "Upload or choose a photo/video" } },
+        { name: "caption", type: "text", admin: { description: "Optional caption" } },
+      ],
+    },
     { name: "isVisible", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide this section without deleting it" } },
   ],
 };
