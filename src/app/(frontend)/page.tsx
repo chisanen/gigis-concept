@@ -344,7 +344,7 @@ export default async function Home() {
             areaServed: { "@type": "GeoCircle", geoMidpoint: { "@type": "GeoCoordinates", latitude: 32.7767, longitude: -96.7970 }, geoRadius: "40000" },
             priceRange: `$${minPrice}–$${maxPrice}`,
             image: "https://gigis-concept.vercel.app/og-image.png",
-            sameAs: ["https://instagram.com/gigisconcept"],
+            sameAs: ["https://www.instagram.com/gigisconcept.ig/"],
             hasOfferCatalog: {
               "@type": "OfferCatalog",
               name: "Services",

@@ -15,11 +15,11 @@ export function InstagramFeed({ widgetId, handle }: Props) {
 
     // Load Elfsight platform script once
     const existing = document.querySelector(
-      'script[src="https://static.elfsight.com/platform/platform.js"]',
+      'script[src="https://elfsightcdn.com/platform.js"]',
     );
     if (!existing) {
       const script = document.createElement("script");
-      script.src = "https://static.elfsight.com/platform/platform.js";
+      script.src = "https://elfsightcdn.com/platform.js";
       script.async = true;
       document.body.appendChild(script);
     }

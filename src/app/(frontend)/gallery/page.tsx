@@ -123,8 +123,8 @@ export default async function GalleryPage() {
     getGalleryPage(),
   ]);
 
-  const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "gigisconcept";
-  const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "";
+  const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "gigisconcept.ig";
+  const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "8f2623a4-4a4b-4cc9-8a87-05698faf659b";
   const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
 
   // Build collections from CMS docs, or fall back to a single "All" collection
