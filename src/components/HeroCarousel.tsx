@@ -18,7 +18,7 @@ function isVideoSlide(slide: HeroSlide): boolean {
 const defaultSlides: HeroSlide[] = [
   { src: "/hero-wedding.png", alt: "Elegant bride and groom on wedding steps" },
   { src: "/hero-champagne.png", alt: "Luxurious champagne tower at reception" },
-  { src: "/hero-nigerian.png", alt: "Nigerian Americans in traditional attire at photo booth" },
+  { src: "/hero-nigerian.png", alt: "Diverse group of friends celebrating at a luxury photo booth" },
   { src: "/hero-kiss.png", alt: "Bride and groom sharing a romantic kiss" },
   { src: "/hero-reception.png", alt: "Opulent wedding reception celebration" },
 ];

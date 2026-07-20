@@ -123,7 +123,7 @@ export default async function GalleryPage() {
     getGalleryPage(),
   ]);
 
-  const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "";
+  const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "gigisconcept";
   const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "";
   const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
 
