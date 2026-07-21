@@ -150,14 +150,29 @@ export function AdminHelpChat() {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;");
 
+    // Convert the light markdown the assistant uses into HTML. Runs on
+    // already-escaped text, so it only produces the tags we add here.
+    const inlineMd = (escaped: string) =>
+      escaped
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/`([^`]+)`/g, "$1")
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+
     // Turn the answer into paragraphs. Blank lines separate paragraphs;
-    // single newlines become line breaks within a paragraph.
+    // single newlines become line breaks within a paragraph. Lines that
+    // start with # are treated as bold sub-headings.
     const bodyHtml = answer
       .split(/\n{2,}/)
       .map((block) => {
         const trimmed = block.trim();
         if (!trimmed) return "";
-        return `<p>${esc(trimmed).replace(/\n/g, "<br/>")}</p>`;
+        const lines = trimmed.split("\n").map((line) => {
+          const escaped = esc(line);
+          const heading = escaped.match(/^#{1,6}\s+(.*)$/);
+          if (heading) return `<strong>${inlineMd(heading[1])}</strong>`;
+          return inlineMd(escaped);
+        });
+        return `<p>${lines.join("<br/>")}</p>`;
       })
       .join("");
 
