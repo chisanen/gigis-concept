@@ -42,7 +42,12 @@ async function getGalleryImages() {
     const payload = await getPayload();
     const result = await payload.find({
       collection: "gallery-images",
-      where: { category: { equals: "public" } },
+      where: {
+        and: [
+          { category: { equals: "public" } },
+          { hidden: { not_equals: true } },
+        ],
+      },
       sort: "sortOrder",
       limit: 200,
       depth: 2,
@@ -126,6 +131,7 @@ export default async function GalleryPage() {
   const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "gigisconcept.ig";
   const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "8f2623a4-4a4b-4cc9-8a87-05698faf659b";
   const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
+  const showGalleryPage = (settings as Record<string, unknown>)?.showGalleryPage as boolean ?? true;
 
   // Build collections from CMS docs, or fall back to a single "All" collection
   const collections: GalleryCollection[] = cmsDocs
@@ -167,6 +173,7 @@ export default async function GalleryPage() {
       )}
 
       {/* Public Gallery with Tabs */}
+      {showGalleryPage && (
       <section className="py-24 md:py-32 bg-brand-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
@@ -176,6 +183,7 @@ export default async function GalleryPage() {
           <GalleryTabs collections={collections} />
         </div>
       </section>
+      )}
 
       {/* Private Gallery */}
       <section className="py-24 md:py-32 bg-brand-100">

@@ -86,5 +86,11 @@ export const GalleryImages: CollectionConfig = {
       defaultValue: 0,
       admin: { description: "Controls display order — lower numbers appear first" },
     },
+    {
+      name: "hidden",
+      type: "checkbox",
+      defaultValue: false,
+      admin: { description: "Check to hide this photo from the public gallery. To hide a whole collection, check this on every photo in that collection." },
+    },
   ],
 };

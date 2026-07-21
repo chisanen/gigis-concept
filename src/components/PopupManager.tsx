@@ -21,17 +21,25 @@ interface PopupData {
   endsAt?: string;
 }
 
+// "Once per session" uses sessionStorage so it resets when the browser is
+// closed and reopened. "Once per day" uses localStorage so the 24h window
+// survives across sessions. "Every visit" is never suppressed.
+function storeFor(popup: PopupData): Storage {
+  return popup.frequency === "session" ? sessionStorage : localStorage;
+}
+
 function shouldShow(popup: PopupData): boolean {
   const now = Date.now();
   if (popup.startsAt && new Date(popup.startsAt).getTime() > now) return false;
   if (popup.endsAt && new Date(popup.endsAt).getTime() < now) return false;
 
+  if (popup.frequency === "always") return true;
+
   const key = `popup-${popup.id}-shown`;
-  const lastShown = localStorage.getItem(key);
+  const lastShown = storeFor(popup).getItem(key);
   if (!lastShown) return true;
 
-  if (popup.frequency === "always") return true;
-  if (popup.frequency === "session") return false; // shown this session
+  if (popup.frequency === "session") return false; // already shown this session
   if (popup.frequency === "day") {
     const diff = now - parseInt(lastShown, 10);
     return diff > 86400000; // 24 hours
@@ -40,7 +48,8 @@ function shouldShow(popup: PopupData): boolean {
 }
 
 function markShown(popup: PopupData) {
-  localStorage.setItem(`popup-${popup.id}-shown`, String(Date.now()));
+  if (popup.frequency === "always") return;
+  storeFor(popup).setItem(`popup-${popup.id}-shown`, String(Date.now()));
 }
 
 export function PopupManager() {

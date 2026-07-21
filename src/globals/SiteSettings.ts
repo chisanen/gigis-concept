@@ -50,6 +50,13 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: "Display",
+          fields: [
+            { name: "showHomeGallery", type: "checkbox", defaultValue: true, admin: { description: "Show the gallery section on your Home page. Uncheck to hide it." } },
+            { name: "showGalleryPage", type: "checkbox", defaultValue: true, admin: { description: "Show the photo gallery on your Gallery page. Uncheck to hide it (the Instagram feed and private client access still show)." } },
+          ],
+        },
+        {
           label: "SEO",
           fields: [
             { name: "defaultMetaTitle", type: "text", defaultValue: "Gigi's Concept | Content Creation & Luxury Photo Booth — Dallas TX", admin: { description: "Default page title for search engines — shows in Google results" } },

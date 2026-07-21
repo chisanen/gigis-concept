@@ -79,6 +79,7 @@ export default async function Home() {
   const ctaBlock = getBlock(blocks, "cta");
   const galleryBlock = getBlock(blocks, "gallerySection");
   const contactBlock = getBlock(blocks, "contactSection");
+  const showHomeGallery = ((settings as Record<string, unknown>)?.showHomeGallery ?? true) as boolean;
 
   // Image URLs from CMS or fallback to static files
   const aboutImage = (about && getMediaUrl(about.image)) || "/gigi-portrait.png";
@@ -228,6 +229,7 @@ export default async function Home() {
       </section>
 
       {/* ═══ 7 · GALLERY ═══ */}
+      {showHomeGallery && (
       <section className="py-16 sm:py-28 md:py-36 bg-brand-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
@@ -240,6 +242,7 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══ 8 · CONTACT US ═══ */}
       <section id="contact" className="py-16 sm:py-28 md:py-36 bg-brand-200">
