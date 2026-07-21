@@ -1,11 +1,44 @@
 "use client";
 
+import { Fragment } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface ChatMessage {
   role: "user" | "assistant";
   text: string;
+}
+
+// Render the light markdown the assistant uses (bold, # headings) as real
+// formatting instead of showing literal ** and # characters in the bubble.
+function renderInlineNodes(text: string, keyPrefix: string) {
+  const cleaned = text
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  return cleaned.split(/\*\*([^*]+)\*\*/g).map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={`${keyPrefix}-b-${i}`}>{part}</strong>
+    ) : (
+      <Fragment key={`${keyPrefix}-s-${i}`}>{part}</Fragment>
+    )
+  );
+}
+
+function renderRichText(text: string) {
+  const lines = text.split("\n");
+  return lines.map((line, i) => {
+    const heading = line.match(/^#{1,6}\s+(.*)$/);
+    return (
+      <Fragment key={i}>
+        {heading ? (
+          <strong>{renderInlineNodes(heading[1], `h-${i}`)}</strong>
+        ) : (
+          renderInlineNodes(line, `l-${i}`)
+        )}
+        {i < lines.length - 1 && <br />}
+      </Fragment>
+    );
+  });
 }
 
 const STORAGE_KEY = "gigi-admin-help-chat";
@@ -593,12 +626,7 @@ export function AdminHelpChat() {
                   }}
                 >
                   <div style={{ ...assistantBubbleStyle, maxWidth: "100%" }}>
-                    {msg.text.split("\n").map((line, i) => (
-                      <span key={i}>
-                        {line}
-                        {i < msg.text.split("\n").length - 1 && <br />}
-                      </span>
-                    ))}
+                    {renderRichText(msg.text)}
                   </div>
                   <button
                     type="button"
