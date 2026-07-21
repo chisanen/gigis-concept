@@ -253,30 +253,48 @@ export function AdminHelpChat() {
 </body>
 </html>`;
 
-    const win = window.open("", "_blank", "width=800,height=900");
-    if (!win) {
-      alert(
-        "Please allow pop-ups for this site to download the PDF, then try again."
-      );
+    // Print via a hidden iframe. This avoids pop-up blockers (no new window)
+    // and reliably triggers the browser's Save-as-PDF dialog.
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    iframe.setAttribute("aria-hidden", "true");
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow?.document;
+    if (!doc) {
+      document.body.removeChild(iframe);
       return;
     }
-    win.document.open();
-    win.document.write(html);
-    win.document.close();
-    // Give the new window a moment to render before printing.
-    win.onload = () => {
-      win.focus();
-      win.print();
-    };
-    // Fallback in case onload does not fire.
-    setTimeout(() => {
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    let printed = false;
+    const triggerPrint = () => {
+      if (printed) return;
+      printed = true;
       try {
-        win.focus();
-        win.print();
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
       } catch {
         // Ignore
       }
-    }, 500);
+      // Remove the iframe after the print dialog has had time to open.
+      setTimeout(() => {
+        if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+      }, 1000);
+    };
+
+    if (iframe.contentWindow) {
+      iframe.contentWindow.onload = triggerPrint;
+    }
+    // Fallback in case onload does not fire for a written document.
+    setTimeout(triggerPrint, 400);
   }
 
   // --- Styles ---
