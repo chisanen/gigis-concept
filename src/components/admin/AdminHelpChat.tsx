@@ -130,6 +130,155 @@ export function AdminHelpChat() {
     }
   }
 
+  // Find the question that prompted a given assistant answer (the nearest
+  // preceding user message), so the PDF can be titled with it.
+  function questionForAnswer(index: number): string {
+    for (let i = index - 1; i >= 0; i--) {
+      if (messages[i].role === "user") return messages[i].text;
+    }
+    return "Your Question";
+  }
+
+  // Generate and download a branded PDF of a single answer using the
+  // browser's native print-to-PDF. No server dependency required, so this
+  // works end to end on Vercel. Gigi picks "Save as PDF" in the dialog.
+  function downloadPdf(question: string, answer: string) {
+    const esc = (s: string) =>
+      s
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+
+    // Turn the answer into paragraphs. Blank lines separate paragraphs;
+    // single newlines become line breaks within a paragraph.
+    const bodyHtml = answer
+      .split(/\n{2,}/)
+      .map((block) => {
+        const trimmed = block.trim();
+        if (!trimmed) return "";
+        return `<p>${esc(trimmed).replace(/\n/g, "<br/>")}</p>`;
+      })
+      .join("");
+
+    const today = new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const safeTitle = esc(question);
+    const fileName = question
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 50) || "how-to-guide";
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>${fileName}</title>
+<style>
+  @page { margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #3A2D28;
+    background: #FFFFFF;
+    line-height: 1.65;
+  }
+  .cover {
+    background: #3A2D28;
+    color: #F1EDE6;
+    padding: 56px 56px 48px;
+  }
+  .brand {
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #D1C7BD;
+    margin: 0 0 20px;
+  }
+  .cover h1 {
+    font-size: 30px;
+    line-height: 1.25;
+    margin: 0;
+    font-weight: 600;
+  }
+  .cover .meta {
+    margin-top: 24px;
+    font-size: 12px;
+    color: #A48374;
+    letter-spacing: 0.04em;
+  }
+  .content { padding: 44px 56px 64px; }
+  .content .label {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #76220B;
+    margin: 0 0 14px;
+    font-weight: 700;
+  }
+  .content p {
+    font-size: 14px;
+    margin: 0 0 16px;
+    color: #3A2D28;
+  }
+  .footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #D1C7BD;
+    font-size: 11px;
+    color: #A48374;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+  <div class="cover">
+    <p class="brand">Gigi's Concept &middot; Admin How-To</p>
+    <h1>${safeTitle}</h1>
+    <p class="meta">Generated ${today}</p>
+  </div>
+  <div class="content">
+    <p class="label">Step by step</p>
+    ${bodyHtml}
+    <div class="footer">
+      Gigi's Concept Admin Help &middot; Keep this guide handy or reprint it anytime from the Help Assistant.
+    </div>
+  </div>
+</body>
+</html>`;
+
+    const win = window.open("", "_blank", "width=800,height=900");
+    if (!win) {
+      alert(
+        "Please allow pop-ups for this site to download the PDF, then try again."
+      );
+      return;
+    }
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+    // Give the new window a moment to render before printing.
+    win.onload = () => {
+      win.focus();
+      win.print();
+    };
+    // Fallback in case onload does not fire.
+    setTimeout(() => {
+      try {
+        win.focus();
+        win.print();
+      } catch {
+        // Ignore
+      }
+    }, 500);
+  }
+
   // --- Styles ---
 
   const fabStyle: React.CSSProperties = {
@@ -227,6 +376,22 @@ export function AdminHelpChat() {
     lineHeight: 1.5,
     wordBreak: "break-word",
     border: "1px solid #D1C7BD",
+  };
+
+  const pdfButtonStyle: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    padding: "5px 12px",
+    borderRadius: 14,
+    border: "1px solid #D1C7BD",
+    background: "#FFFFFF",
+    color: "#76220B",
+    fontSize: 11,
+    fontWeight: 600,
+    letterSpacing: "0.03em",
+    cursor: "pointer",
+    transition: "background 0.2s, border-color 0.2s",
   };
 
   const chipStyle: React.CSSProperties = {
@@ -372,21 +537,61 @@ export function AdminHelpChat() {
             )}
 
             {/* Chat messages */}
-            {messages.map((msg, idx) => (
-              <div
-                key={`${msg.role}-${idx}`}
-                style={
-                  msg.role === "user" ? userBubbleStyle : assistantBubbleStyle
-                }
-              >
-                {msg.text.split("\n").map((line, i) => (
-                  <span key={i}>
-                    {line}
-                    {i < msg.text.split("\n").length - 1 && <br />}
-                  </span>
-                ))}
-              </div>
-            ))}
+            {messages.map((msg, idx) =>
+              msg.role === "user" ? (
+                <div key={`${msg.role}-${idx}`} style={userBubbleStyle}>
+                  {msg.text.split("\n").map((line, i) => (
+                    <span key={i}>
+                      {line}
+                      {i < msg.text.split("\n").length - 1 && <br />}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <div
+                  key={`${msg.role}-${idx}`}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    gap: 6,
+                    maxWidth: "85%",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  <div style={{ ...assistantBubbleStyle, maxWidth: "100%" }}>
+                    {msg.text.split("\n").map((line, i) => (
+                      <span key={i}>
+                        {line}
+                        {i < msg.text.split("\n").length - 1 && <br />}
+                      </span>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      downloadPdf(questionForAnswer(idx), msg.text)
+                    }
+                    style={pdfButtonStyle}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "#F1EDE6";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "#76220B";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "#FFFFFF";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "#D1C7BD";
+                    }}
+                    aria-label="Download this answer as a PDF guide"
+                  >
+                    &#8595; Download PDF guide
+                  </button>
+                </div>
+              )
+            )}
 
             {/* Loading indicator */}
             {isLoading && (
