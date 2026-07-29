@@ -30,7 +30,7 @@ export function Footer({
   links,
   logoUrl,
   tagline = "Editorial content and a timeless photo-booth experience, quietly crafted, beautifully delivered.",
-  contactEmail = "hello@gigisconcept.com",
+  contactEmail = "hello@gigisconceptstudio.com",
   instagramUrl = "https://instagram.com",
   tiktokUrl = "https://tiktok.com",
 }: FooterProps) {

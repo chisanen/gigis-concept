@@ -110,8 +110,8 @@ function TwoWaysBlock({ b }: { b: Block }) {
         </div>
         <div className="grid md:grid-cols-2 gap-10">
           {[
-            { img: card1Image, title: b.card1Title || "Content Creation", desc: b.card1Description || "Editorial content days for founders, brands, and tastemakers.", link: "/contact" },
-            { img: card2Image, title: b.card2Title || "Photo Booth", desc: b.card2Description || "A slow, cinematic take on the classic photo booth.", link: "/contact" },
+            { img: card1Image, title: b.card1Title || "Content Creation", desc: b.card1Description || "Editorial content days for founders, brands, and tastemakers.", link: "/services#how-to-book" },
+            { img: card2Image, title: b.card2Title || "Photo Booth", desc: b.card2Description || "A slow, cinematic take on the classic photo booth.", link: "/services#how-to-book" },
           ].map((card, i) => (
             <div key={i} className="group text-center flex flex-col">
               <div className="relative aspect-[4/3] overflow-hidden mb-8">
@@ -216,7 +216,7 @@ function ContactSectionBlock({ b, contactEmail }: { b: Block; contactEmail?: str
 function StepsBlock({ b }: { b: Block }) {
   const steps = (b.steps as { title: string; description: string }[] | undefined) || [];
   return (
-    <section className="py-14 sm:py-24 md:py-32 bg-white">
+    <section id="how-to-book" className="scroll-mt-24 py-14 sm:py-24 md:py-32 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="font-script text-5xl md:text-6xl text-brand-900 mb-4">{b.heading || "How to book"}</h2>
