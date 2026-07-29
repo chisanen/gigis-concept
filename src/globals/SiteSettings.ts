@@ -16,7 +16,7 @@ export const SiteSettings: GlobalConfig = {
           fields: [
             { name: "siteName", type: "text", defaultValue: "Gigi's Concept", admin: { description: "Your business name — shown in the browser tab and across the site" } },
             { name: "tagline", type: "text", defaultValue: "Content Creation & Luxury Photo Booth", admin: { description: "A short tagline that appears under your business name" } },
-            { name: "contactEmail", type: "email", defaultValue: "hello@gigisconcept.com", admin: { description: "Your main business email — shown on the website and used for notifications" } },
+            { name: "contactEmail", type: "email", defaultValue: "hello@gigisconceptstudio.com", admin: { description: "Your main business email — shown on the website and used for notifications" } },
             { name: "phone", type: "text", admin: { description: "Your business phone number, if you want it displayed on the site" } },
           ],
         },

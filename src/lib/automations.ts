@@ -17,7 +17,7 @@ export async function fireAutomation(trigger: string, data: Record<string, unkno
           subject: "Thank you for your inquiry — Gigi's Concept",
           html: inquiryAutoReplyHtml(firstName),
         });
-        const ownerEmail = process.env.EMAIL_REPLY_TO || "hello@gigisconcept.com";
+        const ownerEmail = process.env.EMAIL_REPLY_TO || "hello@gigisconceptstudio.com";
         await sendEmail({
           to: ownerEmail,
           subject: `New Lead: ${firstName} ${data.lastName || ""}`,

@@ -18,7 +18,7 @@ async function getPublishedPosts() {
   }
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://gigisconcept.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://www.gigisconceptstudio.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [

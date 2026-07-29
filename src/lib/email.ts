@@ -3,7 +3,7 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = process.env.EMAIL_FROM || "Gigi's Concept <onboarding@resend.dev>";
-const REPLY_TO = process.env.EMAIL_REPLY_TO || "hello@gigisconcept.com";
+const REPLY_TO = process.env.EMAIL_REPLY_TO || "hello@gigisconceptstudio.com";
 
 export async function sendEmail({
   to,
@@ -60,7 +60,7 @@ export function inquiryAutoReplyHtml(firstName: string) {
       <p style="color: #3A2D28; font-size: 15px; line-height: 1.8; font-style: italic;">— Gigi</p>
       <hr style="border: none; border-top: 1px solid #D1C7BD; margin: 30px 0;" />
       <p style="color: #A48374; font-size: 12px; text-align: center;">
-        Gigi's Concept · Dallas, TX · <a href="https://gigis-concept.vercel.app" style="color: #A48374;">gigisconcept.com</a>
+        Gigi's Concept · Dallas, TX · <a href="https://www.gigisconceptstudio.com" style="color: #A48374;">gigisconceptstudio.com</a>
       </p>
     </div>
   `;

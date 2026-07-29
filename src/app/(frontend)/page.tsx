@@ -170,7 +170,7 @@ export default async function Home() {
               <p className="text-[13px] text-brand-600 leading-[1.9] mb-8 max-w-xs mx-auto">
                 {(twoWays?.card1Description as string) || "Editorial content days for founders, brands, and tastemakers."}
               </p>
-              <Link href={(twoWays?.card1Link as string) || "/services"} className="inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">LEARN MORE</Link>
+              <Link href="/contact" className="inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">LEARN MORE</Link>
             </div>
             <div className="group text-center">
               <div className="relative aspect-[4/3] overflow-hidden mb-8">

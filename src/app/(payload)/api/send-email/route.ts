@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       }
 
       case "owner_notification": {
-        const ownerEmail = process.env.EMAIL_REPLY_TO || "hello@gigisconcept.com";
+        const ownerEmail = process.env.EMAIL_REPLY_TO || "hello@gigisconceptstudio.com";
         const result = await sendEmail({
           to: ownerEmail,
           subject: `New Inquiry from ${data.firstName} ${data.lastName}`,

@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
         </p>
         <hr style="border: none; border-top: 1px solid #D1C7BD; margin: 30px 0;" />
         <p style="color: #A48374; font-size: 12px; text-align: center;">
-          Gigi's Concept · Dallas, TX · <a href="https://gigis-concept.vercel.app" style="color: #A48374;">gigisconcept.com</a>
+          Gigi's Concept · Dallas, TX · <a href="https://www.gigisconceptstudio.com" style="color: #A48374;">gigisconceptstudio.com</a>
         </p>
       </div>
     `;

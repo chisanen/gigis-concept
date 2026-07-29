@@ -39,13 +39,11 @@ export function QuoteCalculator({
   const bPkg = boothPackages.find(p => p.id === boothPkgId);
   const cPkg = contentPackages.find(p => p.id === contentPkgId);
 
-  // Calculate total in cents
+  // Calculate total in cents. Content creation is custom-quoted, so it is
+  // intentionally excluded from the numeric estimate.
   let totalCents = 0;
   if (wantsBooth && bPkg) {
     totalCents += bPkg.isHourly ? bPkg.priceCents * Math.max(hours, bPkg.minimumHours || 1) : bPkg.priceCents;
-  }
-  if (wantsContent && cPkg) {
-    totalCents += cPkg.isHourly ? cPkg.priceCents * Math.max(hours, cPkg.minimumHours || 1) : cPkg.priceCents;
   }
   Object.entries(addonQty).forEach(([id, qty]) => {
     if (qty <= 0) return;
@@ -103,8 +101,14 @@ export function QuoteCalculator({
         <p className="text-[14px] text-brand-600 mb-2">Thank you, {name}.</p>
         <p className="text-[14px] text-brand-600 mb-8">We&apos;ll send you a detailed proposal within 24 hours.</p>
         <div className="bg-brand-100 inline-block px-8 py-4 rounded-lg">
-          <p className="text-3xl font-light text-brand-900">${total}</p>
-          <p className="text-[12px] text-brand-500">{depositPercent}% deposit: ${deposit}</p>
+          {total > 0 ? (
+            <>
+              <p className="text-3xl font-light text-brand-900">${total}</p>
+              <p className="text-[12px] text-brand-500">{depositPercent}% deposit: ${deposit}</p>
+            </>
+          ) : (
+            <p className="text-lg font-light text-brand-900 italic">Custom quote in progress</p>
+          )}
         </div>
         <button onClick={() => { setSubmitted(false); setBoothPkgId(""); setContentPkgId(""); setAddonQty({}); setName(""); setEmail(""); setPhone(""); setDescription(""); setWantsBooth(false); setWantsContent(false); }}
           className="block mx-auto mt-8 border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">
@@ -114,7 +118,7 @@ export function QuoteCalculator({
     );
   }
 
-  function renderPackagePicker(pkgList: PricingPackage[], selectedId: string, setSelected: (id: string) => void, label: string) {
+  function renderPackagePicker(pkgList: PricingPackage[], selectedId: string, setSelected: (id: string) => void, label: string, hidePrice = false) {
     return (
       <div>
         <p className="text-[10px] tracking-[0.15em] text-brand-500 uppercase mb-3">{label}</p>
@@ -127,8 +131,14 @@ export function QuoteCalculator({
                 <p className="text-[11px] text-brand-500 mt-1">{p.shortDescription || p.subtitle || ""}</p>
               </div>
               <div className="text-right ml-4">
-                <p className="text-lg text-brand-900">{p.priceDisplay}</p>
-                <p className="text-[10px] text-brand-500">{p.priceUnit || ""}</p>
+                {hidePrice ? (
+                  <p className="text-[11px] text-brand-500 italic">Custom quote</p>
+                ) : (
+                  <>
+                    <p className="text-lg text-brand-900">{p.priceDisplay}</p>
+                    <p className="text-[10px] text-brand-500">{p.priceUnit || ""}</p>
+                  </>
+                )}
                 {p.badge && <span className="inline-block mt-1 text-[9px] bg-brand-900 text-white px-2 py-0.5 rounded-full">{p.badge}</span>}
               </div>
             </div>
@@ -205,7 +215,7 @@ export function QuoteCalculator({
 
           {wantsContent && (
             <div>
-              {renderPackagePicker(contentPackages, contentPkgId, setContentPkgId, "Content Creation Package")}
+              {renderPackagePicker(contentPackages, contentPkgId, setContentPkgId, "Content Creation Package", true)}
               {/* Hours for hourly content packages */}
               {cPkg && cPkg.isHourly && (
                 <div className="mt-3 flex items-center gap-3">
@@ -242,8 +252,8 @@ export function QuoteCalculator({
                     )}
                     {wantsContent && cPkg && (
                       <div className="flex justify-between">
-                        <span className="text-brand-900">{cPkg.name}{cPkg.isHourly ? ` (${hours}hrs)` : ""}</span>
-                        <span className="font-medium">${Math.round((cPkg.isHourly ? cPkg.priceCents * Math.max(hours, cPkg.minimumHours || 1) : cPkg.priceCents) / 100)}</span>
+                        <span className="text-brand-900">{cPkg.name}</span>
+                        <span className="text-[12px] text-brand-500 italic">Custom quote</span>
                       </div>
                     )}
                     {Object.entries(addonQty).filter(([,q]) => q > 0).map(([id, qty]) => {
@@ -254,8 +264,17 @@ export function QuoteCalculator({
                     })}
                   </div>
                   <div className="border-t border-brand-200 pt-3">
-                    <div className="flex justify-between text-[16px] font-medium text-brand-900"><span>Estimated Total</span><span>${total}</span></div>
-                    <div className="flex justify-between text-[12px] text-brand-500 mt-1"><span>{depositPercent}% Deposit to Book</span><span>${deposit}</span></div>
+                    {total > 0 ? (
+                      <>
+                        <div className="flex justify-between text-[16px] font-medium text-brand-900"><span>Estimated Total</span><span>${total}</span></div>
+                        <div className="flex justify-between text-[12px] text-brand-500 mt-1"><span>{depositPercent}% Deposit to Book</span><span>${deposit}</span></div>
+                      </>
+                    ) : (
+                      <div className="flex justify-between text-[16px] font-medium text-brand-900"><span>Estimated Total</span><span className="text-[13px] text-brand-500 italic">Custom quote</span></div>
+                    )}
+                    {wantsContent && contentPkgId && (
+                      <p className="text-[11px] text-brand-500 italic mt-3">Content creation is quoted separately. We&apos;ll include your custom pricing in the proposal.</p>
+                    )}
                   </div>
                 </>
               )}

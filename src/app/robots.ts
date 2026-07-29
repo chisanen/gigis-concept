@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/admin/",
     },
-    sitemap: "https://gigisconcept.com/sitemap.xml",
+    sitemap: "https://www.gigisconceptstudio.com/sitemap.xml",
   };
 }

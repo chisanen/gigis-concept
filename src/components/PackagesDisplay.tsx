@@ -58,7 +58,8 @@ async function getData() {
 export async function PackagesDisplay({ service }: { service: "content" | "booth" }) {
   const { packages, addOns } = await getData();
 
-  const category = service === "content" ? "content_creation" : "photo_booth";
+  const isContent = service === "content";
+  const category = isContent ? "content_creation" : "photo_booth";
   const currentPkgs = packages.filter(p => p.category === category);
   const currentAddOns = addOns.filter(a => a.appliesTo === category || a.appliesTo === "all");
 
@@ -87,14 +88,27 @@ export async function PackagesDisplay({ service }: { service: "content" | "booth
               ))}
             </div>
             <div className={`border-t pt-6 ${pkg.isFeatured ? "border-brand-700/30" : "border-brand-200"}`}>
-              <span className={`text-3xl font-light ${pkg.isFeatured ? "text-white" : "text-brand-900"}`}>{pkg.priceDisplay}</span>
-              <span className={`text-xs tracking-[0.1em] ml-1 ${pkg.isFeatured ? "text-brand-500" : "text-brand-600"}`}>{pkg.priceUnit}</span>
+              {isContent ? (
+                <Link
+                  href="/contact"
+                  className={`inline-block px-6 py-2.5 text-[10px] tracking-[0.2em] transition-colors ${
+                    pkg.isFeatured ? "bg-white text-brand-900 hover:bg-brand-100" : "bg-brand-900 text-white hover:bg-brand-700"
+                  }`}
+                >
+                  INQUIRE FOR PRICING
+                </Link>
+              ) : (
+                <>
+                  <span className={`text-3xl font-light ${pkg.isFeatured ? "text-white" : "text-brand-900"}`}>{pkg.priceDisplay}</span>
+                  <span className={`text-xs tracking-[0.1em] ml-1 ${pkg.isFeatured ? "text-brand-500" : "text-brand-600"}`}>{pkg.priceUnit}</span>
+                </>
+              )}
             </div>
           </div>
         ))}
       </div>
 
-      {currentAddOns.length > 0 && (
+      {!isContent && currentAddOns.length > 0 && (
         <div className="mt-10 bg-white border border-brand-200 p-8">
           <h3 className="text-sm tracking-[0.15em] text-brand-900 uppercase mb-6 font-medium">Add-ons</h3>
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
