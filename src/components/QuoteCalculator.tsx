@@ -71,10 +71,14 @@ export function QuoteCalculator({
     if (wantsBooth && bPkg) services.push(bPkg.name);
     if (wantsContent && cPkg) services.push(cPkg.name);
 
+    const leadService = wantsBooth && wantsContent ? "both" : wantsBooth ? "photo_booth" : "content";
+
     const data = {
       firstName: name.split(" ")[0] || name,
-      lastName: name.split(" ").slice(1).join(" ") || "",
-      email, phone, eventDate,
+      lastName: name.split(" ").slice(1).join(" ") || "(none)",
+      email,
+      phone: phone || "Not provided",
+      eventDate: eventDate || "Not specified",
       eventLocation: "TBD",
       eventType: eventType || "Not specified",
       serviceRequired: [wantsBooth && "Photo Booth", wantsContent && "Content Creation"].filter(Boolean).join(" + ") || "TBD",
@@ -85,9 +89,9 @@ export function QuoteCalculator({
 
     await Promise.all([
       fetch("/api/inquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }),
-      fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...data, stage: "new", source: "website" }) }),
+      fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ firstName: data.firstName, lastName: data.lastName, email, phone: phone || undefined, eventDate: eventDate || undefined, eventLocation: "TBD", eventType: eventType || "Not specified", serviceRequired: leadService, heardAbout: "Quote Builder", message: data.message, stage: "new", source: "website", valueCents: total > 0 ? total * 100 : undefined }) }),
       fetch("/api/send-email", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "inquiry_auto_reply", data: { email, firstName: data.firstName } }) }),
-      fetch("/api/send-email", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "owner_notification", data: { Name: name, Email: email, Phone: phone, "Event Date": eventDate, "Event Type": eventType, Service: data.serviceRequired, Packages: services.join(" + "), "Estimated Total": `$${total}`, [`${depositPercent}% Deposit`]: `$${deposit}`, Description: description } }) }),
+      fetch("/api/send-email", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "owner_notification", data: { Name: name, Email: email, Phone: phone || "Not provided", "Event Date": eventDate || "Not specified", "Event Type": eventType, Service: data.serviceRequired, Packages: services.join(" + "), "Estimated Total": `$${total}`, [`${depositPercent}% Deposit`]: `$${deposit}`, Description: description } }) }),
     ]).catch(() => {});
 
     setSubmitting(false);

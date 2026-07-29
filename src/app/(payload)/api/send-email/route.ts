@@ -17,9 +17,13 @@ export async function POST(request: NextRequest) {
 
       case "owner_notification": {
         const ownerEmail = process.env.EMAIL_REPLY_TO || "hello@gigisconceptstudio.com";
+        const who =
+          data.Name ||
+          [data.firstName, data.lastName].filter(Boolean).join(" ") ||
+          "a new client";
         const result = await sendEmail({
           to: ownerEmail,
-          subject: `New Inquiry from ${data.firstName} ${data.lastName}`,
+          subject: `New Inquiry from ${who}`,
           html: ownerNotificationHtml(data),
         });
         return NextResponse.json(result);
