@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // Auto-generate gallery URL if not provided
     if (!galleryUrl) {
-      galleryUrl = `https://gigis-concept.vercel.app/gallery/${encodeURIComponent(collectionName)}`;
+      galleryUrl = `https://www.gigisconceptstudio.com/gallery/${encodeURIComponent(collectionName)}`;
     }
 
     // Auto-lookup password if not provided

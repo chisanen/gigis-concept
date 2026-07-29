@@ -86,7 +86,7 @@ export async function fireAutomation(trigger: string, data: Record<string, unkno
               <h1 style="font-size: 24px; color: #3A2D28; font-weight: 300; letter-spacing: 0.1em; text-align: center;">GIGI'S CONCEPT</h1>
               <p style="color: #3A2D28;">Hi ${name},</p>
               <p style="color: #5C463B; line-height: 1.8;">We've received your payment of $${((amount || 0) / 100).toFixed(2)}. Thank you!</p>
-              <p style="color: #5C463B; line-height: 1.8;">View your booking details in your <a href="https://gigis-concept.vercel.app/portal" style="color: #A48374;">Client Portal</a>.</p>
+              <p style="color: #5C463B; line-height: 1.8;">View your booking details in your <a href="https://www.gigisconceptstudio.com/portal" style="color: #A48374;">Client Portal</a>.</p>
               <p style="color: #3A2D28; font-style: italic;">— Gigi</p>
             </div>
           `,

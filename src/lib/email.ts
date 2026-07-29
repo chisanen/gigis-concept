@@ -51,8 +51,8 @@ export function inquiryAutoReplyHtml(firstName: string) {
       </p>
       <p style="color: #5C463B; font-size: 15px; line-height: 1.8;">
         We'll review your details and get back to you within 24 hours with a custom quote. In the meantime, feel free to browse our
-        <a href="https://gigis-concept.vercel.app/gallery" style="color: #A48374;">gallery</a> or check out our
-        <a href="https://gigis-concept.vercel.app/pricing" style="color: #A48374;">packages</a>.
+        <a href="https://www.gigisconceptstudio.com/gallery" style="color: #A48374;">gallery</a> or check out our
+        <a href="https://www.gigisconceptstudio.com/pricing" style="color: #A48374;">packages</a>.
       </p>
       <p style="color: #5C463B; font-size: 15px; line-height: 1.8;">
         Looking forward to creating something beautiful together!
@@ -79,7 +79,7 @@ export function ownerNotificationHtml(data: Record<string, string>) {
         `).join("")}
       </table>
       <p style="margin-top: 20px;">
-        <a href="https://gigis-concept.vercel.app/admin/collections/inquiries" style="color: #A48374;">View in Admin →</a>
+        <a href="https://www.gigisconceptstudio.com/admin/collections/inquiries" style="color: #A48374;">View in Admin →</a>
       </p>
     </div>
   `;
@@ -117,7 +117,7 @@ export function reviewRequestHtml(name: string) {
         Thank you for choosing Gigi's Concept for your event! We'd love to hear about your experience.
       </p>
       <div style="text-align: center; margin: 30px 0;">
-        <a href="https://gigis-concept.vercel.app/review" style="display: inline-block; padding: 14px 40px; background: #3A2D28; color: #F1EDE6; text-decoration: none; font-size: 12px; letter-spacing: 0.15em; border-radius: 999px;">
+        <a href="https://www.gigisconceptstudio.com/review" style="display: inline-block; padding: 14px 40px; background: #3A2D28; color: #F1EDE6; text-decoration: none; font-size: 12px; letter-spacing: 0.15em; border-radius: 999px;">
           LEAVE A REVIEW
         </a>
       </div>
