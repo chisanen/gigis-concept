@@ -110,16 +110,16 @@ function TwoWaysBlock({ b }: { b: Block }) {
         </div>
         <div className="grid md:grid-cols-2 gap-10">
           {[
-            { img: card1Image, title: b.card1Title || "Content Creation", desc: b.card1Description || "Editorial content days for founders, brands, and tastemakers.", link: b.card1Link || "/services" },
-            { img: card2Image, title: b.card2Title || "Photo Booth", desc: b.card2Description || "A slow, cinematic take on the classic photo booth.", link: b.card2Link || "/services" },
+            { img: card1Image, title: b.card1Title || "Content Creation", desc: b.card1Description || "Editorial content days for founders, brands, and tastemakers.", link: "/contact" },
+            { img: card2Image, title: b.card2Title || "Photo Booth", desc: b.card2Description || "A slow, cinematic take on the classic photo booth.", link: "/contact" },
           ].map((card, i) => (
-            <div key={i} className="group text-center">
+            <div key={i} className="group text-center flex flex-col">
               <div className="relative aspect-[4/3] overflow-hidden mb-8">
                 <Image src={card.img} alt={card.title} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
               <h3 className="font-script text-3xl text-brand-900 mb-4">{card.title}</h3>
               <p className="text-[13px] text-brand-600 leading-[1.9] mb-8 max-w-xs mx-auto">{card.desc}</p>
-              <Link href={card.link} className="inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">LEARN MORE</Link>
+              <Link href={card.link} className="mt-auto self-center inline-block border border-brand-900 px-8 py-3 text-[10px] tracking-[0.25em] text-brand-900 hover:bg-brand-900 hover:text-white transition-all">LEARN MORE</Link>
             </div>
           ))}
         </div>
