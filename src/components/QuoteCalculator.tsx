@@ -139,7 +139,7 @@ export function QuoteCalculator({
                     <p className="text-[10px] text-brand-500">{p.priceUnit || ""}</p>
                   </>
                 )}
-                {p.badge && <span className="inline-block mt-1 text-[9px] bg-brand-900 text-white px-2 py-0.5 rounded-full">{p.badge}</span>}
+                {p.badge && <span className="inline-block mt-1 text-[9px] bg-brand-900 text-white px-2 py-0.5 rounded-full whitespace-nowrap">{p.badge}</span>}
               </div>
             </div>
           </button>

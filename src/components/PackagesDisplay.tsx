@@ -69,7 +69,7 @@ export async function PackagesDisplay({ service }: { service: "content" | "booth
         {currentPkgs.map((pkg) => (
           <div
             key={pkg.id}
-            className={`p-8 md:p-10 relative ${
+            className={`p-8 md:p-10 relative flex flex-col ${
               pkg.isFeatured ? "bg-brand-900 text-white border border-brand-900" : "bg-white border border-brand-200"
             }`}
           >
@@ -80,14 +80,14 @@ export async function PackagesDisplay({ service }: { service: "content" | "booth
             )}
             <h3 className={`text-xl font-semibold mb-1 ${pkg.isFeatured ? "text-white" : "text-brand-900"}`}>{pkg.name}</h3>
             <p className={`text-sm mb-8 italic ${pkg.isFeatured ? "text-brand-400" : "text-brand-600"}`}>{pkg.subtitle}</p>
-            <div className="space-y-3 mb-10 min-h-[140px]">
+            <div className="space-y-3 mb-10 flex-grow">
               {pkg.features?.map((f, i) => (
                 <p key={i} className={`text-sm border-b pb-3 ${pkg.isFeatured ? "text-brand-400 border-brand-700/30" : "text-brand-600 border-brand-200"}`}>
                   {f.feature}
                 </p>
               ))}
             </div>
-            <div className={`border-t pt-6 ${pkg.isFeatured ? "border-brand-700/30" : "border-brand-200"}`}>
+            <div className={`border-t pt-6 ${isContent ? "text-center" : ""} ${pkg.isFeatured ? "border-brand-700/30" : "border-brand-200"}`}>
               {isContent ? (
                 <Link
                   href="/contact"
