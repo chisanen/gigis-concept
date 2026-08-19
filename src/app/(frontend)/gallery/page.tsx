@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { GalleryTabs } from "@/components/GalleryTabs";
+// import { GalleryTabs } from "@/components/GalleryTabs"; // Public gallery hidden per client request
 import { PrivateGallery } from "@/components/PrivateGallery";
 import { InstagramFeed } from "@/components/InstagramFeed";
 import { getPayload } from "@/lib/payload";
@@ -14,8 +13,8 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-// Gallery hidden per client request — remove this line to re-enable
-const GALLERY_HIDDEN = true;
+// Public gallery hidden per client request — to re-enable, uncomment the GalleryTabs section below
+const PUBLIC_GALLERY_HIDDEN = true;
 
 const fallbackPhotos = [
   { src: "https://images.unsplash.com/photo-1745231991466-19d41014cc66?w=600&q=80", alt: "Couple embracing" },
@@ -126,8 +125,6 @@ function buildCollections(docs: Record<string, unknown>[]): GalleryCollection[] 
 }
 
 export default async function GalleryPage() {
-  if (GALLERY_HIDDEN) notFound();
-
   const [settings, cmsDocs, pageBlocks] = await Promise.all([
     getSettings(),
     getGalleryImages(),
@@ -178,8 +175,8 @@ export default async function GalleryPage() {
         </section>
       )}
 
-      {/* Public Gallery with Tabs */}
-      {showGalleryPage && (
+      {/* Public Gallery with Tabs — hidden per client request, re-enable when ready */}
+      {/* {!PUBLIC_GALLERY_HIDDEN && showGalleryPage && (
       <section className="py-24 md:py-32 bg-brand-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
@@ -189,7 +186,7 @@ export default async function GalleryPage() {
           <GalleryTabs collections={collections} />
         </div>
       </section>
-      )}
+      )} */}
 
       {/* Private Gallery */}
       <section className="py-24 md:py-32 bg-brand-100">
