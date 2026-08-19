@@ -230,7 +230,8 @@ export function QuoteCalculator({
                   {cPkg.minimumHours && <span className="text-[11px] text-brand-500">({cPkg.minimumHours}-hr minimum)</span>}
                 </div>
               )}
-              {renderAddOns(contentAddOns, "Content Add-ons")}
+              {/* Content Add-ons hidden per client request — uncomment to re-enable */}
+              {/* {renderAddOns(contentAddOns, "Content Add-ons")} */}
             </div>
           )}
 
