@@ -38,15 +38,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     siteName: "Gigi's Concept",
-    title: "Gigi's Concept | Your event. Our Lens. Timeless Moments.",
+    title: "Gigi's Concept | Your Event. Our Lens. Timeless Moments.",
     description: "Luxury content creation & photo booth services in Dallas, Texas. Weddings, events, brand shoots.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Gigi's Concept | Your event. Our Lens. Timeless Moments." }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Gigi's Concept | Your Event. Our Lens. Timeless Moments." }],
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gigi's Concept | Your event. Our Lens. Timeless Moments.",
+    title: "Gigi's Concept | Your Event. Our Lens. Timeless Moments.",
     description: "Luxury content creation & photo booth services in Dallas, Texas.",
     images: ["/og-image.png"],
   },
