@@ -14,7 +14,7 @@ const defaultLinks: NavLink[] = [
   { href: "/", label: "HOME" },
   { href: "/about", label: "ABOUT" },
   { href: "/services", label: "SERVICES" },
-  { href: "/gallery", label: "GALLERY" },
+  // { href: "/gallery", label: "GALLERY" }, // Hidden per client request — re-enable when ready
   { href: "/blog", label: "BLOG" },
   { href: "/pricing", label: "PRICING" },
 ];

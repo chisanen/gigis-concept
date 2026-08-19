@@ -32,7 +32,12 @@ export const metadata: Metadata = {
   title: "Gigi's Concept | Content Creation & Luxury Photo Booth | Dallas TX",
   description:
     "Editorial content and a timeless photo-booth experience in Dallas, Texas. Quietly crafted, beautifully delivered. Weddings, events, brand shoots.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
+    siteName: "Gigi's Concept",
     title: "Gigi's Concept | Your Event. Our Lens. Timeless.",
     description: "Luxury content creation & photo booth services in Dallas, Texas. Weddings, events, brand shoots.",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Gigi's Concept | Your Event. Our Lens. Timeless." }],

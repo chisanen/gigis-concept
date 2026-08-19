@@ -3,7 +3,7 @@ import Image from "next/image";
 import { InquiryForm } from "@/components/InquiryForm";
 import { PackagesDisplay } from "@/components/PackagesDisplay";
 import { PackagesSection } from "@/components/PackagesSection";
-import { Gallery } from "@/components/Gallery";
+// import { Gallery } from "@/components/Gallery"; // Hidden per client request — re-enable when ready
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 import { getPayload } from "@/lib/payload";
@@ -77,7 +77,7 @@ export default async function Home() {
   const twoWays = getBlock(blocks, "twoWays");
   const pkgs = getBlock(blocks, "packagesToggle");
   const ctaBlock = getBlock(blocks, "cta");
-  const galleryBlock = getBlock(blocks, "gallerySection");
+  // const galleryBlock = getBlock(blocks, "gallerySection"); // Hidden per client request
   const contactBlock = getBlock(blocks, "contactSection");
   const showHomeGallery = ((settings as Record<string, unknown>)?.showHomeGallery ?? true) as boolean;
 
@@ -228,8 +228,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ═══ 7 · GALLERY ═══ */}
-      {showHomeGallery && (
+      {/* ═══ 7 · GALLERY — hidden per client request, re-enable when ready ═══ */}
+      {/* {showHomeGallery && (
       <section className="py-16 sm:py-28 md:py-36 bg-brand-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
@@ -242,7 +242,7 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      )}
+      )} */}
 
       {/* ═══ 8 · CONTACT US ═══ */}
       <section id="contact" className="py-16 sm:py-28 md:py-36 bg-brand-200">

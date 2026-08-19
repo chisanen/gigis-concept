@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { GalleryTabs } from "@/components/GalleryTabs";
 import { PrivateGallery } from "@/components/PrivateGallery";
 import { InstagramFeed } from "@/components/InstagramFeed";
@@ -12,6 +13,9 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
+
+// Gallery hidden per client request — remove this line to re-enable
+const GALLERY_HIDDEN = true;
 
 const fallbackPhotos = [
   { src: "https://images.unsplash.com/photo-1745231991466-19d41014cc66?w=600&q=80", alt: "Couple embracing" },
@@ -122,6 +126,8 @@ function buildCollections(docs: Record<string, unknown>[]): GalleryCollection[] 
 }
 
 export default async function GalleryPage() {
+  if (GALLERY_HIDDEN) notFound();
+
   const [settings, cmsDocs, pageBlocks] = await Promise.all([
     getSettings(),
     getGalleryImages(),
