@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-// import { GalleryTabs } from "@/components/GalleryTabs"; // Public gallery hidden per client request
+import { GalleryTabs } from "@/components/GalleryTabs";
 import { PrivateGallery } from "@/components/PrivateGallery";
-import { InstagramFeed } from "@/components/InstagramFeed";
 import { getPayload } from "@/lib/payload";
 import { getMediaUrl } from "@/lib/render-blocks";
 
@@ -12,24 +11,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-// Public gallery hidden per client request — to re-enable, uncomment the GalleryTabs section below
-const PUBLIC_GALLERY_HIDDEN = true;
-
-const fallbackPhotos = [
-  { src: "https://images.unsplash.com/photo-1745231991466-19d41014cc66?w=600&q=80", alt: "Couple embracing" },
-  { src: "https://images.unsplash.com/photo-1515531980326-6244280b99c8?w=600&q=80", alt: "Elegant couple" },
-  { src: "https://images.unsplash.com/photo-1515015337340-dbabb1fa63ae?w=600&q=80", alt: "Wedding couple" },
-  { src: "https://images.unsplash.com/photo-1560461723-0fa849b3e03a?w=600&q=80", alt: "Bridal party" },
-  { src: "https://images.unsplash.com/photo-1516668557604-c8e814fdb184?w=600&q=80", alt: "Birthday celebration" },
-  { src: "https://images.unsplash.com/photo-1592599457454-e6ace3370314?w=600&q=80", alt: "Wedding celebration" },
-  { src: "https://images.unsplash.com/photo-1585890483032-1465321a75a5?w=600&q=80", alt: "Bridal party formal" },
-  { src: "https://images.unsplash.com/photo-1515015443787-2e0fb93d9783?w=600&q=80", alt: "Wedding portrait" },
-  { src: "https://images.unsplash.com/photo-1700142534189-cc18e2d42917?w=600&q=80", alt: "Bride with bouquet" },
-  { src: "https://images.unsplash.com/photo-1632850741446-50260d19a158?w=600&q=80", alt: "Portrait session" },
-  { src: "https://images.unsplash.com/photo-1719499719196-7a256956a22b?w=600&q=80", alt: "Bride and groom" },
-  { src: "https://images.unsplash.com/photo-1563525614522-b76b89d81024?w=600&q=80", alt: "Birthday party" },
-];
 
 async function getSettings() {
   try {
@@ -131,15 +112,12 @@ export default async function GalleryPage() {
     getGalleryPage(),
   ]);
 
-  const instagramHandle = (settings as Record<string, unknown>)?.instagramHandle as string || "gigisconcept.ig";
-  const instagramWidgetId = (settings as Record<string, unknown>)?.instagramWidgetId as string || "8f2623a4-4a4b-4cc9-8a87-05698faf659b";
-  const showInstagramFeed = (settings as Record<string, unknown>)?.showInstagramFeed as boolean ?? true;
   const showGalleryPage = (settings as Record<string, unknown>)?.showGalleryPage as boolean ?? true;
 
-  // Build collections from CMS docs, or fall back to a single "All" collection
+  // Build collections from CMS-uploaded images only
   const collections: GalleryCollection[] = cmsDocs
     ? buildCollections(cmsDocs as Record<string, unknown>[])
-    : [{ name: "All", photos: fallbackPhotos }];
+    : [];
 
   // Extract headings from CMS blocks if available
   const heroBlock = findBlock(pageBlocks, "hero");
@@ -162,21 +140,8 @@ export default async function GalleryPage() {
         </div>
       </section>
 
-      {/* Instagram Feed */}
-      {showInstagramFeed && (instagramWidgetId || instagramHandle) && (
-        <section className="py-24 md:py-32 bg-white">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-14">
-              <p className="text-[10px] tracking-[0.5em] text-brand-500 mb-4 uppercase">Follow Us</p>
-              <h2 className="font-script text-4xl md:text-5xl text-brand-900">Instagram</h2>
-            </div>
-            <InstagramFeed widgetId={instagramWidgetId} handle={instagramHandle} />
-          </div>
-        </section>
-      )}
-
-      {/* Public Gallery with Tabs — hidden per client request, re-enable when ready */}
-      {/* {!PUBLIC_GALLERY_HIDDEN && showGalleryPage && (
+      {/* Public Gallery */}
+      {showGalleryPage && collections.length > 0 && (
       <section className="py-24 md:py-32 bg-brand-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
@@ -186,7 +151,7 @@ export default async function GalleryPage() {
           <GalleryTabs collections={collections} />
         </div>
       </section>
-      )} */}
+      )}
 
       {/* Private Gallery */}
       <section className="py-24 md:py-32 bg-brand-100">
